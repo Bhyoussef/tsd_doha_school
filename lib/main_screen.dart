@@ -164,9 +164,10 @@ class MainScreen extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child:  GestureDetector(
-                    onTap: () => _showQrImageDialog(context, controller.parent.username!),
-                    child: QrImage(
+                  child: GestureDetector(
+                    onTap: () => _showQrImageDialog(
+                        context, controller.parent.username!),
+                    child: QrImageView(
                       data: controller.parent!.uid!.toString(),
                       version: QrVersions.auto,
                       foregroundColor: Colors.black,
@@ -227,7 +228,7 @@ void _showQrImageDialog(BuildContext context, String qrData) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              QrImage(
+              QrImageView(
                 data: qrData,
                 version: QrVersions.auto,
                 foregroundColor: Colors.black,

@@ -23,7 +23,7 @@ dependencies:
   flutter_device_type: ^0.4.0
   dio: ^5.1.1
   path_provider: ^2.0.5
-  qr_flutter: ^4.0.0
+  qr_flutter: ^4.1.0
   webview_flutter: ^2.0.0
 
 dev_dependencies:
