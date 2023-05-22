@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../model/child_model.dart';
+import 'package:tunisian_school_doha/model/child_model.dart';
 
 class ChildCardWidget extends StatelessWidget {
   final Mychildreen student;
@@ -14,39 +15,13 @@ class ChildCardWidget extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 30, right: 10),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    student.group ?? '',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    student.Class ?? '',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildCircleAvatar(student.image),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 Text(
                   '${student.nameAr ?? ''} ${student.lastNameAr ?? ''}',
                   style: const TextStyle(
@@ -61,6 +36,28 @@ class ChildCardWidget extends StatelessWidget {
                     fontSize: 18,
                   ),
                 ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      student.group ?? '',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      student.Class ?? '',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
               ],
             ),
           ),
@@ -79,14 +76,14 @@ class ChildCardWidget extends StatelessWidget {
           radius: 40.0,
         );
       } catch (e) {
-
-        print('Invalid image data: $e');
+        if (kDebugMode) {
+          print('Invalid image data: $e');
+        }
       }
     }
     return const CircleAvatar(
-     backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+      backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
       radius: 40.0,
     );
   }
-
 }

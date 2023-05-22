@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -23,7 +24,7 @@ class DetailScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [primarycolor, primarycolor],
                 begin: Alignment.bottomLeft,
@@ -34,9 +35,9 @@ class DetailScreen extends StatelessWidget {
           ),
           Positioned(
             top: 40,
-            left: 5,
+            left: 10,
             child: IconButton(
-              icon: const  Icon(
+              icon: const Icon(
                 Icons.arrow_back_ios,
                 color: CupertinoColors.white,
               ),
@@ -45,10 +46,9 @@ class DetailScreen extends StatelessWidget {
               },
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 80),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topCenter,
               child: Column(
                 children: [
                   _buildCircleAvatar(student.image),
@@ -69,11 +69,14 @@ class DetailScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () => _showQrImageDialog(context, student.ref!),
-                    child: QrImageView(
-                      data: student.ref!,
-                      version: QrVersions.auto,
-                      foregroundColor: Colors.white,
-                      size: 100.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: QrImageView(
+                        data: student.ref!,
+                        version: QrVersions.auto,
+                        backgroundColor: Colors.white,
+                        size: 100.0,
+                      ),
                     ),
                   ),
                   Text(
@@ -153,7 +156,7 @@ class DetailScreen extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text(
               title,
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           ],
         ),
@@ -218,7 +221,9 @@ Widget _buildCircleAvatar(dynamic image) {
         radius: 30.0,
       );
     } catch (e) {
-      print('Invalid image data: $e');
+      if (kDebugMode) {
+        print('Invalid image data: $e');
+      }
     }
   }
   return const CircleAvatar(
