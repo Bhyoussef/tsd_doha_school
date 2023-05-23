@@ -45,11 +45,22 @@ class MesaageReceivedController extends GetxController {
     }
   }
 
-  Future<void> getDetailsMessage(uis,int messageId)async{
+  Future<void> getDetailsMessage(uid,int messageId)async{
     try{
       isLoading(true);
       final messagedetail = await ApiServiceMessage.getMessageDetails(6523, messageId);
       messageDetail.assignAll(messagedetail);
+      update();
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  Future<void> updateMessageState(uid,int messageId)async{
+    try{
+      isLoading(true);
+      final updatemessage = await ApiServiceMessage.getMessageDetails(6523, messageId);
+      messageDetail.assignAll(updatemessage);
       update();
     }finally{
       isLoading(false);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../controller/language_controller/language_controller.dart';
 
 
@@ -21,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
                   init: LanguageController(),
                   builder: (controller) => CheckboxListTile(
                     checkColor: Colors.white,
-                    activeColor: const Color(0xFFB97CFC),
+                    activeColor:  primarycolor,
                     title:  Text('anglais'.tr),
                     value: controller.savedLang.value == 'EN',
                     onChanged: (bool? value) {
@@ -37,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
                   init: LanguageController(),
                   builder: (controller) => CheckboxListTile(
                     checkColor: Colors.white,
-                    activeColor: const Color(0xFFB97CFC),
+                    activeColor:  primarycolor,
                     title:  Text('arabe'.tr),
                     value: controller.savedLang.value == 'AR',
                     onChanged: (bool? value) {
@@ -53,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                   init: LanguageController(),
                   builder: (controller) => CheckboxListTile(
                     checkColor: Colors.white,
-                    activeColor: const Color(0xFFB97CFC),
+                    activeColor:  primarycolor,
                     title:  Text('francais'.tr),
                     value: controller.savedLang.value == 'FR',
                     onChanged: (bool? value) {

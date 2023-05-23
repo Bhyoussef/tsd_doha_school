@@ -1,7 +1,8 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../../model/message_model.dart';
+
+
 
 class MessageCardReceived extends StatelessWidget {
   final String title;
@@ -9,15 +10,19 @@ class MessageCardReceived extends StatelessWidget {
   final String sender;
   final String message;
   final String details;
-  final String isRead; // New property for indicating read/unread status
+  final String isRead;
+  final bool isAttached;
+  final List<Attachments> attachments;
 
-  const MessageCardReceived({
+  const MessageCardReceived({super.key,
     required this.title,
     required this.image,
     required this.sender,
     required this.message,
     required this.details,
     required this.isRead,
+    required this.isAttached,
+    required this.attachments,
   });
 
   @override
@@ -51,7 +56,7 @@ class MessageCardReceived extends StatelessWidget {
                     Expanded(
                       child: Text(
                         sender,
-                        style: TextStyle(fontSize: 16.0),
+                        style: const TextStyle(fontSize: 16.0),
                       ),
                     ),
                   ],
@@ -61,7 +66,7 @@ class MessageCardReceived extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: RichText(
                   text: TextSpan(
-                    style: TextStyle(fontSize: 16.0, color: Colors.black),
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
                     children: [
                       TextSpan(
                         text: message,
@@ -70,6 +75,34 @@ class MessageCardReceived extends StatelessWidget {
                   ),
                 ),
               ),
+              if (attachments.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Attachments:',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: attachments.length,
+                        itemBuilder: (context, index) {
+                          final attachment = attachments[index];
+                          return Text(
+                            attachment.fileName ?? '',
+                            style: const TextStyle(fontSize: 14.0),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
               const Divider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -97,11 +130,17 @@ class MessageCardReceived extends StatelessWidget {
               ),
             ),
           ),
+          isAttached ? Container() : const Positioned(
+            top: 8.0,
+            right: 25.0,
+            child: Icon(Icons.attach_file,),
+          ),
         ],
       ),
     );
   }
 }
+
 
 
 class MessageCardSent extends StatelessWidget {

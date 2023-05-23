@@ -26,7 +26,7 @@ void app() async {
   }
 
   runApp(
-    MyApp(route: Routes.onbording, language: language),
+    MyApp(route: Routes.splashscreen, language: language),
   );
 }
 
@@ -34,6 +34,7 @@ void app() async {
 class MyApp extends StatelessWidget {
   final String? route;
   final String? language;
+
 
   const MyApp({
     Key? key,
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
           theme: appThemeData(context),
           translations: Translation(),
           locale: locale,
+          fallbackLocale: locale,
           debugShowCheckedModeBanner: false,
           initialRoute: route,
           getPages: Routes.routes,
@@ -64,6 +66,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 
 

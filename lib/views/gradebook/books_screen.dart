@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../model/book_model.dart';
+import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 
 class BookListScreen extends StatefulWidget {
@@ -35,14 +37,14 @@ class _BookListScreenState extends State<BookListScreen> {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon: const  Icon(Icons.arrow_back_ios,color: CupertinoColors.white),
           onPressed: () {
             Get.back();
           },
         ),
-        backgroundColor: Colors.white,
-        title: const Text('Books',style: TextStyle(
-            color: Color(0xFF7590d6)
+        backgroundColor: primarycolor,
+        title: const  Text('Books',style: TextStyle(
+            color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
       body: GetBuilder<ChildrenController>(
@@ -111,12 +113,12 @@ class BookCard extends StatelessWidget {
                                       child: Text(attachment.fileName ?? ''),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.download,
-                                        color: Color(0xFFB97CFC) ,),
+                                      icon:  Icon(Icons.download,
+                                        color: primarycolor ,),
                                       onPressed: () {
                                         SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
                                           downloadController.downloadFile(
-                                            uid, // Replace the argument with the uid obtained from SharedData
+                                            uid,
                                             attachment.id.toString(),
                                             attachment.fileName ?? '',
                                           );

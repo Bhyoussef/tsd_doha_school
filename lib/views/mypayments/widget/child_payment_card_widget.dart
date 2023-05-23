@@ -19,7 +19,10 @@ class ChildCardPayment extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildCircleAvatar(student.image),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: _buildCircleAvatar(student.image),
+            ),
               const SizedBox(width: 10),
             Expanded(
               child: Container(

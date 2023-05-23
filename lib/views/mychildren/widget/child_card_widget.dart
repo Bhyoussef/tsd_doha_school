@@ -76,7 +76,7 @@ class ChildCardWidget extends StatelessWidget {
 
         return CircleAvatar(
           backgroundImage: MemoryImage(decodedImage),
-          radius: 30.0,
+          radius: 40.0,
         );
       } catch (e) {
 
@@ -85,7 +85,7 @@ class ChildCardWidget extends StatelessWidget {
     }
     return const CircleAvatar(
      backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
-      radius: 30.0,
+      radius: 40.0,
     );
   }
 

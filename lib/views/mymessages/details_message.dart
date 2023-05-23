@@ -102,7 +102,7 @@ class _DetailsMessageState extends State<DetailsMessage> {
 
 
           ),
-          primary: Color(0xFFB97CFC),
+          primary: const Color(0xFFB97CFC),
         ),
 
         child:  const Text('Add Comment'),
@@ -118,7 +118,11 @@ class _DetailsMessageState extends State<DetailsMessage> {
       image: widget.message.teacherImage ?? '',
       sender: widget.message.teacher ?? '',
       message: widget.message.message ?? '',
-      details: '${widget.message.student ?? ''} • ${widget.message.date ?? ''}', isRead: widget.message.state!,
+      details: '${widget.message.student ?? ''} • ${widget.message.date ?? ''}',
+      isRead: widget.message.state!,
+      isAttached: widget.message.attachments!.isEmpty,
+      attachments: widget.message.attachments!,
+
     );
   }
 
@@ -168,7 +172,6 @@ class _DetailsMessageState extends State<DetailsMessage> {
   void sendComment() {
     final comment = commentController.text;
     // Perform any necessary actions to send the comment
-    // ...
     commentController.clear();
   }
 }

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/send_message_controller.dart';
 import '../../model/personal_model.dart';
@@ -20,11 +22,11 @@ class SendMessageScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: primarycolor,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFFB97CFC),
+            color: CupertinoColors.white,
           ),
           onPressed: () {
             Get.back();
@@ -32,9 +34,10 @@ class SendMessageScreen extends StatelessWidget {
         ),
         title: const Text(
           'Send Message',
-          style: TextStyle(color: Color(0xFF7590d6)),
+          style: TextStyle(
+              color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF4D71D7)),
+        iconTheme: IconThemeData(color: CupertinoColors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -59,7 +62,9 @@ class SendMessageScreen extends StatelessWidget {
               _buildMessageField(),
               const SizedBox(height: 20),
               MaterialButton(
-                color: Color(0xFFB97CFC),
+                minWidth: MediaQuery.of(context).size.width,
+                height: 50,
+                color: primarycolor,
                 textColor: Colors.white,
                 onPressed: () {
                   final selectedTo = toController.text;
@@ -82,7 +87,8 @@ class SendMessageScreen extends StatelessWidget {
                     );
                     receiverId = selectedAdmin.id?.toString() ?? '0';
                   }
-                  SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                  SharedData.getFromStorage('parent', 'object', 'uid')
+                      .then((uid) {
                     controller.sendMessage(
                       uid,
                       selectedTo,
@@ -91,8 +97,11 @@ class SendMessageScreen extends StatelessWidget {
                       receiverId,
                     );
                   });
-                  },
-                child: const Text('Send'),
+                },
+                child: const Text(
+                  'Send',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -111,27 +120,31 @@ class SendMessageScreen extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Obx(() => RadioListTile<String>(
+              activeColor: primarycolor,
               title: const Text('Teacher'),
               value: 'T',
               groupValue: controller.selectedTo.value,
               onChanged: (value) {
                 toController.text = value!;
                 controller.selectedTo.value = value;
-                SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
+                SharedData.getFromStorage('parent', 'object', 'uid')
+                    .then((uid) async {
                   controller.fetchRecipients(uid); // Pass the uid argument
                 });
                 controller.recipientVisible.value = true;
               },
             )),
         Obx(() => RadioListTile<String>(
+              activeColor: primarycolor,
               title: const Text('Administrator'),
               value: 'A',
               groupValue: controller.selectedTo.value,
               onChanged: (value) {
                 toController.text = value!;
                 controller.selectedTo.value = value;
-                SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-                  controller.fetchRecipients(uid); // Pass the uid argument
+                SharedData.getFromStorage('parent', 'object', 'uid')
+                    .then((uid) async {
+                  controller.fetchRecipients(uid);
                 });
                 controller.recipientVisible.value = true;
               },
@@ -153,7 +166,6 @@ class SendMessageScreen extends StatelessWidget {
         if (recipients.isNotEmpty) {
           recipientController.text = recipients.first!;
         } else {
-// Reset the recipient field when there are no recipients available
           recipientController.text = "";
         }
       }

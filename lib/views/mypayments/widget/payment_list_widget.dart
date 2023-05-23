@@ -31,7 +31,7 @@ class PaymentListItem extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: const Text('Total Paid'),
+                title: const Text('Total Paid',style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle: Text(paymentTotal.totPaid.toString()),
                 trailing: const Icon(Icons.payment,color: Colors.green,),
 
@@ -41,7 +41,7 @@ class PaymentListItem extends StatelessWidget {
 
               ),
               ListTile(
-                title: const Text('Total Inpaid'),
+                title: const Text('Total Inpaid',style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle:Text(paymentTotal.totUnpaid.toString()) ,
                 trailing: const Icon(Icons.payment,color: Colors.red,),
                 onTap: () {

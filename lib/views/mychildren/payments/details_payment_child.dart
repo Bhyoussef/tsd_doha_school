@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -10,6 +11,7 @@ import 'package:tunisian_school_doha/model/child_model.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/payment_details_model.dart';
 import '../../../model/payment_model.dart';
+import '../../../theme/app_colors.dart';
 import '../../../utils/shared_preferences.dart';
 import '../../mypayments/payment_screen.dart';
 
@@ -322,7 +324,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
           onPressed: () {
             Get.back();
           },
@@ -332,56 +334,60 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
           color: Color(0xFF7590d6)
         ),),
       ),
-      body: Obx(
-            () {
-          if (controller.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return ListView.builder(
-              itemCount: controller.totalinpaiddetailsstudents.length,
-              itemBuilder: (context, index) {
-                final paidDetail = controller.totalinpaiddetailsstudents[index];
+      body: SafeArea(
+        child: Obx(
+              () {
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.builder(
+                itemCount: controller.totalinpaiddetailsstudents.length,
+                itemBuilder: (context, index) {
+                  final paidDetail = controller.totalinpaiddetailsstudents[index];
 
-                return Card(
-                  margin: EdgeInsets.all(10),
-                  child: ListTile(
-                    title: Text(
-                      paidDetail.period.toString(),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                  return Card(
+                    margin: EdgeInsets.all(10),
+                    child: ListTile(
+                      title: Text(
+                        paidDetail.period.toString(),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Price Unit: ${paidDetail.priceUnit}'),
+                          Text('Year: ${paidDetail.year}'),
+                        ],
+                      ),
+                      trailing: Switch(
+                        activeColor: const Color(0xFFB97CFC),
+                        value: selectedLines.contains(index),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value) {
+                              selectedLines.add(index);
+                            } else {
+                              selectedLines.remove(index);
+                            }
+                            totalAmount = calculateTotalAmount();
+                          });
+                        },
                       ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Price Unit: ${paidDetail.priceUnit}'),
-                        Text('Year: ${paidDetail.year}'),
-                      ],
-                    ),
-                    trailing: Switch(
-                      activeColor: const Color(0xFFB97CFC),
-                      value: selectedLines.contains(index),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value) {
-                            selectedLines.add(index);
-                          } else {
-                            selectedLines.remove(index);
-                          }
-                          totalAmount = calculateTotalAmount();
-                        });
-                      },
-                    ),
-                  ),
-                );
-              },
-            );
-          }
-        },
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
       floatingActionButton: MaterialButton(
-        color: const Color(0xFFB97CFC),
+        height: 50,
+        minWidth: MediaQuery.of(context).size.width-30,
+        color: primarycolor,
         textColor: Colors.white,
         onPressed: () {
           if (selectedLines.isNotEmpty) {
@@ -391,16 +397,16 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
             navigateToPaymentPage(context, selectedDetails);
           }
         },
-        child: Text('Pay'),
+        child:const  Text('Pay',style: TextStyle(fontWeight: FontWeight.bold),),
       ),
       bottomNavigationBar: Padding(
         padding:const EdgeInsets.all(16),
         child: Text(
           'Total Amount: $totalAmount',
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF7590d6)
+            color: primarycolor
           ),
         ),
       ),
@@ -426,7 +432,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       MaterialPageRoute(
         builder: (context) =>
             PaymentScreen(
-              schoolCode: widget.student.classId!.toString(),
+              schoolCode: widget.student.schoolCode!,
               parentID: parentId,
               childID: widget.student.studentId!,
               amount: totalAmount,

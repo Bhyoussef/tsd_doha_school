@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import 'controller/home_controller.dart';
 import 'controller/auth_controller/login_controller.dart';
 
@@ -19,8 +20,8 @@ class MainScreen extends StatelessWidget {
           Container(
             height: 240,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF4d71d7), Color(0xFF6495ed)],
+              gradient:  LinearGradient(
+                colors: [primarycolor, primarycolor],
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
               ),
@@ -63,6 +64,7 @@ class MainScreen extends StatelessWidget {
               'mychildren'.tr,
               style: TextStyle(
                 color: controller.getOptionColor(0),
+
               ),
             ),
             onTap: () {

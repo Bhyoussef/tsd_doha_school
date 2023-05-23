@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../main_screen.dart';
 import '../../controller/home_controller.dart';
+import '../../theme/app_colors.dart';
 import '../about/about_screen.dart';
 import '../configuration/configuration_screen.dart';
 import '../mychildren/mychildren_screen.dart';
@@ -18,16 +20,17 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        backgroundColor: primarycolor,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Color(0xFF4D71D7)),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: Obx(() =>
             Text(
           controller.pageTitle.value,style:
         const TextStyle(
-          color: Color(0xFF7590d6)
+          color: CupertinoColors.white,
+          fontWeight: FontWeight.bold,
         ),)),
         actions: [
           Padding(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
-import 'package:tunisian_school_doha/views/mychildren/children_details_screen.dart';
+import 'package:tunisian_school_doha/views/home/home_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentScreen extends StatelessWidget {
@@ -12,16 +11,16 @@ class PaymentScreen extends StatelessWidget {
   final int childID;
   final double amount;
   final List<int> lineIDs;
-
   const PaymentScreen({
-    super.key,
+    Key? key,
     required this.schoolCode,
     required this.parentID,
     required this.childID,
     required this.amount,
     required this.lineIDs,
     required this.student,
-  });
+  }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,38 +75,38 @@ class PaymentScreen extends StatelessWidget {
   }
 
   void openCreditBrowser(BuildContext context) {
-    String lines = '';
-    lineIDs.forEach((item) {
-      lines = lines + '&lines[]=' + item.toString();
-    });
+    List<String> encodedLines = lineIDs.map((item) => 'lines[]=$item').toList();
+    String lines = encodedLines.join('&');
 
     String url =
-        'https://payment.tsdoha.com/session?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amount$lines';
+        'https://payment.tsdoha.com/session?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amount&$lines';
+
+    String encodedUrl = Uri.encodeFull(url);
 
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                elevation: 0,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Color(0xFFB97CFC),
-                  ),
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-                backgroundColor: Colors.white,
-                title: const Text(
-                  'Credit',
-                  style: TextStyle(color: Color(0xFF7590d6)),
-                ),
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xFFB97CFC),
               ),
-              body:  WebView(
-            initialUrl: url,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            backgroundColor: Colors.white,
+            title: const Text(
+              'Credit',
+              style: TextStyle(color: Color(0xFF7590d6)),
+            ),
+          ),
+          body: WebView(
+            initialUrl: encodedUrl,
             javascriptMode: JavascriptMode.unrestricted,
             navigationDelegate: (NavigationRequest request) {
               if (request.url.contains('payment/success')) {
@@ -120,19 +119,20 @@ class PaymentScreen extends StatelessWidget {
               return NavigationDecision.navigate;
             },
           ),
-          )
-        ));
+        ),
+      ),
+    );
   }
 
   void openDebitBrowser(BuildContext context) {
-    String lines = '';
-    lineIDs.forEach((item) {
-      lines = lines + '&lines[]=' + item.toString();
-    });
-
+    List<String> encodedLines = lineIDs.map((item) => 'lines[]=$item').toList();
+    String lines = encodedLines.join('&');
+    final double amountdebit = amount * 100;
+    final int amountdeb = amountdebit.toInt();
     String url =
-        'https://payment.tsdoha.com/sts/checkout?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=${amount}$lines';
-
+        'https://payment.tsdoha.com/sts/checkout?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amountdeb&$lines';
+    print(url);
+    String encodedUrl = Uri.encodeFull(url);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -155,8 +155,8 @@ class PaymentScreen extends StatelessWidget {
               style: TextStyle(color: Color(0xFF7590d6)),
             ),
           ),
-          body:  WebView(
-            initialUrl: url,
+          body: WebView(
+            initialUrl: encodedUrl,
             javascriptMode: JavascriptMode.unrestricted,
             navigationDelegate: (NavigationRequest request) {
               if (request.url.contains('payment/success')) {
@@ -186,7 +186,7 @@ class PaymentScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Get.to(() => DetailScreen(student: student));
+                Get.to(() => HomeScreen());
               },
               child: const Text('OK'),
             ),
@@ -196,3 +196,5 @@ class PaymentScreen extends StatelessWidget {
     );
   }
 }
+
+

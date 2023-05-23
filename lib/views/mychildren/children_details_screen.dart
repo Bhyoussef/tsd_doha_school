@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../model/child_model.dart';
-import '../books/books_screen.dart';
 import '../dicipline/dicipline_screen.dart';
 import '../excersice/excersice_screen.dart';
+import '../gradebook/books_screen.dart';
 import '../recording/recordingScreen.dart';
 import '../timetable/time_table_screen.dart';
 import 'payments/details_payment_child.dart';
@@ -22,9 +23,9 @@ class DetailScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF4d71d7), Color(0xFF6495ed)],
+                colors: [primarycolor, primarycolor],
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
               ),
@@ -35,9 +36,9 @@ class DetailScreen extends StatelessWidget {
             top: 40,
             left: 5,
             child: IconButton(
-              icon: Icon(
+              icon: const  Icon(
                 Icons.arrow_back_ios,
-                color: Color(0xFFB97CFC),
+                color: CupertinoColors.white,
               ),
               onPressed: () {
                 Get.back();
@@ -109,7 +110,7 @@ class DetailScreen extends StatelessWidget {
                         context, 'Dicipline', navigateToDiciplinePage),
                     _buildGridItem(
                         context, 'Time Tables', navigateToTimeTablePage),
-                    _buildGridItem(context, 'Book', navigateToBookPage),
+                    _buildGridItem(context, 'GradeBook', navigateToBookPage),
                     _buildGridItem(
                         context, 'Recording', navigateToRecordingPage),
                   ],
@@ -149,7 +150,7 @@ class DetailScreen extends StatelessWidget {
               size: 36.0,
               color: Colors.black,
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               title,
               style: TextStyle(fontSize: 16, color: Colors.black),
@@ -170,7 +171,7 @@ class DetailScreen extends StatelessWidget {
         return Icons.school;
       case 'time tables':
         return Icons.schedule;
-      case 'book':
+      case 'gradebook':
         return Icons.menu_book;
       case 'recording':
         return Icons.mic;

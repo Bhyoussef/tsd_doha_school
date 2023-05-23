@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
@@ -31,13 +33,14 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon: const Icon(Icons.arrow_back_ios,color:CupertinoColors.white),
           onPressed: () {
             Get.back();
           },
         ),
-        backgroundColor: Colors.white,
-        title: const Text('Exercise ',style: TextStyle(color: Color(0xFF7590d6)),),
+        backgroundColor: primarycolor,
+        title: const Text('Exercise ',style: TextStyle(
+            color: CupertinoColors.white,fontWeight: FontWeight.bold),),
       ),
       body: GetBuilder<ChildrenController>(
         builder: (exerciseController) {

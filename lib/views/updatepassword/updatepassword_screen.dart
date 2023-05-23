@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import 'widget/password_field_widget.dart';
 import '../../controller/auth_controller/updatepassword_controller.dart';
 
@@ -23,9 +24,7 @@ class UpdatePasswordScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 50,
-                ),
+
                 PasswordFormField(
                   controller: _oldpassword,
                   labelText: 'oldpassword'.tr,
@@ -61,8 +60,9 @@ class UpdatePasswordScreen extends StatelessWidget {
                 const SizedBox(height: 32.0),
                 Center(
                   child: MaterialButton(
-                    minWidth: 380,
-                    color: Color(0xFFB97CFC),
+                    height: 50,
+                    minWidth: MediaQuery.of(context).size.width,
+                    color: primarycolor,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _passwordChangeController.updatePasswd(
@@ -74,7 +74,9 @@ class UpdatePasswordScreen extends StatelessWidget {
                     },
                     child: Text(
                       'update'.tr,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
