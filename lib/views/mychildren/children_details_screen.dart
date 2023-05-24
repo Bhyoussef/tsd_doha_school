@@ -219,7 +219,7 @@ class DetailScreen extends StatelessWidget {
   }
 
   void navigateToTimeTablePage() {
-    Get.to(() => TimeTableScreen(studentId: student.studentId!));
+    Get.to(() => TimeTableScreen(studentId: student.studentId!,student:student));
   }
 }
 

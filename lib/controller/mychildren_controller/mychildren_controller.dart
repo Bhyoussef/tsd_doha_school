@@ -56,10 +56,10 @@ class ChildrenController extends GetxController {
     }
   }
 
-  Future<void> fetchTiemTableStudent(int studentId) async {
+  Future<void> fetchTiemTableStudent(int studentId,String ClassId) async {
     try {
       isLoading(true);
-      final fetchedtimetable = await ApiServiceMyChildren.fetchTimeTable(studentId);
+      final fetchedtimetable = await ApiServiceMyChildren.fetchTimeTable(studentId,ClassId);
       timetable.assignAll(fetchedtimetable);
       update();
     } finally {

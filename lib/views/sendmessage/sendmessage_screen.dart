@@ -39,8 +39,9 @@ class SendMessageScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: CupertinoColors.white),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const  EdgeInsets.all(20.0),
         child: SingleChildScrollView(
+          physics:const  AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -174,26 +175,31 @@ class SendMessageScreen extends StatelessWidget {
           recipientController.text = '';
         }
       }
-      return Obx(() => DropdownButtonFormField<String>(
-        value: recipientController.text,
-        onChanged: (value) {
-          recipientController.text = value!;
-        },
-        items: recipients
-            .map(
-              (recipient) => DropdownMenuItem(
-            value: recipient,
-            child: Text(recipient!),
+      return Obx(() => SingleChildScrollView(
+        child: DropdownButtonFormField<String>(
+          value: recipientController.text,
+          onChanged: (value) {
+            recipientController.text = value!;
+          },
+          items: recipients
+              .map(
+                (recipient) => DropdownMenuItem(
+              value: recipient,
+              child: Text(recipient!),
+            ),
+          )
+              .toList(),
+          decoration: const InputDecoration(
+            labelText: 'Recipient',
           ),
-        )
-            .toList(),
-        decoration: const InputDecoration(
-          labelText: 'Recipient',
+          key: ValueKey(controller.selectedTo.value),
+          isExpanded: true, // Show only the first item and enable scrolling
         ),
-        key: ValueKey(controller.selectedTo.value),
       ));
     });
   }
+
+
 
   Widget _buildSubjectField() {
     return TextField(

@@ -126,18 +126,24 @@ Widget _buildCircleAvatar(dynamic image) {
     try {
       final decodedImage = base64Decode(image.toString());
       final imageBytes = Uint8List.fromList(decodedImage);
-      return CircleAvatar(
-        backgroundImage: MemoryImage(imageBytes),
-        radius: 30.0,
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CircleAvatar(
+          backgroundImage: MemoryImage(imageBytes),
+          radius: 30.0,
+        ),
       );
     } catch (e) {
 
       print('Invalid image data: $e');
     }
   }
-  return const CircleAvatar(
-    backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
-    radius: 30.0,
+  return const Padding(
+    padding:  EdgeInsets.all(8.0),
+    child: CircleAvatar(
+      backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
+      radius: 30.0,
+    ),
   );
 }
 
@@ -234,11 +240,11 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
         body: Obx(
               () {
             if (paymentController.isLoading.value) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('No payments history found.'),
               );
             }
@@ -248,7 +254,7 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
               itemBuilder: (context, index) {
                 final payment = paymentController.totalpaiddetailsstudents[index];
                 return Card(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -256,12 +262,12 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
                       children: [
                         Text(
                           payment.period.toString(),
-                          style: TextStyle(
+                          style: const  TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Divider(),
+                        const Divider(),
                         Text(
                           'Price Unit: ${payment.priceUnit}',
                         ),
@@ -350,7 +356,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                     child: ListTile(
                       title: Text(
                         paidDetail.period.toString(),
-                        style: TextStyle(
+                        style:const  TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

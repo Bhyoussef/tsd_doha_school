@@ -24,6 +24,15 @@ class RecordingScreen extends StatelessWidget {
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/imgs/notfound.png'),
+            Text('No Records Found ')
+          ],
+        )
+      ),
     );
   }
 }
