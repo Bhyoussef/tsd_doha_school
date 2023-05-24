@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/utils/shared_preferences.dart';
-import 'package:tunisian_school_doha/services/auth.dart';
-import 'package:tunisian_school_doha/model/auth_model.dart';
-import 'package:tunisian_school_doha/views/home/home_screen.dart';
-import 'package:tunisian_school_doha/views/login/login_screen.dart';
+
+
+import '../../model/auth_model.dart';
+import '../../services/auth.dart';
+import '../../utils/shared_preferences.dart';
+import '../../views/home/home_screen.dart';
+import '../../views/onbording/spalsh_screen.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
@@ -45,6 +47,7 @@ class AuthController extends GetxController {
 
   void logout() async {
     SharedData.logout();
-    Get.off(() => LoginScreen());
+    SharedData.clearStorage();
+    Get.off(() => SplashScreen());
   }
 }

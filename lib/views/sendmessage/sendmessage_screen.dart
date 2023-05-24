@@ -31,17 +31,27 @@ class SendMessageScreen extends StatelessWidget {
             Get.back();
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
         title: const Text(
           'Send Message',
           style: TextStyle(
               color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
-        iconTheme: IconThemeData(color: CupertinoColors.white),
+        iconTheme: const IconThemeData(color: CupertinoColors.white),
       ),
       body: Padding(
-        padding: const  EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
-          physics:const  AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -80,20 +90,22 @@ class SendMessageScreen extends StatelessWidget {
                   String receiverId = '0';
 
                   if (selectedTo == 'T') {
-                    final selectedTeacher = controller.teacherRecipients.firstWhere(
-                          (teacher) => teacher.name == selectedRecipient,
+                    final selectedTeacher =
+                        controller.teacherRecipients.firstWhere(
+                      (teacher) => teacher.name == selectedRecipient,
                       orElse: () => Personal(),
                     );
                     receiverId = selectedTeacher.id?.toString() ?? '0';
                   } else if (selectedTo == 'A') {
                     final selectedAdmin = controller.adminRecipients.firstWhere(
-                          (admin) => admin.name == selectedRecipient,
+                      (admin) => admin.name == selectedRecipient,
                       orElse: () => Personal(),
                     );
                     receiverId = selectedAdmin.id?.toString() ?? '0';
                   }
 
-                  SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                  SharedData.getFromStorage('parent', 'object', 'uid')
+                      .then((uid) {
                     controller.sendMessage(
                       uid,
                       selectedTo,
@@ -120,39 +132,41 @@ class SendMessageScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'To',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         Obx(() => RadioListTile<String>(
-          activeColor: primarycolor,
-          title: const Text('Teacher'),
-          value: 'T',
-          groupValue: controller.selectedTo.value,
-          onChanged: (value) {
-            toController.text = value!;
-            controller.selectedTo.value = value;
-            SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-              controller.fetchRecipients(uid);
-            });
-            controller.recipientVisible.value = true;
-          },
-        )),
+              activeColor: primarycolor,
+              title: const Text('Teacher'),
+              value: 'T',
+              groupValue: controller.selectedTo.value,
+              onChanged: (value) {
+                toController.text = value!;
+                controller.selectedTo.value = value;
+                SharedData.getFromStorage('parent', 'object', 'uid')
+                    .then((uid) async {
+                  controller.fetchRecipients(uid);
+                });
+                controller.recipientVisible.value = true;
+              },
+            )),
         Obx(() => RadioListTile<String>(
-          activeColor: primarycolor,
-          title: const Text('Administrator'),
-          value: 'A',
-          groupValue: controller.selectedTo.value,
-          onChanged: (value) {
-            toController.text = value!;
-            controller.selectedTo.value = value;
-            SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-              controller.fetchRecipients(uid);
-            });
-            controller.recipientVisible.value = true;
-          },
-        )),
+              activeColor: primarycolor,
+              title: const Text('Administrator'),
+              value: 'A',
+              groupValue: controller.selectedTo.value,
+              onChanged: (value) {
+                toController.text = value!;
+                controller.selectedTo.value = value;
+                SharedData.getFromStorage('parent', 'object', 'uid')
+                    .then((uid) async {
+                  controller.fetchRecipients(uid);
+                });
+                controller.recipientVisible.value = true;
+              },
+            )),
       ],
     );
   }
@@ -161,13 +175,13 @@ class SendMessageScreen extends StatelessWidget {
     return Obx(() {
       final List<String?> recipients = controller.selectedTo.value == 'T'
           ? controller.teacherRecipients
-          .map((personal) => personal.name)
-          .toSet()
-          .toList()
+              .map((personal) => personal.name)
+              .toSet()
+              .toList()
           : controller.adminRecipients
-          .map((personal) => personal.name)
-          .toSet()
-          .toList();
+              .map((personal) => personal.name)
+              .toSet()
+              .toList();
       if (!recipients.contains(recipientController.text)) {
         if (recipients.isNotEmpty) {
           recipientController.text = recipients.first!;
@@ -176,30 +190,32 @@ class SendMessageScreen extends StatelessWidget {
         }
       }
       return Obx(() => SingleChildScrollView(
-        child: DropdownButtonFormField<String>(
-          value: recipientController.text,
-          onChanged: (value) {
-            recipientController.text = value!;
-          },
-          items: recipients
-              .map(
-                (recipient) => DropdownMenuItem(
-              value: recipient,
-              child: Text(recipient!),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                DropdownButtonFormField<String>(
+                  value: recipientController.text,
+                  onChanged: (value) {
+                    recipientController.text = value!;
+                  },
+                  items: recipients
+                      .map(
+                        (recipient) => DropdownMenuItem(
+                          value: recipient,
+                          child: Text(recipient!),
+                        ),
+                      )
+                      .toList(),
+                  decoration: const InputDecoration(
+                    labelText: 'Recipient',
+                  ),
+                  key: ValueKey(controller.selectedTo.value),
+                ),
+              ],
             ),
-          )
-              .toList(),
-          decoration: const InputDecoration(
-            labelText: 'Recipient',
-          ),
-          key: ValueKey(controller.selectedTo.value),
-          isExpanded: true, // Show only the first item and enable scrolling
-        ),
-      ));
+          ));
     });
   }
-
-
 
   Widget _buildSubjectField() {
     return TextField(
@@ -236,35 +252,41 @@ class SendMessageScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
-        Obx(() => ListView.builder(
-          shrinkWrap: true,
-          itemCount: controller.attachmentControllers.length,
-          itemBuilder: (context, index) {
-            final attachmentController = controller.attachmentControllers[index];
-            return Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    attachmentController.text,
-                    style: const TextStyle(
-                      fontSize: 16,
+        Obx(
+          () => ListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.attachmentControllers.length,
+            itemBuilder: (context, index) {
+              final attachmentController =
+                  controller.attachmentControllers[index];
+              final attachmentName = attachmentController.text
+                  .split('/')
+                  .last; // Extract the attachment name from the full path
+
+              return Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      attachmentName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    controller.removeAttachment(index);
-                  },
-                ),
-              ],
-            );
-          },
-        )),
+                  IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      controller.removeAttachment(index);
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ],
     );
   }
-
 
   Widget _buildAddAttachmentButton() {
     return MaterialButton(

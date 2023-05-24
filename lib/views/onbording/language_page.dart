@@ -55,7 +55,7 @@ class LanguageScreen extends StatelessWidget {
                     onPressed: () async {
                       SharedData.saveToStorage('language', 'en', 'string');
                       Get.updateLocale(const Locale('en'));
-                      // Get.toNamed(Routes.getloginscreen());
+                      Get.toNamed(Routes.getloginscreen());
                     },
                     style: PadiwanButtonTheme.whiteButtonTheme.style,
                     child: Row(
@@ -84,7 +84,7 @@ class LanguageScreen extends StatelessWidget {
                     onPressed: () async {
                       SharedData.saveToStorage('language', 'ar', 'string');
                       Get.updateLocale(const Locale('ar'));
-                      // Get.toNamed(Routes.getloginscreen());
+                       Get.toNamed(Routes.getloginscreen());
                     },
                     style: PadiwanButtonTheme.blueButtonTheme.style,
                     child: Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../controller/payment_controller/payments_controller.dart';
 import 'details_payment_children/details_payment_children.dart';
@@ -16,8 +17,8 @@ class MyPaymentsScreen extends StatelessWidget {
         init: PaymentsController(),
         builder: (controller) {
           if (controller.paymentsTotalparents.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return  Center(
+              child: CircularProgressIndicator(color: primarycolor,),
             );
           }
           return ListView(

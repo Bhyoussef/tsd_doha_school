@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
+
+import '../../theme/app_colors.dart';
+
 
 
 class RecordingScreen extends StatelessWidget {
@@ -23,13 +25,23 @@ class RecordingScreen extends StatelessWidget {
         title: const  Text('Recording',style: TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/imgs/notfound.png'),
-            Text('No Records Found ')
+            const Text('No Records Found ')
           ],
         )
       ),

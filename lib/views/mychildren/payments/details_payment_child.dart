@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
-
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/payment_details_model.dart';
 import '../../../model/payment_model.dart';
@@ -51,34 +48,47 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
             Get.back();
           },
         ),
-        title: const Text('Payment',style: TextStyle(color:CupertinoColors.white),),
+        title: const Text('Payment',style:
+        TextStyle(color:CupertinoColors.white,fontWeight: FontWeight.bold),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
 
       ),
-      body: ListView(
-        children: [
-          ChildCardPayment(student: widget.student,),
-          GetBuilder<PaymentsController>(
-            init: PaymentsController(),
-            builder: (controller) {
-              if (controller.paymentsTotalstudents.isEmpty) {
-                return  Center(
-                  child: CircularProgressIndicator(color: primarycolor,),
-                );
-              }
-              return ListView.builder(
+      body: Obx(
+            () {
+          final paymentsController = Get.find<PaymentsController>();
+
+          if (paymentsController.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(color: primarycolor),
+            );
+          }
+
+          return ListView(
+            children: [
+              ChildCardPayment(student: widget.student),
+              ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.paymentsTotalstudents.length,
+                itemCount: paymentsController.paymentsTotalstudents.length,
                 itemBuilder: (context, index) {
-                  final paymentTotal = controller.paymentsTotalstudents[index];
-                  return PaymentListItem(paymentTotal: paymentTotal,student: widget.student,);
+                  final paymentTotal = paymentsController.paymentsTotalstudents[index];
+                  return PaymentListItem(paymentTotal: paymentTotal, student: widget.student);
                 },
-              );
-            },
-          )
-
-        ],
+              ),
+            ],
+          );
+        },
       ),
+
     );
   }
 }
@@ -135,7 +145,9 @@ Widget _buildCircleAvatar(dynamic image) {
       );
     } catch (e) {
 
-      print('Invalid image data: $e');
+       if (kDebugMode) {
+         print('Invalid image data: $e');
+       }
     }
   }
   return const Padding(
@@ -201,7 +213,7 @@ class PaymentListItem extends StatelessWidget {
 
 class TotalPaymentsChild extends StatefulWidget {
   final Mychildreen student;
-  TotalPaymentsChild({Key? key, required this.student}) : super(key: key);
+  const TotalPaymentsChild({Key? key, required this.student}) : super(key: key);
 
   @override
   State<TotalPaymentsChild> createState() => _TotalPaymentsChildState();
@@ -213,7 +225,7 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       paymentController.fetchingTotalPaymentsStudentsDetail(
           widget.student.studentId!);
     });
@@ -236,12 +248,22 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
           title: const Text('Total Paid',style: TextStyle(
               color: CupertinoColors.white,fontWeight: FontWeight.bold
           ),),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ],
         ),
         body: Obx(
               () {
             if (paymentController.isLoading.value) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return  Center(
+                child: CircularProgressIndicator(color: primarycolor,),
               );
             } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
               return const Center(
@@ -271,7 +293,7 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
                         Text(
                           'Price Unit: ${payment.priceUnit}',
                         ),
-                        Divider(),
+                        const Divider(),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Text(
@@ -339,12 +361,22 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
         title: const Text('My payments',style: TextStyle(
           color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(
               () {
             if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator(color: primarycolor,));
             } else {
               return ListView.builder(
                 itemCount: controller.totalinpaiddetailsstudents.length,
@@ -352,7 +384,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                   final paidDetail = controller.totalinpaiddetailsstudents[index];
 
                   return Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: ListTile(
                       title: Text(
                         paidDetail.period.toString(),

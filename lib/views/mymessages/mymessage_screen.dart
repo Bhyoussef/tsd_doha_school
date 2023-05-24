@@ -79,8 +79,8 @@ class _MessagesScreenState extends State<MessagesScreen>
     return GetBuilder<MesaageReceivedController>(
       builder: (controller) {
         if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return  Center(
+            child: CircularProgressIndicator(color: primarycolor,),
           );
         } else if (controller.receivedmessage.isEmpty) {
           return const Center(
@@ -126,8 +126,8 @@ class _MessagesScreenState extends State<MessagesScreen>
     return GetBuilder<MesaageSentController>(
       builder: (controller) {
         if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return  Center(
+            child: CircularProgressIndicator(color: primarycolor,),
           );
         } else if (controller.sentedmessage.isEmpty) {
           return const Center(

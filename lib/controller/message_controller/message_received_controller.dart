@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../model/child_model.dart';
 import '../../model/message_detail.dart';
 import '../../model/message_model.dart';
@@ -11,6 +13,7 @@ class MesaageReceivedController extends GetxController {
   final receivedmessage = <Message>[].obs;
   final childdetail = <Mychildreen>[].obs;
   final messageDetail = <MessageDetail>[].obs;
+  var attachmentControllers = <TextEditingController>[].obs;
   final isLoading = true.obs;
   int? parentId;
 
@@ -78,4 +81,29 @@ class MesaageReceivedController extends GetxController {
     }
   }
 
+
+
+  void addAttachment() {
+    _pickAttachment();
+  }
+
+  void removeAttachment(int index) {
+    attachmentControllers.removeAt(index);
+  }
+
+  Future<void> _pickAttachment() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final attachmentPath = pickedFile.path;
+      final attachmentController = TextEditingController(text: attachmentPath);
+      attachmentControllers.add(attachmentController);
+      attachmentController.addListener(() {
+        // Remove attachment controller if the text is empty (attachment is cleared)
+        if (attachmentController.text.isEmpty) {
+          removeAttachment(attachmentControllers.indexOf(attachmentController));
+        }
+      });
+    }
+  }
 }

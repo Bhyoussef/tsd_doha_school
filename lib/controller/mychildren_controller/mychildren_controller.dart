@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:tunisian_school_doha/model/exersice_model.dart';
 import 'package:tunisian_school_doha/model/time_table_model.dart';
 import 'package:tunisian_school_doha/utils/shared_preferences.dart';
-import 'package:tunisian_school_doha/constant/constant.dart';
 import 'package:tunisian_school_doha/model/book_model.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
 import 'package:tunisian_school_doha/services/mychildren.dart';
@@ -13,6 +12,7 @@ class ChildrenController extends GetxController {
   final exersice = <Exersice>[].obs;
   final timetable = <TimeTable>[].obs;
   RxBool isLoading = false.obs;
+  ChildrenController get timetableController => this;
 
   @override
   void onInit() {

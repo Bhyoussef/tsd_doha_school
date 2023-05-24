@@ -11,9 +11,11 @@ class TimeTableScreen extends StatefulWidget {
   final int studentId;
   final Mychildreen student;
 
-  const TimeTableScreen(
-      {Key? key, required this.studentId, required this.student})
-      : super(key: key);
+  const TimeTableScreen({
+    Key? key,
+    required this.studentId,
+    required this.student,
+  }) : super(key: key);
 
   @override
   State<TimeTableScreen> createState() => _TimeTableScreenState();
@@ -25,8 +27,11 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      controller.fetchTiemTableStudent(widget.studentId, widget.student.Class!);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchTiemTableStudent(
+        widget.studentId,
+        widget.student.Class!,
+      );
     });
   }
 
@@ -46,16 +51,28 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
         title: const Text(
           'Time Table',
           style: TextStyle(
-              color: CupertinoColors.white, fontWeight: FontWeight.bold),
+            color: CupertinoColors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
       ),
-      body: GetBuilder<ChildrenController>(
-        builder: (timetableController) {
-          if (timetableController.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
+      body: Obx(
+        () {
+          if (controller.isLoading.value) {
+            return  Center(
+              child: CircularProgressIndicator(color: primarycolor,),
             );
-          } else if (timetableController.timetable.isEmpty) {
+          } else if (controller.timetable.isEmpty) {
             return Center(
               child: Image.asset('assets/imgs/notfound.png'),
             );
@@ -65,10 +82,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 _buildDateRange(),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: timetableController.timetable.length,
+                    itemCount: controller.timetable.length,
                     itemBuilder: (context, index) {
-                      final timetableEntry =
-                          timetableController.timetable[index];
+                      final timetableEntry = controller.timetable[index];
                       return _buildTimetableEntry(timetableEntry);
                     },
                   ),
@@ -84,13 +100,13 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   Widget _buildDateRange() {
     final now = DateTime.now();
     final monday = now.subtract(Duration(days: now.weekday - 1));
-    final saturday = monday.add(Duration(days: 5));
+    final saturday = monday.add(const Duration(days: 5));
 
     return Stack(
       children: [
         Container(
           height: 150,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage('https://unsplash.it/1080/720?image=1044'),
               fit: BoxFit.cover,
@@ -106,7 +122,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 color: Colors.purpleAccent.withOpacity(0.01),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -170,7 +186,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                   const SizedBox(width: 10),
                   Text(
                     '${timetableEntry.startTime ?? ''} - ${timetableEntry.endTime ?? ''}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -182,13 +198,12 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 children: [
                   Text(
                     timetableEntry.day ?? '',
-                    style:const  TextStyle(
-                      fontSize: 20,fontWeight: FontWeight.bold
-                    ),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     timetableEntry.teacher ?? '',
-                    style:const TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),
@@ -206,6 +221,4 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       ),
     );
   }
-
-
 }

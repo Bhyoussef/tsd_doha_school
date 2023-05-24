@@ -23,6 +23,16 @@ class DiciplineScreen extends StatelessWidget {
         title: const Text('Dicipline',style: TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
       ),
     );
   }
