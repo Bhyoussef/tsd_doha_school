@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
-
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/payment_details_model.dart';
 import '../../../model/payment_model.dart';
@@ -16,10 +12,11 @@ import '../../../utils/shared_preferences.dart';
 import '../../mypayments/payment_screen.dart';
 
 class DetailsPaymentChild extends StatefulWidget {
-
   final int studentId;
   final Mychildreen student;
-   DetailsPaymentChild({Key? key, required this.studentId, required this.student}) : super(key: key);
+  const DetailsPaymentChild(
+      {Key? key, required this.studentId, required this.student})
+      : super(key: key);
 
   @override
   State<DetailsPaymentChild> createState() => _DetailsPaymentChildState();
@@ -32,59 +29,62 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
   void initState() {
     super.initState();
 
-
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       paymentController.fetchingTotalPaymentsStudents(widget.studentId);
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
         backgroundColor: primarycolor,
-        leading: IconButton(
-          icon:const  Icon(Icons.arrow_back_ios,color:CupertinoColors.white,),
-          onPressed: () {
-            Get.back();
-          },
+        title: const Text(
+          'Payment',
+          style: TextStyle(color: CupertinoColors.white),
         ),
-        title: const Text('Payment',style: TextStyle(color:CupertinoColors.white),),
-
       ),
-      body: ListView(
-        children: [
-          ChildCardPayment(student: widget.student,),
-          GetBuilder<PaymentsController>(
-            init: PaymentsController(),
-            builder: (controller) {
-              if (controller.paymentsTotalstudents.isEmpty) {
-                return  Center(
-                  child: CircularProgressIndicator(color: primarycolor,),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            ChildCardPayment(
+              student: widget.student,
+            ),
+            const SizedBox(height: 15),
+            GetBuilder<PaymentsController>(
+              init: PaymentsController(),
+              builder: (controller) {
+                if (controller.paymentsTotalstudents.isEmpty) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: primarycolor,
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.paymentsTotalstudents.length,
+                  itemBuilder: (context, index) {
+                    final paymentTotal =
+                        controller.paymentsTotalstudents[index];
+                    return PaymentListItem(
+                      paymentTotal: paymentTotal,
+                      student: widget.student,
+                    );
+                  },
                 );
-              }
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.paymentsTotalstudents.length,
-                itemBuilder: (context, index) {
-                  final paymentTotal = controller.paymentsTotalstudents[index];
-                  return PaymentListItem(paymentTotal: paymentTotal,student: widget.student,);
-                },
-              );
-            },
-          )
-
-        ],
+              },
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
-
-
 
 class ChildCardPayment extends StatelessWidget {
   final Mychildreen student;
@@ -93,34 +93,37 @@ class ChildCardPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 150,
-      child: Card(
-        margin: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildCircleAvatar(student.image),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  '${student.name ?? ''} ${student.lastName ?? ''}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildCircleAvatar(student.image),
+          const SizedBox(width: 10),
+          Text(
+            '${student.name ?? ''} ${student.lastName ?? ''}',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
 Widget _buildCircleAvatar(dynamic image) {
   if (image != null) {
     try {
@@ -131,7 +134,6 @@ Widget _buildCircleAvatar(dynamic image) {
         radius: 30.0,
       );
     } catch (e) {
-
       print('Invalid image data: $e');
     }
   }
@@ -141,52 +143,57 @@ Widget _buildCircleAvatar(dynamic image) {
   );
 }
 
-
 class PaymentListItem extends StatelessWidget {
   final Payment paymentTotal;
   final Mychildreen student;
 
-  const PaymentListItem({Key? key, required this.paymentTotal, required this.student}) : super(key: key);
+  const PaymentListItem(
+      {Key? key, required this.paymentTotal, required this.student})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, 5),
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          children: [
+            ListTile(
+              title: const Text('Total Paid'),
+              subtitle: Text(paymentTotal.totPaid.toString()),
+              trailing: const Icon(
+                Icons.payment,
+                color: Colors.green,
+              ),
+              onTap: () {
+                Get.to(() => TotalPaymentsChild(
+                      student: student,
+                    ));
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text('Total Inpaid'),
+              subtitle: Text(paymentTotal.totUnpaid.toString()),
+              trailing: const Icon(
+                Icons.payment,
+                color: Colors.red,
+              ),
+              onTap: () {
+                Get.to(() => TotalImpaidChild(student: student));
+              },
             ),
           ],
-        ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            children: [
-              ListTile(
-                title: const Text('Total Paid'),
-                subtitle: Text(paymentTotal.totPaid.toString()),
-                trailing: const Icon(Icons.payment,color: Colors.green,),
-
-                onTap: () {
-                  Get.to(() =>  TotalPaymentsChild(student: student,));
-                },
-
-              ),
-              ListTile(
-                title: const Text('Total Inpaid'),
-                subtitle:Text(paymentTotal.totUnpaid.toString()) ,
-                trailing: const Icon(Icons.payment,color: Colors.red,),
-                onTap: () {
-                  Get.to(() =>  TotalImpaidChild(student:student));
-                },
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -195,7 +202,7 @@ class PaymentListItem extends StatelessWidget {
 
 class TotalPaymentsChild extends StatefulWidget {
   final Mychildreen student;
-  TotalPaymentsChild({Key? key, required this.student}) : super(key: key);
+  const TotalPaymentsChild({Key? key, required this.student}) : super(key: key);
 
   @override
   State<TotalPaymentsChild> createState() => _TotalPaymentsChildState();
@@ -208,86 +215,83 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      paymentController.fetchingTotalPaymentsStudentsDetail(
-          widget.student.studentId!);
+      paymentController
+          .fetchingTotalPaymentsStudentsDetail(widget.student.studentId!);
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
-            onPressed: () {
-              Get.back();
-            },
-          ),
           backgroundColor: primarycolor,
-          title: const Text('Total Paid',style: TextStyle(
-              color: CupertinoColors.white,fontWeight: FontWeight.bold
-          ),),
+          title: const Text(
+            'Total Paid',
+            style: TextStyle(
+              color: CupertinoColors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         body: Obx(
-              () {
+          () {
             if (paymentController.isLoading.value) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('No payments history found.'),
               );
             }
 
-            return  ListView.builder(
+            return ListView.builder(
               itemCount: paymentController.totalpaiddetailsstudents.length,
               itemBuilder: (context, index) {
-                final payment = paymentController.totalpaiddetailsstudents[index];
-                return Card(
-                  margin: EdgeInsets.all(10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          payment.period.toString(),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                final payment =
+                    paymentController.totalpaiddetailsstudents[index];
+                return Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        payment.period.toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Divider(),
-                        Text(
-                          'Price Unit: ${payment.priceUnit}',
+                      ),
+                      Text(
+                        'Price Unit: ${payment.priceUnit}',
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          'Year: ${payment.year}',
                         ),
-                        Divider(),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Text(
-                            'Year: ${payment.year}',
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },
             );
-
           },
-        )
-    );
+        ));
   }
-
-
 }
-
-
 
 class TotalImpaidChild extends StatefulWidget {
   final Mychildreen student;
@@ -323,34 +327,45 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
-          onPressed: () {
-            Get.back();
-          },
-        ),
         backgroundColor: primarycolor,
-        title: const Text('My payments',style: TextStyle(
-          color: CupertinoColors.white,fontWeight: FontWeight.bold
-        ),),
+        title: const Text(
+          'My payments',
+          style: TextStyle(
+            color: CupertinoColors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SafeArea(
         child: Obx(
-              () {
+          () {
             if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             } else {
               return ListView.builder(
                 itemCount: controller.totalinpaiddetailsstudents.length,
                 itemBuilder: (context, index) {
-                  final paidDetail = controller.totalinpaiddetailsstudents[index];
+                  final paidDetail =
+                      controller.totalinpaiddetailsstudents[index];
 
-                  return Card(
-                    margin: EdgeInsets.all(10),
+                  return Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
                     child: ListTile(
                       title: Text(
                         paidDetail.period.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -362,8 +377,8 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                           Text('Year: ${paidDetail.year}'),
                         ],
                       ),
-                      trailing: Switch(
-                        activeColor:  primarycolor,
+                      trailing: CupertinoSwitch(
+                        activeColor: primarycolor,
                         value: selectedLines.contains(index),
                         onChanged: (value) {
                           setState(() {
@@ -386,7 +401,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       ),
       floatingActionButton: MaterialButton(
         height: 50,
-        minWidth: MediaQuery.of(context).size.width-30,
+        minWidth: MediaQuery.of(context).size.width - 30,
         color: primarycolor,
         textColor: Colors.white,
         onPressed: () {
@@ -397,17 +412,9 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
             navigateToPaymentPage(context, selectedDetails);
           }
         },
-        child:const  Text('Pay',style: TextStyle(fontWeight: FontWeight.bold),),
-      ),
-      bottomNavigationBar: Padding(
-        padding:const EdgeInsets.all(16),
         child: Text(
-          'Total Amount: $totalAmount',
-          style:  TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: primarycolor
-          ),
+          totalAmount == 0.0 ? 'Select items' : 'Pay  $totalAmount QAR',
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -422,23 +429,22 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
     return total;
   }
 
-  void navigateToPaymentPage(BuildContext context,
-      List<PaymentDetails> selectedDetails) {
+  void navigateToPaymentPage(
+      BuildContext context, List<PaymentDetails> selectedDetails) {
     List<int> lineIDs =
-    selectedDetails.map((detail) => detail.idLine!).toList();
+        selectedDetails.map((detail) => detail.idLine!).toList();
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            PaymentScreen(
-              schoolCode: widget.student.schoolCode!,
-              parentID: parentId,
-              childID: widget.student.studentId!,
-              amount: totalAmount,
-              lineIDs: lineIDs,
-              student:widget.student
-            ),
+        builder: (context) => PaymentScreen(
+          schoolCode: widget.student.schoolCode!,
+          parentID: parentId,
+          childID: widget.student.studentId!,
+          amount: totalAmount,
+          lineIDs: lineIDs,
+          student: widget.student,
+        ),
       ),
     );
   }

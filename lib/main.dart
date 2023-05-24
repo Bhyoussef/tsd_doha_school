@@ -13,7 +13,6 @@ void main() async {
 
 void app() async {
   final language = await SharedData.getFromStorage('language', 'string');
-  print('Language saved : == $language');
   if (language != null) {
     final parent = await SharedData.getFromStorage('parent', 'string');
     if (parent != null) {
