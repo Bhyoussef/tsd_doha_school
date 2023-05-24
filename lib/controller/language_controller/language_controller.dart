@@ -1,31 +1,21 @@
 import 'dart:ui';
 import 'package:get/get.dart';
-import '../../languages/language_services.dart';
+import 'package:tunisian_school_doha/utils/shared_preferences.dart';
 
 class LanguageController extends GetxController {
-
-  final PrefService _prefService = PrefService();
-
   var savedLang = "EN".obs;
 
-  saveLocale() {
-    _prefService.createString('locale', savedLang.value);
-  }
-
-  Future<void> setLocale() async {
-    _prefService.readString('locale').then((value) {
-      if (value != '' && value != null) {
-        Get.updateLocale(Locale(value.toString().toLowerCase()));
-        savedLang.value = value.toString();
-        update();
-      }
-    });
+  Future<void> changeLanguage(language) async {
+    SharedData.saveToStorage('language', language, 'string');
+    Get.updateLocale(Locale(language.toString().toLowerCase()));
+    savedLang.value = language.toString();
+    update();
   }
 
   @override
   void onInit() async {
-    setLocale();
+    final language = await SharedData.getFromStorage('language', 'string');
+    changeLanguage(language);
     super.onInit();
   }
-
 }

@@ -7,11 +7,13 @@ import 'languages/translation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // SharedData.clearStorage();
   app();
 }
 
 void app() async {
   final language = await SharedData.getFromStorage('language', 'string');
+  print('Language saved : == $language');
   if (language != null) {
     final parent = await SharedData.getFromStorage('parent', 'string');
     if (parent != null) {
@@ -23,50 +25,38 @@ void app() async {
         return;
       }
     }
+    runApp(
+      MyApp(route: Routes.loginscreen, language: language),
+    );
   }
 
   runApp(
-    MyApp(route: Routes.splashscreen, language: language),
+    MyApp(route: Routes.splashscreen, language: 'en'),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   final String? route;
   final String? language;
 
-
   const MyApp({
     Key? key,
-    this.route,  this.language,
+    this.route,
+    this.language,
   }) : super(key: key);
-
-  Future<String?> _getLanguage() async {
-    final language = await SharedData.getFromStorage('language', 'string');
-    return language;
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String?>(
-      future: _getLanguage(),
-      builder: (context, snapshot) {
-        final savedLanguage = snapshot.data;
-        final locale = savedLanguage != null ? Locale(savedLanguage) : null;
-        return GetMaterialApp(
-          theme: appThemeData(context),
-          translations: Translation(),
-          locale: locale,
-          fallbackLocale: locale,
-          debugShowCheckedModeBanner: false,
-          initialRoute: route,
-          getPages: Routes.routes,
-        );
-      },
+    return GetMaterialApp(
+      theme: appThemeData(context),
+      translations: Translation(),
+      locale: language == 'ar'
+          ? const Locale('ar', 'AR')
+          : const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
+      debugShowCheckedModeBanner: false,
+      initialRoute: route,
+      getPages: Routes.routes,
     );
   }
 }
-
-
-
-

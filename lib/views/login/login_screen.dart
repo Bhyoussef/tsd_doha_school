@@ -129,32 +129,31 @@ class TopRedSection extends StatelessWidget {
       ),
       child: Container(
         color: primarycolor,
-        height: 380,
+        height: 350,
         child: Stack(
           children: [
             Positioned(
               left: 0,
               right: 0,
-              top: 55,
-              height: 389 / 2.3,
-              child: SizedBox(
-                height: 156,
-                width: 156,
-                child: Image.asset('assets/imgs/logotsd.png'),
-              ),
-            ),
-            Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Image.asset(
-                    'assets/imgs/loginBackground.png',
-                    width: size.width,
-                    alignment: Alignment.bottomCenter,
-                    height: 165,
+              top: 100,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 156,
+                    width: 156,
+                    child: Image.asset('assets/imgs/tsdIcon.png'),
                   ),
-                ),
-              ],
+                  const Text(
+                    'Tunisian School',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontFamily: 'Bahij',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

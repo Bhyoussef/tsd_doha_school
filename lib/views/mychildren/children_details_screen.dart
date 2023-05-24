@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,99 +21,74 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primarycolor,
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              leading: IconButton(
-                icon:const  Icon(Icons.arrow_back_ios,color:CupertinoColors.white,),
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              backgroundColor: primarycolor,
-              expandedHeight: 350,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Stack(
+        bottom: false,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                color: primarycolor,
+                width: double.infinity,
+                child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [primarycolor, primarycolor],
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 60),
+                      child: _buildCircleAvatar(student.image),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      '${student.name ?? ''} ${student.lastName ?? ''}',
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      '${student.nameAr ?? ''} ${student.lastNameAr ?? ''}',
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      student.academicYear.toString(),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    GestureDetector(
+                      onTap: () => _showQrImageDialog(context, student.ref!),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: QrImageView(
+                          data: student.ref!,
+                          version: QrVersions.auto,
+                          backgroundColor: Colors.white,
+                          size: 100.0,
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
-                        children: [
-                          _buildCircleAvatar(student.image),
-                          const SizedBox(height: 8.0),
-                          Text(
-                            '${student.name ?? ''} ${student.lastName ?? ''}',
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                          const SizedBox(height: 4.0),
-                          Text(
-                            '${student.nameAr ?? ''} ${student.lastNameAr ?? ''}',
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.white),
-                          ),
-                          const SizedBox(height: 4.0),
-                          Text(
-                            student.academicYear.toString(),
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.white),
-                          ),
-                          GestureDetector(
-                            onTap: () =>
-                                _showQrImageDialog(context, student.ref!),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: QrImageView(
-                                data: student.ref!,
-                                version: QrVersions.auto,
-                                backgroundColor: Colors.white,
-                                size: 100.0,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            student.ref.toString(),
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.white),
-                          ),
-                        ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        student.ref.toString(),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 500,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24.0),
-                    topRight: Radius.circular(24.0),
-                  ),
-                ),
+              Container(
+                color: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(16),
                   child: GridView.count(
+                    primary: false,
                     shrinkWrap: true,
-                    crossAxisCount: 2,
                     mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    crossAxisCount: 2,
                     children: [
                       _buildGridItem(
                           context, 'Exercises', navigateToExercisePage),
-                      _buildGridItem(context, 'Payments', navigateToPaymentPage),
+                      _buildGridItem(
+                          context, 'Payments', navigateToPaymentPage),
                       _buildGridItem(
                           context, 'Discipline', navigateToDisciplinePage),
                       _buildGridItem(
@@ -126,40 +100,37 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-
-
   ImageProvider<Object> _getImageForTitle(String title) {
     switch (title.toLowerCase()) {
       case 'exercises':
-        return AssetImage('assets/imgs/bulletin.jpg');
+        return const AssetImage('assets/imgs/bulletin.jpg');
       case 'payments':
-        return AssetImage('assets/imgs/paymen.png');
+        return const AssetImage('assets/imgs/paymen.png');
       case 'discipline':
-        return AssetImage('assets/imgs/discipline.png');
+        return const AssetImage('assets/imgs/discipline.png');
       case 'time tables':
-        return AssetImage('assets/imgs/elearn.png');
+        return const AssetImage('assets/imgs/elearn.png');
       case 'gradebook':
-        return AssetImage('assets/imgs/course-icon.jpg');
+        return const AssetImage('assets/imgs/course-icon.jpg');
       case 'recording':
-        return AssetImage('assets/imgs/course-icon.jpg');
+        return const AssetImage('assets/imgs/course-icon.jpg');
       default:
-        return AssetImage('assets/imgs/error.png');
+        return const AssetImage('assets/imgs/error.png');
     }
   }
 
-
   Widget _buildGridItem(
-      BuildContext context,
-      String title,
-      VoidCallback navigateCallback,
-      ) {
+    BuildContext context,
+    String title,
+    VoidCallback navigateCallback,
+  ) {
     return GestureDetector(
       onTap: navigateCallback,
       child: Container(
@@ -169,7 +140,7 @@ class DetailScreen extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
               blurRadius: 6.0,
             ),
           ],
@@ -193,7 +164,6 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
-
 
   void navigateToRecordingPage() {
     Get.to(() => const RecordingScreen());

@@ -23,7 +23,7 @@ class Routes {
   static List<GetPage> routes = [
     GetPage(
       name: loginscreen,
-      page: () => LoginScreen(),
+      page: () => const LoginScreen(),
       binding: ControllersBinding(),
     ),
     GetPage(

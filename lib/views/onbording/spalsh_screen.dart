@@ -28,25 +28,26 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children:  [
+          children: [
             SizedBox(
-                height: 224,
-                width: 224,
-                child: Image.asset('assets/imgs/tsdIcon.png')),
-            Text(
+              height: 224,
+              width: 224,
+              child: Image.asset('assets/imgs/tsdIcon.png'),
+            ),
+            const Text(
               'Tunisian School',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 50,
+                fontSize: 30,
                 color: Colors.white,
                 fontFamily: 'Bahij',
               ),
             ),
-            Text(
+            const Text(
               'Version 1.0.0',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 color: Colors.white,
                 fontFamily: 'Bahij',
                 fontWeight: FontWeight.w100,
@@ -60,6 +61,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> pushNextScreen() async {
     await Future.delayed(const Duration(seconds: 3));
-    Get.to(()=>LanguageScreen());
+    Get.to(() => const LanguageScreen());
   }
 }
