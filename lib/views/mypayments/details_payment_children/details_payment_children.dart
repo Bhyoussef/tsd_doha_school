@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 
 class TotalPaymentsChildren extends StatefulWidget {
@@ -32,15 +34,15 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: primarycolor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
           onPressed: () {
             Get.back();
           },
         ),
         title: const Text('Total Payment',style: TextStyle(
-            color: Color(0xFF7590d6)
+            color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
       body: Obx(

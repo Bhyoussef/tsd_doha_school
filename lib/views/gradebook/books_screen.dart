@@ -47,27 +47,32 @@ class _BookListScreenState extends State<BookListScreen> {
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
-      body: GetBuilder<ChildrenController>(
-        builder: (bookController) {
-          if (bookController.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (bookController.books.isEmpty) {
-            return const Center(
-              child: Text('No books found.'),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: bookController.books.length,
-              itemBuilder: (context, index) {
-                final book = bookController.books[index];
-                return BookCard(
-                    book: book, downloadController: downloadcontroller);
-              },
-            );
-          }
-        },
+      body: SafeArea(
+        child: GetBuilder<ChildrenController>(
+          builder: (bookController) {
+            if (bookController.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (bookController.books.isEmpty) {
+              return const Center(
+                child: Text('No books found.'),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ListView.builder(
+                  itemCount: bookController.books.length,
+                  itemBuilder: (context, index) {
+                    final book = bookController.books[index];
+                    return BookCard(
+                        book: book, downloadController: downloadcontroller);
+                  },
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -83,58 +88,70 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(book.academic ?? ''),
-                      const Divider(),
-                      if (book.attachments!.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: book.attachments!.length,
-                              itemBuilder: (context, index) {
-                                final attachment = book.attachments![index];
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(attachment.fileName ?? ''),
-                                    ),
-                                    IconButton(
-                                      icon:  Icon(Icons.download,
-                                        color: primarycolor ,),
-                                      onPressed: () {
-                                        SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                                          downloadController.downloadFile(
-                                            uid,
-                                            attachment.id.toString(),
-                                            attachment.fileName ?? '',
-                                          );
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                    ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(0, 2),
+            blurRadius: 6.0,
+          ),
+        ],
+      ),
+      child: Card(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(book.academic ?? ''),
+                        const Divider(),
+                        if (book.attachments!.isNotEmpty)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: book.attachments!.length,
+                                itemBuilder: (context, index) {
+                                  final attachment = book.attachments![index];
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(attachment.fileName ?? ''),
+                                      ),
+                                      IconButton(
+                                        icon:  Icon(Icons.download,
+                                          color: primarycolor ,),
+                                        onPressed: () {
+                                          SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                                            downloadController.downloadFile(
+                                              uid,
+                                              attachment.id.toString(),
+                                              attachment.fileName ?? '',
+                                            );
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )));
+                ],
+              ))),
+    );
   }
 }

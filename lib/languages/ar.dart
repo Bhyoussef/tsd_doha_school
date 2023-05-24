@@ -34,6 +34,6 @@ const Map<String, String> ar = {
   'updatepassword':'تغيير كلمة المرور',
   'configuration':'إعدادات',
   'logout':'تسجيل خروج',
-  'recieved':'',
+  'recieved':'رسائلي',
   'sent':'مرسل'
 };

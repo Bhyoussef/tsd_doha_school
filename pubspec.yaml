@@ -25,6 +25,9 @@ dependencies:
   path_provider: ^2.0.5
   qr_flutter: ^4.1.0
   webview_flutter: ^2.0.0
+  sliver_tools: ^0.2.10
+  image_picker: ^0.8.4+4
+
 
 dev_dependencies:
   flutter_test:

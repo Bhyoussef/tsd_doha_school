@@ -44,6 +44,8 @@ class _MessagesScreenState extends State<MessagesScreen>
             labelColor: Colors.white,
             indicatorColor: CupertinoColors.white,
             automaticIndicatorColorAdjustment: true,
+            indicatorWeight: 3.0,
+
             controller: _tabController,
             tabs: [
               Tab(
@@ -86,7 +88,7 @@ class _MessagesScreenState extends State<MessagesScreen>
           );
         } else {
           return Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(6.0),
             child: ListView.builder(
               itemCount: controller.receivedmessage.length,
               itemBuilder: (context, index) {
@@ -98,6 +100,7 @@ class _MessagesScreenState extends State<MessagesScreen>
                       //controller.updateMessageState(message.id);
                     }
                     Get.to(() => DetailsMessage(message: message));
+                    print(message.iD);
                   },
                   child: MessageCardReceived(
                     title: message.titleOfMessage ?? '',
@@ -178,9 +181,12 @@ class MessageCardReceived extends StatelessWidget {
     bool isMessageRead = isRead == 'read';
 
     return Card(
-      elevation: isMessageRead ? 0.0 : 4.0,
+      elevation: isMessageRead ? 2.0 : 2.0,
       shape: isMessageRead
-          ? null
+          ? RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+      )
           : RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
               side: BorderSide(color: Colors.grey.withOpacity(0.5)),

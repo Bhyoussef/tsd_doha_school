@@ -6,7 +6,7 @@ import '../constant/constant.dart';
 import '../model/personal_model.dart';
 
 class ApiServicePersonal {
-  static Future<List<Personal>> getPersonal(int parentId, String type) async {
+  static Future<List<Personal>> getPersonal(int uid, String type) async {
     final response = await http.post(
       Uri.parse('${Res.host}/proschool/liste_teacher'),
       headers: {"Content-Type": "application/json"},
@@ -17,7 +17,7 @@ class ApiServicePersonal {
           "params": {
             "id": type,
             "class_ids": "",
-            "parent_id": parentId,
+            "parent_id": uid,
           }
         },
       ),

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
@@ -30,14 +32,15 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: primarycolor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon: const Icon(Icons.arrow_back_ios,color:CupertinoColors.white,),
           onPressed: () {
             Get.back();
           },
         ),
-        title: const Text('Time Line',style: TextStyle(color:Color(0xFF7590d6) ),),
+        title: const Text('Time Line',style: TextStyle(
+            color:CupertinoColors.white,fontWeight: FontWeight.bold ),),
       ),
       body: GetBuilder<ChildrenController>(
         builder: (timetableController) {
@@ -46,8 +49,8 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (timetableController.timetable.isEmpty) {
-            return const Center(
-              child: Text('No Time Table found.'),
+            return  Center(
+              child: Image.asset('assets/imgs/notfound.png'),
             );
           } else {
             return Container();

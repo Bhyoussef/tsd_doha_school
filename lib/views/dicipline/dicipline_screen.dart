@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 
 class DiciplineScreen extends StatelessWidget {
   const DiciplineScreen({Key? key}) : super(key: key);
@@ -12,14 +14,14 @@ class DiciplineScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
           onPressed: () {
             Get.back();
           },
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: primarycolor,
         title: const Text('Dicipline',style: TextStyle(
-            color: Color(0xFF7590d6)
+            color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
     );

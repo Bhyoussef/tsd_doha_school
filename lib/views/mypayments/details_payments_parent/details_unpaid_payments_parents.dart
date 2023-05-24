@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 
 import '../../../controller/payment_controller/payments_controller.dart';
 
@@ -23,15 +25,15 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: primarycolor,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+            icon: Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
             onPressed: () {
               Get.back();
             },
           ),
           title: const Text('Total Unpaid',style: TextStyle(
-              color: Color(0xFF7590d6)
+              color: CupertinoColors.white,fontWeight: FontWeight.bold
           ),),
         ),
         body: Obx(

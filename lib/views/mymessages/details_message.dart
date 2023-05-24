@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../model/child_model.dart';
 import '../../model/message_detail.dart';
@@ -29,6 +31,8 @@ class _DetailsMessageState extends State<DetailsMessage> {
       controller.getDetailsMessage(uid, widget.message.iD!);
       print(uid.toString());
       print(widget.message.studentId.toString());
+      print(widget.message.iD.toString());
+
     });
   }
 
@@ -38,17 +42,20 @@ class _DetailsMessageState extends State<DetailsMessage> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: primarycolor,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFFB97CFC),
+            color: CupertinoColors.white,
           ),
           onPressed: () {
             Get.back();
           },
         ),
-        title: const  Text('Message Details',style: TextStyle(color: Color(0xFF7590d6)),),
+        title: const Text(
+          'Message Details',
+          style: TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
+        ),
       ),
       body: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -57,12 +64,16 @@ class _DetailsMessageState extends State<DetailsMessage> {
           messageContent(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children:   const [
-
+            children: [
               Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('Comments',style: TextStyle(color:  Color(0xFFB97CFC),
-                    fontWeight: FontWeight.bold,fontSize: 25),),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Comments',
+                  style: TextStyle(
+                      color: primarycolor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25),
+                ),
               ),
             ],
           ),
@@ -70,7 +81,6 @@ class _DetailsMessageState extends State<DetailsMessage> {
         ],
       ),
       floatingActionButton: ElevatedButton(
-
         onPressed: () {
           showDialog(
             context: context,
@@ -97,18 +107,14 @@ class _DetailsMessageState extends State<DetailsMessage> {
           );
         },
         style: ElevatedButton.styleFrom(
+          elevation: 2.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-
-
           ),
-          primary: const Color(0xFFB97CFC),
+          primary: primarycolor,
         ),
-
-        child:  const Text('Add Comment'),
+        child:  const Text('Add Comment',style: TextStyle(fontWeight: FontWeight.bold),),
       ),
-
-
     );
   }
 
@@ -122,7 +128,6 @@ class _DetailsMessageState extends State<DetailsMessage> {
       isRead: widget.message.state!,
       isAttached: widget.message.attachments!.isEmpty,
       attachments: widget.message.attachments!,
-
     );
   }
 
@@ -152,8 +157,8 @@ class _DetailsMessageState extends State<DetailsMessage> {
           );
         } else {
           return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child:SingleChildScrollView(
+            padding: const EdgeInsets.all(4.0),
+            child: SingleChildScrollView(
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -169,6 +174,7 @@ class _DetailsMessageState extends State<DetailsMessage> {
       },
     );
   }
+
   void sendComment() {
     final comment = commentController.text;
     // Perform any necessary actions to send the comment
@@ -183,6 +189,11 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -242,6 +253,7 @@ class CommentCard extends StatelessWidget {
               ],
             ),
           ),
+          
         ],
       ),
     );
@@ -268,8 +280,6 @@ class ChildCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -288,12 +298,8 @@ class ChildCard extends StatelessWidget {
                   ],
                 ),
               ),
-
-
-
             ],
           ),
-
         ],
       ),
     );

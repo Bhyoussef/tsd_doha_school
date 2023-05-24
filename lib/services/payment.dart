@@ -5,7 +5,7 @@ import '../model/payment_details_model.dart';
 import '../model/payment_model.dart';
 
 class ApiServicePayment {
-  static Future<List<Payment>> getPaymentsParentTotal(int parentId) async {
+  static Future<List<Payment>> getPaymentsParentTotal(int uid) async {
     final response = await http.post(
       Uri.parse('${Res.host}/proschool/give_me_total'),
       headers: {"Content-Type": "application/json"},
@@ -13,9 +13,9 @@ class ApiServicePayment {
         {
           "jsonrpc": "2.0",
           "method": "call",
-          "uid": parentId,
+          "uid": uid,
           "params": {
-            "parent_id": parentId,
+            "parent_id": uid,
             "student_id": false,
           }
         },

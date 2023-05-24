@@ -44,15 +44,15 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: primarycolor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+          icon:const  Icon(Icons.arrow_back_ios,color:CupertinoColors.white,),
           onPressed: () {
             Get.back();
           },
         ),
-        title: const Text('Payment',style: TextStyle(color: Color(0xFF7590d6)),),
-        
+        title: const Text('Payment',style: TextStyle(color:CupertinoColors.white),),
+
       ),
       body: ListView(
         children: [
@@ -61,8 +61,8 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
             init: PaymentsController(),
             builder: (controller) {
               if (controller.paymentsTotalstudents.isEmpty) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return  Center(
+                  child: CircularProgressIndicator(color: primarycolor,),
                 );
               }
               return ListView.builder(
@@ -221,14 +221,14 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
           centerTitle: true,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios,color: Color(0xFFB97CFC),),
+            icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
             onPressed: () {
               Get.back();
             },
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: primarycolor,
           title: const Text('Total Paid',style: TextStyle(
-              color: Color(0xFF7590d6)
+              color: CupertinoColors.white,fontWeight: FontWeight.bold
           ),),
         ),
         body: Obx(
@@ -329,9 +329,9 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
             Get.back();
           },
         ),
-        backgroundColor: Colors.white,
-        title: Text('Total Unpaid',style: TextStyle(
-          color: Color(0xFF7590d6)
+        backgroundColor: primarycolor,
+        title: const Text('My payments',style: TextStyle(
+          color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
       body: SafeArea(
@@ -363,7 +363,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                         ],
                       ),
                       trailing: Switch(
-                        activeColor: const Color(0xFFB97CFC),
+                        activeColor:  primarycolor,
                         value: selectedLines.contains(index),
                         onChanged: (value) {
                           setState(() {

@@ -27,115 +27,123 @@ class MessageCardReceived extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: MemoryImage(base64Decode(image)),
-                      radius: 20.0,
-                    ),
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: Text(
-                        sender,
-                        style: const TextStyle(fontSize: 16.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RichText(
-                  text: TextSpan(
-                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
-                    children: [
-                      TextSpan(
-                        text: message,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (attachments.isNotEmpty)
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Card(
+        elevation: 2.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
                     children: [
-                      const Text(
-                        'Attachments:',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      CircleAvatar(
+                        backgroundImage: MemoryImage(base64Decode(image)),
+                        radius: 20.0,
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: attachments.length,
-                        itemBuilder: (context, index) {
-                          final attachment = attachments[index];
-                          return Text(
-                            attachment.fileName ?? '',
-                            style: const TextStyle(fontSize: 14.0),
-                          );
-                        },
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          sender,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
                       ),
                     ],
                   ),
                 ),
-
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      details,
-                      style: const TextStyle(fontSize: 14.0),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: message,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                ),
+                if (attachments.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Attachments:',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: attachments.length,
+                          itemBuilder: (context, index) {
+                            final attachment = attachments[index];
+                            return Text(
+                              attachment.fileName ?? '',
+                              style: const TextStyle(fontSize: 14.0),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        details,
+                        style: const TextStyle(fontSize: 14.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 8.0,
+              right: 8.0,
+              child: Container(
+                width: 12.0,
+                height: 12.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isRead =='read'  ? Colors.green : Colors.red,
                 ),
               ),
-            ],
-          ),
-          Positioned(
-            top: 8.0,
-            right: 8.0,
-            child: Container(
-              width: 12.0,
-              height: 12.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isRead =='read'  ? Colors.green : Colors.red,
-              ),
             ),
-          ),
-          isAttached ? Container() : const Positioned(
-            top: 8.0,
-            right: 25.0,
-            child: Icon(Icons.attach_file,),
-          ),
-        ],
+            isAttached ? Container() : const Positioned(
+              top: 8.0,
+              right: 25.0,
+              child: Icon(Icons.attach_file,),
+            ),
+          ],
+        ),
       ),
     );
   }

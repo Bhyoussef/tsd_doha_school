@@ -69,7 +69,7 @@ class ApiServiceMessage {
     String receiver,
     String subject,
     String message,
-    String receiverId,
+    String receiverId, String attachmentPath,
   ) async {
     final url = Uri.parse('${Res.host}/proschool/send_teacher_messaging');
     final body = jsonEncode({
@@ -81,7 +81,7 @@ class ApiServiceMessage {
         "uid": parentId,
         "subject": subject,
         "message": message,
-        "attachment": "",
+        "attachment": attachmentPath,
         "name_attachment": ""
       }
     });
@@ -146,6 +146,55 @@ class ApiServiceMessage {
           )
           .toList();
       return messageData;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  static Future<String?> addComments(int uid ,String body,int studentId) async {
+    final response = await http.post(
+      Uri.parse('${Res.host}/web/commantedPost'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "uid": 6523,
+          "params": {
+            "body": "body",
+            "model": "proschool.parent.message",
+            "res_id": 48812,
+            "user_id": 6523,
+            "attachment": null,
+            "name_attachment": null
+          }
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['result'] != null) {
+        Get.snackbar(
+          'Success :',
+          'Your comment have been succsufully added ',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(20),
+        );
+
+      } else if (jsonResponse['result'] == null) {
+        Get.snackbar(
+          'Error :',
+          'Something wrong happened ',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(20),
+        );
+      }
+      return jsonResponse["result"];
     } else {
       throw Exception('Failed to load data');
     }

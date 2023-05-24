@@ -12,7 +12,7 @@ class MesaageReceivedController extends GetxController {
   final childdetail = <Mychildreen>[].obs;
   final messageDetail = <MessageDetail>[].obs;
   final isLoading = true.obs;
-
+  int? parentId;
 
 
   @override
@@ -26,7 +26,7 @@ class MesaageReceivedController extends GetxController {
   Future<void> fetchingReceivedMessage(uid) async {
     try {
       isLoading(true);
-      final messageList = await ApiServiceMessage.getMessagesrecieved(uid);
+      final messageList = await ApiServiceMessage.getMessagesrecieved(uid!);
       receivedmessage.assignAll(messageList);
       update();
     } finally {
@@ -61,6 +61,17 @@ class MesaageReceivedController extends GetxController {
       isLoading(true);
       final updatemessage = await ApiServiceMessage.getMessageDetails(6523, messageId);
       messageDetail.assignAll(updatemessage);
+      update();
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  Future<void> addComments(uid,String body,int studentId)async{
+    try{
+      isLoading(true);
+        await ApiServiceMessage.addComments(uid,  body, studentId);
+
       update();
     }finally{
       isLoading(false);

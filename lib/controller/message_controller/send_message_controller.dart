@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-
-import '../../constant/constant.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../model/personal_model.dart';
 import '../../services/message.dart';
 import '../../services/personal.dart';
@@ -12,11 +12,11 @@ class SendMessageController extends GetxController {
   var selectedRecipient = RxString('');
   var subject = RxString('');
   var message = RxString('');
+  var attachmentControllers = <TextEditingController>[].obs; // Updated list type
   var teacherRecipients = <Personal>[].obs;
   var adminRecipients = <Personal>[].obs;
   var recipientVisible = RxBool(false);
   var isLoading = false.obs;
-
 
   @override
   void onInit() {
@@ -26,7 +26,7 @@ class SendMessageController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchRecipients(uid) async {
+  Future<void> fetchRecipients(int uid) async {
     try {
       String type = '';
       if (selectedTo.value == 'T') {
@@ -47,24 +47,54 @@ class SendMessageController extends GetxController {
         }
       }
     } catch (e) {
-      // Handle error
+// Handle error
     }
   }
 
-
   Future<String?> sendMessage(
-      int parentId,String receiver,
-      String subject, String message,String receiverId,) async {
-
+      int parentId,
+      String receiver,
+      String subject,
+      String message,
+      String receiverId,
+      List<String> attachmentPaths,
+      ) async {
     try {
-
       isLoading(true);
-      await ApiServiceMessage.sendMessage(parentId,
-          receiver, subject, message,receiverId);
+      await ApiServiceMessage.sendMessage(
+        parentId,
+        receiver,
+        subject,
+        message,
+        receiverId,
+        attachmentPaths as String,
+      );
     } finally {
       isLoading(false);
     }
     return null;
   }
 
-}
+  void addAttachment() {
+    _pickAttachment();
+  }
+
+  void removeAttachment(int index) {
+    attachmentControllers.removeAt(index);
+  }
+
+  Future<void> _pickAttachment() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final attachmentPath = pickedFile.path;
+      final attachmentController = TextEditingController(text: attachmentPath);
+      attachmentControllers.add(attachmentController);
+      attachmentController.addListener(() {
+        // Remove attachment controller if the text is empty (attachment is cleared)
+        if (attachmentController.text.isEmpty) {
+          removeAttachment(attachmentControllers.indexOf(attachmentController));
+        }
+      });
+    }
+  }}

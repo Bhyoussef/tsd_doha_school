@@ -45,12 +45,16 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       body: GetBuilder<ChildrenController>(
         builder: (exerciseController) {
           if (exerciseController.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return  Center(
+              child: CircularProgressIndicator(color: primarycolor,),
             );
           } else if (exerciseController.exersice.isEmpty) {
-            return const Center(
-              child: Text('No Exercise found.'),
+            return  Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/imgs/notfound.png'),
+                Text('No Exercise')
+              ],
             );
           } else {
             return Container();
