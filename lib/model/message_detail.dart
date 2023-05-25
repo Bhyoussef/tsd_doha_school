@@ -1,3 +1,5 @@
+import 'attachement_model.dart';
+
 class MessageDetail {
   String? body;
   String? recordName;
@@ -10,19 +12,22 @@ class MessageDetail {
   int? id;
   AuthorId? authorId;
   int? resId;
+  List<Attachment>? attachments;
 
-  MessageDetail(
-      {this.body,
-        this.recordName,
-        this.voteUserIds,
-        this.writeDate,
-        this.date,
-        this.model,
-        this.attachmentIds,
-        this.type,
-        this.id,
-        this.authorId,
-        this.resId});
+  MessageDetail({
+    this.body,
+    this.recordName,
+    this.voteUserIds,
+    this.writeDate,
+    this.date,
+    this.model,
+    this.attachmentIds,
+    this.type,
+    this.id,
+    this.authorId,
+    this.resId,
+    this.attachments,
+  });
 
   MessageDetail.fromJson(Map<String, dynamic> json) {
     body = json['body'];
@@ -35,9 +40,13 @@ class MessageDetail {
     type = json['type'];
     id = json['id'];
     authorId = json['author_id'] != null
-        ? new AuthorId.fromJson(json['author_id'])
+        ? AuthorId.fromJson(json['author_id'])
         : null;
     resId = json['res_id'];
+    if (json['attachments'] != null) {
+      attachments = List<Attachment>.from(
+          json['attachments'].map((attachment) => Attachment.fromJson(attachment)));
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -51,11 +60,13 @@ class MessageDetail {
     data['attachment_ids'] = this.attachmentIds;
     data['type'] = this.type;
     data['id'] = this.id;
-
     if (this.authorId != null) {
       data['author_id'] = this.authorId!.toJson();
     }
     data['res_id'] = this.resId;
+    if (this.attachments != null) {
+      data['attachments'] = this.attachments!.map((attachment) => attachment.toJson()).toList();
+    }
     return data;
   }
 }

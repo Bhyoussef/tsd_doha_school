@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../controller/message_controller/message_received_controller.dart';
+import '../../model/attachement_model.dart';
 import '../../model/child_model.dart';
 import '../../model/message_detail.dart';
 import '../../model/message_model.dart';
@@ -11,15 +12,15 @@ import '../../utils/shared_preferences.dart';
 import 'add_comment.dart';
 import 'widget/message_card.dart';
 
-class DetailsMessage extends StatefulWidget {
+class DetailsMessageReceived extends StatefulWidget {
   final Message message;
-  const DetailsMessage({Key? key, required this.message}) : super(key: key);
+  const DetailsMessageReceived({Key? key, required this.message}) : super(key: key);
 
   @override
-  State<DetailsMessage> createState() => _DetailsMessageState();
+  State<DetailsMessageReceived> createState() => _DetailsMessageReceivedState();
 }
 
-class _DetailsMessageState extends State<DetailsMessage> {
+class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   final MesaageReceivedController controller =
   Get.find<MesaageReceivedController>();
   final TextEditingController commentController = TextEditingController();
@@ -29,7 +30,7 @@ class _DetailsMessageState extends State<DetailsMessage> {
     super.initState();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       controller.getChildDetail(uid, widget.message.studentId!);
-      controller.getDetailsMessage(uid, widget.message.iD!);
+      controller.getComments(uid, widget.message.iD!);
       print(uid.toString());
       print(widget.message.studentId.toString());
       print(widget.message.iD.toString());
@@ -76,7 +77,7 @@ class _DetailsMessageState extends State<DetailsMessage> {
             return  Center(
               child: CircularProgressIndicator(color: primarycolor,),
             );
-          } else if (controller.messageDetail.isEmpty) {
+          } else if (controller.comments.isEmpty) {
             return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +118,7 @@ class _DetailsMessageState extends State<DetailsMessage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => AddCommentPage(),
+            builder: (context) => const AddCommentPage(),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -168,15 +169,21 @@ class _DetailsMessageState extends State<DetailsMessage> {
         child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: controller.messageDetail.length,
+          itemCount: controller.comments.length,
           itemBuilder: (context, index) {
-            final comments = controller.messageDetail[index];
-            return CommentCard(comments: comments);
+            final comment = controller.comments[index];
+            final attachments = controller.allattachements[index];
+
+            return CommentCard(
+              comments: comment,
+              attachments: attachments as List<Attachment>,
+            );
           },
         ),
       ),
     );
   }
+
 
   void sendComment() {
     final comment = commentController.text;
@@ -187,7 +194,13 @@ class _DetailsMessageState extends State<DetailsMessage> {
 
 class CommentCard extends StatelessWidget {
   final MessageDetail comments;
-  const CommentCard({Key? key, required this.comments}) : super(key: key);
+  final List<Attachment> attachments;
+
+  const CommentCard({
+    Key? key,
+    required this.comments,
+    required this.attachments,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -243,6 +256,18 @@ class CommentCard extends StatelessWidget {
               ),
             ),
           ),
+          if (attachments.isNotEmpty) ...attachments.map((attachment) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Icon(Icons.attach_file),
+                const SizedBox(width: 4.0),
+                Expanded(
+                  child: Text(attachment.fileName!),
+                ),
+              ],
+            ),
+          )),
           const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -268,6 +293,7 @@ class CommentCard extends StatelessWidget {
     return htmlText.replaceAll(exp, '');
   }
 }
+
 
 class ChildCard extends StatelessWidget {
   final Mychildreen child;
@@ -307,3 +333,5 @@ class ChildCard extends StatelessWidget {
     );
   }
 }
+
+

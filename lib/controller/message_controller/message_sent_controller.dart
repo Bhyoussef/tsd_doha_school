@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
-import '../../constant/constant.dart';
+import 'package:tunisian_school_doha/model/send_message_model.dart';
+
 import '../../model/message_sent_model.dart';
 import '../../services/message.dart';
 import '../../utils/shared_preferences.dart';
 
 class MesaageSentController extends GetxController {
   final sentedmessage = <MessageSent>[].obs;
+  final detailssentmessage = <SendMessage>[].obs;
   final isLoading = true.obs;
 
   @override
@@ -22,6 +24,17 @@ class MesaageSentController extends GetxController {
       final messageList =
           await ApiServiceMessage.getMessagesSented(uid);
       sentedmessage.assignAll(messageList);
+      update();
+    } finally {
+      isLoading(false);
+    }
+  }
+  Future<void> getsentmessagedetails(uid,int messageId) async {
+    try {
+      isLoading(true);
+      final messageList =
+      await ApiServiceMessage.getMessagesSentedDeatails(uid,messageId);
+      detailssentmessage.assignAll(messageList);
       update();
     } finally {
       isLoading(false);

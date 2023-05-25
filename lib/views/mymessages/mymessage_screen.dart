@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/theme/app_colors.dart';
@@ -10,8 +11,11 @@ import '../../model/message_model.dart';
 import '../../model/message_sent_model.dart';
 import '../sendmessage/sendmessage_screen.dart';
 import 'details_message.dart';
+import 'message_sent_details.dart';
 
 class MessagesScreen extends StatefulWidget {
+  const MessagesScreen({super.key});
+
   @override
   _MessagesScreenState createState() => _MessagesScreenState();
 }
@@ -99,8 +103,10 @@ class _MessagesScreenState extends State<MessagesScreen>
                       // Update the message state to 'read'
                       //controller.updateMessageState(message.id);
                     }
-                    Get.to(() => DetailsMessage(message: message));
-                    print(message.iD);
+                    Get.to(() => DetailsMessageReceived(message: message));
+                    if (kDebugMode) {
+                      print(message.iD);
+                    }
                   },
                   child: MessageCardReceived(
                     title: message.titleOfMessage ?? '',
@@ -109,7 +115,7 @@ class _MessagesScreenState extends State<MessagesScreen>
                     message: message.message ?? '',
                     details: '${message.student ?? ''} • ${message.date ?? ''}',
                     isRead: message.state ?? '',
-                    isAttached: message.attachments!.isEmpty!,
+                    isAttached: message.attachments!.isEmpty,
                     attachments: message.attachments!,
                     downloadController: downloadController,
                   ),
@@ -138,11 +144,19 @@ class _MessagesScreenState extends State<MessagesScreen>
             itemCount: controller.sentedmessage.length,
             itemBuilder: (context, index) {
               MessageSent message = controller.sentedmessage[index];
-              return MessageCardSent(
-                title: message.name ?? '',
-                receiver: message.receiver ?? '',
-                message: message.message ?? '',
-                date: message.date ?? '',
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: (){
+                    Get.to(()=>MessageSentDetails(message:message));
+                  },
+                  child: MessageCardSent(
+                    title: message.name ?? '',
+                    receiver: message.receiver ?? '',
+                    message: message.message ?? '',
+                    date: message.date ?? '',
+                  ),
+                ),
               );
             },
           );
@@ -213,7 +227,7 @@ class MessageCardReceived extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage: MemoryImage(base64Decode(image)),
-                      radius: 20.0,
+                      radius: 40.0,
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
@@ -294,7 +308,7 @@ class MessageCardReceived extends StatelessWidget {
           ),
           isAttached
               ? Container()
-              : Positioned(
+              : const Positioned(
                   top: 8.0,
                   right: 25.0,
                   child: Icon(Icons.attach_file),

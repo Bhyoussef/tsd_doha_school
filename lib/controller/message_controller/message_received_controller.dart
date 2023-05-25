@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../model/attachement_model.dart';
 import '../../model/child_model.dart';
 import '../../model/message_detail.dart';
 import '../../model/message_model.dart';
@@ -12,7 +13,8 @@ import '../../utils/shared_preferences.dart';
 class MesaageReceivedController extends GetxController {
   final receivedmessage = <Message>[].obs;
   final childdetail = <Mychildreen>[].obs;
-  final messageDetail = <MessageDetail>[].obs;
+  final comments = <MessageDetail>[].obs;
+  final allattachements = <Attachment>[].obs;
   var attachmentControllers = <TextEditingController>[].obs;
   final isLoading = true.obs;
   int? parentId;
@@ -24,6 +26,7 @@ class MesaageReceivedController extends GetxController {
       fetchingReceivedMessage(uid);
     });
     super.onInit();
+
   }
 
   Future<void> fetchingReceivedMessage(uid) async {
@@ -48,22 +51,30 @@ class MesaageReceivedController extends GetxController {
     }
   }
 
-  Future<void> getDetailsMessage(uid,int messageId)async{
-    try{
+  Future<void> getComments(uid, int messageId) async {
+    try {
       isLoading(true);
-      final messagedetail = await ApiServiceMessage.getMessageDetails(6523, messageId);
-      messageDetail.assignAll(messagedetail);
+      final commentsList = await ApiServiceMessage.getListComments(6523, messageId);
+      comments.assignAll(commentsList);
+      for (MessageDetail comment in commentsList) {
+        if (comment.attachmentIds!.isNotEmpty) {
+          await getAllAttachments(comment.attachmentIds);
+          comment.attachments = allattachements.toList() as List<Attachment>?;
+        }
+      }
       update();
-    }finally{
+    } finally {
       isLoading(false);
     }
   }
 
+
+
   Future<void> updateMessageState(uid,int messageId)async{
     try{
       isLoading(true);
-      final updatemessage = await ApiServiceMessage.getMessageDetails(6523, messageId);
-      messageDetail.assignAll(updatemessage);
+      final updatemessage = await ApiServiceMessage.getListComments(6523, messageId);
+      comments.assignAll(updatemessage);
       update();
     }finally{
       isLoading(false);
@@ -74,12 +85,27 @@ class MesaageReceivedController extends GetxController {
     try{
       isLoading(true);
         await ApiServiceMessage.addComments(uid,  body, studentId);
-
-      update();
+        update();
     }finally{
       isLoading(false);
     }
   }
+
+  Future<void> getAllAttachments(List<int>? attachmentIds) async {
+    if (attachmentIds == null || attachmentIds.isEmpty) {
+      return;
+    }
+    try {
+      isLoading(true);
+      final attachmentsData =
+      await ApiServiceMessage.getAllattachements(attachmentIds);
+      allattachements.assignAll(attachmentsData);
+      update();
+    } finally {
+      isLoading(false);
+    }
+  }
+
 
 
 
@@ -99,7 +125,6 @@ class MesaageReceivedController extends GetxController {
       final attachmentController = TextEditingController(text: attachmentPath);
       attachmentControllers.add(attachmentController);
       attachmentController.addListener(() {
-        // Remove attachment controller if the text is empty (attachment is cleared)
         if (attachmentController.text.isEmpty) {
           removeAttachment(attachmentControllers.indexOf(attachmentController));
         }
