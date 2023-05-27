@@ -12,7 +12,8 @@ class SendMessageController extends GetxController {
   var selectedRecipient = RxString('');
   var subject = RxString('');
   var message = RxString('');
-  var attachmentControllers = <TextEditingController>[].obs; // Updated list type
+  var attachmentControllers =
+      <TextEditingController>[].obs; // Updated list type
   var teacherRecipients = <Personal>[].obs;
   var adminRecipients = <Personal>[].obs;
   var recipientVisible = RxBool(false);
@@ -26,7 +27,7 @@ class SendMessageController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchRecipients(int uid) async {
+  fetchRecipients(int uid) async {
     try {
       String type = '';
       if (selectedTo.value == 'T') {
@@ -51,14 +52,14 @@ class SendMessageController extends GetxController {
     }
   }
 
-  Future<String?> sendMessage(
-      int parentId,
-      String receiver,
-      String subject,
-      String message,
-      String receiverId,
-      List<String> attachmentPaths,
-      ) async {
+  sendMessage(
+    int parentId,
+    String receiver,
+    String subject,
+    String message,
+    String receiverId,
+    List<String> attachmentPaths,
+  ) async {
     try {
       isLoading(true);
       await ApiServiceMessage.sendMessage(
@@ -83,7 +84,7 @@ class SendMessageController extends GetxController {
     attachmentControllers.removeAt(index);
   }
 
-  Future<void> _pickAttachment() async {
+  _pickAttachment() async {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -97,4 +98,5 @@ class SendMessageController extends GetxController {
         }
       });
     }
-  }}
+  }
+}

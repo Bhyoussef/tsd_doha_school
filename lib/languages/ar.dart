@@ -35,5 +35,6 @@ const Map<String, String> ar = {
   'configuration':'إعدادات',
   'logout':'تسجيل خروج',
   'recieved':'رسائلي',
-  'sent':'مرسل'
+  'sent':'مرسل',
+  'exercises':'تمارين'
 };

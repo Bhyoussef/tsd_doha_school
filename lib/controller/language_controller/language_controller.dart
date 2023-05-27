@@ -5,7 +5,7 @@ import 'package:tunisian_school_doha/utils/shared_preferences.dart';
 class LanguageController extends GetxController {
   var savedLang = "EN".obs;
 
-  Future<void> changeLanguage(language) async {
+  changeLanguage(language) async {
     SharedData.saveToStorage('language', language, 'string');
     Get.updateLocale(Locale(language.toString().toLowerCase()));
     savedLang.value = language.toString();

@@ -6,8 +6,7 @@ import '../../constant/constant.dart';
 class PasswordChangeController extends GetxController {
   var isLoading = false.obs;
 
-  Future<String?> updatePasswd(
-      String oldPassword, newPassword, confirmPassword) async {
+  updatePasswd(String oldPassword, newPassword, confirmPassword) async {
     try {
       isLoading(true);
       await ApiServiceAuth.changePassword(

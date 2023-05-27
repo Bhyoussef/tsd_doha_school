@@ -57,7 +57,7 @@ class MessageCardReceived extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundImage: MemoryImage(base64Decode(image)),
-                        radius: 20.0,
+                        radius: 40.0,
                       ),
                       const SizedBox(width: 8.0),
                       Expanded(

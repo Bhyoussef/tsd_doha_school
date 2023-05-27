@@ -8,7 +8,7 @@ import '../../../controller/payment_controller/payments_controller.dart';
 
 class DetailPaymentsUnpaidParents extends StatefulWidget {
 
-  DetailPaymentsUnpaidParents({super.key});
+  const DetailPaymentsUnpaidParents({super.key});
 
   @override
   State<DetailPaymentsUnpaidParents> createState() => _DetailPaymentsUnpaidParentsState();
@@ -27,7 +27,7 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
           elevation: 0,
           backgroundColor: primarycolor,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
+            icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
             onPressed: () {
               Get.back();
             },
@@ -35,11 +35,23 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
           title: const Text('Total Unpaid',style: TextStyle(
               color: CupertinoColors.white,fontWeight: FontWeight.bold
           ),),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ],
         ),
         body: Obx(
               () {
             if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return  Center(child: CircularProgressIndicator(
+                color: primarycolor,
+              ));
             } else {
               return ListView.builder(
                 itemCount: controller.totalinpaiddetailsparents.length,
@@ -47,7 +59,7 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
                   final paidDetail = controller.totalinpaiddetailsparents[index];
 
                   return Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -55,16 +67,16 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
                         children: [
                           Text(
                             paidDetail.period.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Divider(),
+                          const Divider(),
                           Text(
                             'Price Unit: ${paidDetail.priceUnit}',
                           ),
-                          Divider(),
+                          const Divider(),
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(

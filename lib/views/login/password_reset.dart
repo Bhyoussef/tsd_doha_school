@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/auth_controller/login_controller.dart';
+import '../../controller/auth_controller/password_rest_controller.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/keyboard.dart';
-import 'password_reset.dart';
+import 'login_screen.dart';
 import 'widget/BottomTextureOnly.dart';
-import 'widget/login_text_field_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class PasswordRest extends StatelessWidget {
+  final controller = Get.put(PasswordResetController());
+   PasswordRest({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AuthController _authController = Get.put(AuthController());
+
     final size = MediaQuery.of(context).size;
     final _formKey = GlobalKey<FormState>();
-    final _loginController = TextEditingController(text: '27178800234');
-    final _passwordController = TextEditingController(text: '1234');
+
 
     return Scaffold(
       body: GestureDetector(
@@ -41,62 +40,36 @@ class LoginScreen extends StatelessWidget {
                             children: [
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 28),
+                                const EdgeInsets.symmetric(horizontal: 28),
                                 child: Column(
                                   children: [
                                     const SizedBox(height: 50),
-                                    LoginTextField(
-                                      controller: _loginController,
-                                      labelText: 'parent_id'.tr,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'parent_id_required'.tr;
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    const SizedBox(height: 18),
-                                    LoginTextField(
-                                      controller: _passwordController,
-                                      labelText: 'password'.tr,
-                                      obscureText: true,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'password_obligatoire'.tr;
-                                        }
-                                        return null;
-                                      },
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                        labelText: 'parent_id'.tr,
+                                        border: const OutlineInputBorder(),
+                                      ),
                                     ),
                                     const SizedBox(height: 18),
                                     MaterialButton(
-                                      minWidth:
-                                          MediaQuery.of(context).size.width,
                                       height: 50,
+                                      minWidth: MediaQuery.of(context).size.width,
                                       color: primarycolor,
+                                      onPressed: () {},
                                       textColor: Colors.white,
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          _authController.authenticateUser(
-                                            _loginController.text,
-                                            _passwordController.text,
-                                          );
-                                        }
-                                      },
-                                      child: Text('identifier'.tr),
+                                      child: Text('reset_password'.tr),
                                     ),
                                     const SizedBox(height: 18),
                                     TextButton(
-                                      onPressed: () =>
-                                          Get.to(PasswordRest()),
+                                      onPressed: () {
+                                        Get.back();
+                                      },
                                       child: Text(
-                                        'reset_password'.tr,
-                                        style: TextStyle(color: primarycolor),
+                                        'or_login'.tr,
+                                        style:  TextStyle(color: primarycolor),
                                       ),
                                     ),
-                                    const SizedBox(height: 20),
-                                    Obx(() => _authController.isLoading.value
-                                        ?  CircularProgressIndicator(color: primarycolor,)
-                                        : Container()),
+
                                   ],
                                 ),
                               ),

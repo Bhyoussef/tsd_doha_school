@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:tunisian_school_doha/model/child_model.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
+import '../../../model/child_model.dart';
+import '../../../theme/app_colors.dart';
 
 class TotalPaymentsChildren extends StatefulWidget {
   final Mychildreen student;
@@ -49,10 +47,10 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
             () {
           if (paymentController.isLoading.value) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: primarycolor,),
             );
           } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No payments history found.'),
             );
           }
@@ -62,7 +60,7 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
             itemBuilder: (context, index) {
               final payment = paymentController.totalpaiddetailsstudents[index];
               return Card(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -70,16 +68,16 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
                     children: [
                       Text(
                         payment.period.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Divider(),
+                      const Divider(),
                       Text(
                         'Price Unit: ${payment.priceUnit}',
                       ),
-                      Divider(),
+                      const Divider(),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Text(

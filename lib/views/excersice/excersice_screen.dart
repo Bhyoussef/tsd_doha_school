@@ -9,7 +9,7 @@ import '../../controller/mychildren_controller/mychildren_controller.dart';
 class ExerciseScreen extends StatefulWidget {
   final int studentId;
 
-  ExerciseScreen({Key? key, required this.studentId}) : super(key: key);
+  const ExerciseScreen({Key? key, required this.studentId}) : super(key: key);
 
   @override
   State<ExerciseScreen> createState() => _ExerciseScreenState();
@@ -41,26 +41,41 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         backgroundColor: primarycolor,
         title: const Text('Exercise ',style: TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ],
       ),
-      body: GetBuilder<ChildrenController>(
-        builder: (exerciseController) {
-          if (exerciseController.isLoading.value) {
-            return  Center(
-              child: CircularProgressIndicator(color: primarycolor,),
-            );
-          } else if (exerciseController.exersice.isEmpty) {
-            return  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/imgs/notfound.png'),
-                Text('No Exercise')
-              ],
-            );
-          } else {
-            return Container();
-          }
-        },
+      body: SafeArea(
+        child: Obx(
+              () {
+            final exerciseController = Get.find<ChildrenController>();
+
+            if (exerciseController.isLoading.value) {
+              return Center(
+                child: CircularProgressIndicator(color: primarycolor),
+              );
+            } else if (exerciseController.exersice.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/imgs/notfound.png'),
+                  const Text('No Exercise Found'),
+                ],
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
+
     );
   }
 }

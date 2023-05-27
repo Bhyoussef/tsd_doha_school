@@ -4,23 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../controller/message_controller/message_received_controller.dart';
+import '../../model/attachement_model.dart';
 import '../../model/child_model.dart';
 import '../../model/message_detail.dart';
 import '../../model/message_model.dart';
 import '../../utils/shared_preferences.dart';
+import 'add_comment.dart';
 import 'widget/message_card.dart';
 
-class DetailsMessage extends StatefulWidget {
+class DetailsMessageReceived extends StatefulWidget {
   final Message message;
-  const DetailsMessage({Key? key, required this.message}) : super(key: key);
+  const DetailsMessageReceived({Key? key, required this.message}) : super(key: key);
 
   @override
-  State<DetailsMessage> createState() => _DetailsMessageState();
+  State<DetailsMessageReceived> createState() => _DetailsMessageReceivedState();
 }
 
-class _DetailsMessageState extends State<DetailsMessage> {
+class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   final MesaageReceivedController controller =
-      Get.find<MesaageReceivedController>();
+  Get.find<MesaageReceivedController>();
   final TextEditingController commentController = TextEditingController();
 
   @override
@@ -28,11 +30,10 @@ class _DetailsMessageState extends State<DetailsMessage> {
     super.initState();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       controller.getChildDetail(uid, widget.message.studentId!);
-      controller.getDetailsMessage(uid, widget.message.iD!);
+      controller.getComments(uid, widget.message.iD!);
       print(uid.toString());
       print(widget.message.studentId.toString());
       print(widget.message.iD.toString());
-
     });
   }
 
@@ -54,56 +55,70 @@ class _DetailsMessageState extends State<DetailsMessage> {
         ),
         title: const Text(
           'Message Details',
-          style: TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: [
-          //childContent(),
-          messageContent(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Comments',
-                  style: TextStyle(
-                      color: primarycolor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25),
-                ),
-              ),
-            ],
+          style: TextStyle(
+            color: CupertinoColors.white,
+            fontWeight: FontWeight.bold,
           ),
-          comments(),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
         ],
+      ),
+      body: Obx(
+            () {
+          if (controller.isLoading.value) {
+            return  Center(
+              child: CircularProgressIndicator(color: primarycolor,),
+            );
+          } else if (controller.comments.isEmpty) {
+            return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/imgs/notfound.png'),
+                    const Text('No Messages Found')
+                  ],
+                )
+            );
+          } else {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                messageContent(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:  [
+                    Padding(
+                      padding:const  EdgeInsets.all(8.0),
+                      child: Text(
+                        'Comments',
+                        style: TextStyle(
+                          color: primarycolor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                comments(),
+              ],
+            );
+          }
+        },
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Add Comment'),
-              content: TextField(
-                controller: commentController,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your comment...',
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    // Call the method to send the comment
-                    sendComment();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Send'),
-                ),
-              ],
-            ),
+            builder: (context) => const AddCommentPage(),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -113,7 +128,10 @@ class _DetailsMessageState extends State<DetailsMessage> {
           ),
           primary: primarycolor,
         ),
-        child:  const Text('Add Comment',style: TextStyle(fontWeight: FontWeight.bold),),
+        child: const Text(
+          'Add Comment',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -132,7 +150,7 @@ class _DetailsMessageState extends State<DetailsMessage> {
   }
 
   Widget childContent() {
-    return Container(
+    return SizedBox(
       height: 100,
       child: ListView.builder(
         itemCount: controller.childdetail.length,
@@ -145,46 +163,44 @@ class _DetailsMessageState extends State<DetailsMessage> {
   }
 
   Widget comments() {
-    return GetBuilder<MesaageReceivedController>(
-      builder: (controller) {
-        if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (controller.messageDetail.isEmpty) {
-          return const Center(
-            child: Text('No data'),
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: SingleChildScrollView(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.messageDetail.length,
-                itemBuilder: (context, index) {
-                  final comments = controller.messageDetail[index];
-                  return CommentCard(comments: comments);
-                },
-              ),
-            ),
-          );
-        }
-      },
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.comments.length,
+          itemBuilder: (context, index) {
+            final comment = controller.comments[index];
+            final attachments = controller.allattachements[index];
+
+            return CommentCard(
+              comments: comment,
+              attachments: attachments as List<Attachment>,
+            );
+          },
+        ),
+      ),
     );
   }
 
+
   void sendComment() {
     final comment = commentController.text;
-    // Perform any necessary actions to send the comment
+    // send the comment
     commentController.clear();
   }
 }
 
 class CommentCard extends StatelessWidget {
   final MessageDetail comments;
-  const CommentCard({Key? key, required this.comments}) : super(key: key);
+  final List<Attachment> attachments;
+
+  const CommentCard({
+    Key? key,
+    required this.comments,
+    required this.attachments,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +230,7 @@ class CommentCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundImage:
-                      MemoryImage(base64Decode(comments.authorId!.image!)),
+                  MemoryImage(base64Decode(comments.authorId!.image!)),
                   radius: 20.0,
                 ),
                 const SizedBox(width: 8.0),
@@ -240,6 +256,18 @@ class CommentCard extends StatelessWidget {
               ),
             ),
           ),
+          if (attachments.isNotEmpty) ...attachments.map((attachment) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Icon(Icons.attach_file),
+                const SizedBox(width: 4.0),
+                Expanded(
+                  child: Text(attachment.fileName!),
+                ),
+              ],
+            ),
+          )),
           const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -253,7 +281,6 @@ class CommentCard extends StatelessWidget {
               ],
             ),
           ),
-          
         ],
       ),
     );
@@ -266,6 +293,7 @@ class CommentCard extends StatelessWidget {
     return htmlText.replaceAll(exp, '');
   }
 }
+
 
 class ChildCard extends StatelessWidget {
   final Mychildreen child;
@@ -305,3 +333,5 @@ class ChildCard extends StatelessWidget {
     );
   }
 }
+
+

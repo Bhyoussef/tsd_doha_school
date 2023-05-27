@@ -306,8 +306,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
             },
           ),
           if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
+             Center(
+              child: CircularProgressIndicator(color: primarycolor,),
             ),
         ],
       ),

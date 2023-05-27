@@ -8,9 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../constant/constant.dart';
 
 class FileDownloadController extends GetxController {
-
-  Future<void> downloadFile(
-      int parentId, String fileId, String fileName) async {
+  downloadFile(int parentId, String fileId, String fileName) async {
     try {
       final response = await http.post(
         Uri.parse('${Res.host}/proschool/giveme_base64'),
@@ -70,8 +68,4 @@ class FileDownloadController extends GetxController {
       }
     }
   }
-
-
-
-
 }

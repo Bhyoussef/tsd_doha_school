@@ -27,6 +27,7 @@ dependencies:
   webview_flutter: ^2.0.0
   sliver_tools: ^0.2.10
   image_picker: ^0.8.4+4
+  intl: ^0.18.1
 
 
 dev_dependencies:

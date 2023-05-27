@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -59,8 +61,9 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> pushNextScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
-    Get.to(() => const LanguageScreen());
+  pushNextScreen() async {
+    Timer(Duration(seconds: 3), () {
+      Get.to(() => const LanguageScreen());
+    });
   }
 }

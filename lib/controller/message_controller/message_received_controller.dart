@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../model/attachement_model.dart';
 import '../../model/child_model.dart';
 import '../../model/message_detail.dart';
 import '../../model/message_model.dart';
@@ -6,14 +9,14 @@ import '../../services/message.dart';
 import '../../services/personal.dart';
 import '../../utils/shared_preferences.dart';
 
-
 class MesaageReceivedController extends GetxController {
   final receivedmessage = <Message>[].obs;
   final childdetail = <Mychildreen>[].obs;
-  final messageDetail = <MessageDetail>[].obs;
+  final comments = <MessageDetail>[].obs;
+  final allattachements = <Attachment>[].obs;
+  var attachmentControllers = <TextEditingController>[].obs;
   final isLoading = true.obs;
   int? parentId;
-
 
   @override
   void onInit() {
@@ -23,7 +26,7 @@ class MesaageReceivedController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchingReceivedMessage(uid) async {
+  fetchingReceivedMessage(uid) async {
     try {
       isLoading(true);
       final messageList = await ApiServiceMessage.getMessagesrecieved(uid!);
@@ -34,10 +37,11 @@ class MesaageReceivedController extends GetxController {
     }
   }
 
-  Future<void> getChildDetail(uid,int studentId) async {
+  getChildDetail(uid, int studentId) async {
     try {
       isLoading(true);
-      final childdetail = await ApiServicePersonal.getSingleChild(uid, studentId);
+      final childdetail =
+          await ApiServicePersonal.getSingleChild(uid, studentId);
       childdetail.assignAll(childdetail);
       update();
     } finally {
@@ -45,37 +49,81 @@ class MesaageReceivedController extends GetxController {
     }
   }
 
-  Future<void> getDetailsMessage(uid,int messageId)async{
-    try{
+  getComments(uid, int messageId) async {
+    try {
       isLoading(true);
-      final messagedetail = await ApiServiceMessage.getMessageDetails(6523, messageId);
-      messageDetail.assignAll(messagedetail);
+      final commentsList =
+          await ApiServiceMessage.getListComments(6523, messageId);
+      comments.assignAll(commentsList);
+      for (MessageDetail comment in commentsList) {
+        if (comment.attachmentIds!.isNotEmpty) {
+          await getAllAttachments(comment.attachmentIds);
+          comment.attachments = allattachements.toList() as List<Attachment>?;
+        }
+      }
       update();
-    }finally{
+    } finally {
       isLoading(false);
     }
   }
 
-  Future<void> updateMessageState(uid,int messageId)async{
-    try{
+  updateMessageState(uid, int messageId) async {
+    try {
       isLoading(true);
-      final updatemessage = await ApiServiceMessage.getMessageDetails(6523, messageId);
-      messageDetail.assignAll(updatemessage);
+      final updatemessage =
+          await ApiServiceMessage.getListComments(6523, messageId);
+      comments.assignAll(updatemessage);
       update();
-    }finally{
+    } finally {
       isLoading(false);
     }
   }
 
-  Future<void> addComments(uid,String body,int studentId)async{
-    try{
+  addComments(uid, String body, int studentId) async {
+    try {
       isLoading(true);
-        await ApiServiceMessage.addComments(uid,  body, studentId);
-
+      await ApiServiceMessage.addComments(uid, body, studentId);
       update();
-    }finally{
+    } finally {
       isLoading(false);
     }
   }
 
+  getAllAttachments(List<int>? attachmentIds) async {
+    if (attachmentIds == null || attachmentIds.isEmpty) {
+      return;
+    }
+    try {
+      isLoading(true);
+      final attachmentsData =
+          await ApiServiceMessage.getAllattachements(attachmentIds);
+      allattachements.assignAll(attachmentsData);
+      update();
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void addAttachment() {
+    _pickAttachment();
+  }
+
+  void removeAttachment(int index) {
+    attachmentControllers.removeAt(index);
+  }
+
+  _pickAttachment() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final attachmentPath = pickedFile.path;
+      final attachmentController = TextEditingController(text: attachmentPath);
+      attachmentControllers.add(attachmentController);
+      attachmentController.addListener(() {
+        if (attachmentController.text.isEmpty) {
+          removeAttachment(attachmentControllers.indexOf(attachmentController));
+        }
+      });
+    }
+  }
 }

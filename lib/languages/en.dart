@@ -35,5 +35,6 @@ const Map<String, String> en = {
   'configuration':'Settings',
   'logout':'Logout',
   'recieved':'Recieved',
-  'sent':'Sent'
+  'sent':'Sent',
+  'exercises':'Exercises'
 };

@@ -102,7 +102,7 @@ class ApiServiceMyChildren {
     }
   }
 
-  static Future<List<TimeTable>> fetchTimeTable(int studentId) async {
+  static Future<List<TimeTable>> fetchTimeTable(int studentId,String ClassId) async {
     final response = await http.post(
       Uri.parse('${Res.host}/proschool/giveme_all_calendar'),
       headers: {'Content-Type': 'application/json'},
@@ -112,8 +112,8 @@ class ApiServiceMyChildren {
           "method": "call",
           "uid": false,
           "params": {
-            "class_id": "",
-            "choice": "",
+            "class_id": ClassId,
+            "choice": "thisweek",
             "student_id": studentId,
           }
         },
@@ -124,10 +124,10 @@ class ApiServiceMyChildren {
       final jsonData = jsonDecode(response.body);
 
       final bookData = jsonData['result'][0]["calendar"];
-      /* List<TimeTable> timetableList = bookData
+       List<TimeTable> timetableList = bookData
           .map<TimeTable>((data) => TimeTable.fromJson(data))
-          .toList();*/
-      return [];
+          .toList();
+      return timetableList;
     } else {
       throw Exception('Failed to fetch books');
     }

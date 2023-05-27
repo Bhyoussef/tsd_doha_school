@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
@@ -129,17 +130,23 @@ Widget _buildCircleAvatar(dynamic image) {
     try {
       final decodedImage = base64Decode(image.toString());
       final imageBytes = Uint8List.fromList(decodedImage);
-      return CircleAvatar(
-        backgroundImage: MemoryImage(imageBytes),
-        radius: 30.0,
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CircleAvatar(
+          backgroundImage: MemoryImage(imageBytes),
+          radius: 30.0,
+        ),
       );
     } catch (e) {
       print('Invalid image data: $e');
     }
   }
-  return const CircleAvatar(
-    backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
-    radius: 30.0,
+  return const Padding(
+    padding: EdgeInsets.all(8.0),
+    child: CircleAvatar(
+      backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
+      radius: 30.0,
+    ),
   );
 }
 

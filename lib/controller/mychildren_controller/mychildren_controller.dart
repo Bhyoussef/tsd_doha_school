@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:tunisian_school_doha/model/exersice_model.dart';
 import 'package:tunisian_school_doha/model/time_table_model.dart';
 import 'package:tunisian_school_doha/utils/shared_preferences.dart';
-import 'package:tunisian_school_doha/constant/constant.dart';
 import 'package:tunisian_school_doha/model/book_model.dart';
 import 'package:tunisian_school_doha/model/child_model.dart';
 import 'package:tunisian_school_doha/services/mychildren.dart';
@@ -13,6 +12,7 @@ class ChildrenController extends GetxController {
   final exersice = <Exersice>[].obs;
   final timetable = <TimeTable>[].obs;
   RxBool isLoading = false.obs;
+  ChildrenController get timetableController => this;
 
   @override
   void onInit() {
@@ -22,7 +22,7 @@ class ChildrenController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchChildren(uid) async {
+  fetchChildren(uid) async {
     try {
       isLoading(true);
       final childrenList = await ApiServiceMyChildren.getChildren(uid);
@@ -33,7 +33,7 @@ class ChildrenController extends GetxController {
     }
   }
 
-  Future<void> fetchBooksStudents(int studentId) async {
+  fetchBooksStudents(int studentId) async {
     try {
       isLoading(true);
       final fetchedBooks = await ApiServiceMyChildren.fetchBooks(studentId);
@@ -44,11 +44,11 @@ class ChildrenController extends GetxController {
     }
   }
 
-  Future<void> fetchExerciseStudent(int studentId) async {
+  fetchExerciseStudent(int studentId) async {
     try {
       isLoading(true);
-      final fetchedExercise = await ApiServiceMyChildren.fetchExercise(
-        studentId);
+      final fetchedExercise =
+          await ApiServiceMyChildren.fetchExercise(studentId);
       exersice.assignAll(fetchedExercise);
       update();
     } finally {
@@ -56,10 +56,11 @@ class ChildrenController extends GetxController {
     }
   }
 
-  Future<void> fetchTiemTableStudent(int studentId) async {
+  fetchTiemTableStudent(int studentId, String ClassId) async {
     try {
       isLoading(true);
-      final fetchedtimetable = await ApiServiceMyChildren.fetchTimeTable(studentId);
+      final fetchedtimetable =
+          await ApiServiceMyChildren.fetchTimeTable(studentId, ClassId);
       timetable.assignAll(fetchedtimetable);
       update();
     } finally {
