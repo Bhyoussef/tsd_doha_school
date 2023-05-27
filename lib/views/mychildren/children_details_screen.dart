@@ -23,12 +23,7 @@ class DetailScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: primarycolor,
-        leading: GestureDetector(
-            onTap: (){
-              Get.back();
-            },
-            child: const Icon(Icons.arrow_back_ios,)),
+        backgroundColor: Colors.transparent,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -40,7 +35,6 @@ class DetailScreen extends StatelessWidget {
           ),
         ],
       ),
-
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -53,27 +47,28 @@ class DetailScreen extends StatelessWidget {
                     width: double.infinity,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 60),
-                          child: _buildCircleAvatar(student.image),
-                        ),
+                        _buildCircleAvatar(student.image),
                         const SizedBox(height: 8.0),
                         Text(
                           '${student.name ?? ''} ${student.lastName ?? ''}',
-                          style: const TextStyle(fontSize: 20, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white),
                         ),
                         const SizedBox(height: 4.0),
                         Text(
                           '${student.nameAr ?? ''} ${student.lastNameAr ?? ''}',
-                          style: const TextStyle(fontSize: 16, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.white),
                         ),
                         const SizedBox(height: 4.0),
                         Text(
                           student.academicYear.toString(),
-                          style: const TextStyle(fontSize: 16, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.white),
                         ),
                         GestureDetector(
-                          onTap: () => _showQrImageDialog(context, student.ref!),
+                          onTap: () =>
+                              _showQrImageDialog(context, student.ref!),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: QrImageView(
@@ -88,8 +83,8 @@ class DetailScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 20),
                           child: Text(
                             student.ref.toString(),
-                            style:
-                                const TextStyle(fontSize: 16, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ],
@@ -114,7 +109,8 @@ class DetailScreen extends StatelessWidget {
                               context, 'Discipline', navigateToDisciplinePage),
                           _buildGridItem(
                               context, 'Time Tables', navigateToTimeTablePage),
-                          _buildGridItem(context, 'GradeBook', navigateToBookPage),
+                          _buildGridItem(
+                              context, 'GradeBook', navigateToBookPage),
                           _buildGridItem(
                               context, 'Recording', navigateToRecordingPage),
                         ],
@@ -124,7 +120,7 @@ class DetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-        /*    Positioned(
+            /*    Positioned(
               top: 16.0,
               left: 16.0,
               child: IconButton(
@@ -142,7 +138,7 @@ class DetailScreen extends StatelessWidget {
   ImageProvider<Object> _getImageForTitle(String title) {
     switch (title.toLowerCase()) {
       case 'exercises':
-        return  const AssetImage('assets/imgs/bulletin.jpg');
+        return const AssetImage('assets/imgs/bulletin.jpg');
       case 'payments':
         return const AssetImage('assets/imgs/paymen.png');
       case 'discipline':
@@ -221,7 +217,8 @@ class DetailScreen extends StatelessWidget {
   }
 
   void navigateToTimeTablePage() {
-    Get.to(() => TimeTableScreen(studentId: student.studentId!,student:student));
+    Get.to(
+        () => TimeTableScreen(studentId: student.studentId!, student: student));
   }
 }
 
