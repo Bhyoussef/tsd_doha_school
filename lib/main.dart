@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:tunisian_school_doha/routes/routes.dart';
-import 'package:tunisian_school_doha/theme/app_theme.dart';
-import 'package:tunisian_school_doha/utils/shared_preferences.dart';
 import 'languages/translation.dart';
+import 'routes/routes.dart';
+import 'theme/app_theme.dart';
+import 'utils/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

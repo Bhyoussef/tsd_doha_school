@@ -194,6 +194,8 @@ class MainScreen extends StatelessWidget {
 class LogoutDialog extends StatelessWidget {
   final AuthController _authController = Get.find();
 
+   LogoutDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

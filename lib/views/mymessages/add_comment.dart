@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
-
 import '../../controller/message_controller/message_received_controller.dart';
+import '../../theme/app_colors.dart';
 
 class AddCommentPage extends StatefulWidget {
   const AddCommentPage({super.key});

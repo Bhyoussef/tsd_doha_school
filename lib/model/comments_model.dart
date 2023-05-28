@@ -1,6 +1,6 @@
 import 'attachement_model.dart';
 
-class MessageDetail {
+class Comment {
   String? body;
   String? recordName;
   List<int>? voteUserIds;
@@ -14,7 +14,7 @@ class MessageDetail {
   int? resId;
   List<Attachment>? attachments;
 
-  MessageDetail({
+  Comment({
     this.body,
     this.recordName,
     this.voteUserIds,
@@ -29,7 +29,7 @@ class MessageDetail {
     this.attachments,
   });
 
-  MessageDetail.fromJson(Map<String, dynamic> json) {
+  Comment.fromJson(Map<String, dynamic> json) {
     body = json['body'];
     recordName = json['record_name'];
     voteUserIds = json['vote_user_ids'].cast<int>();

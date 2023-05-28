@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tunisian_school_doha/model/child_model.dart';
+import '../../../model/child_model.dart';
 
 class ChildCardWidget extends StatelessWidget {
   final Mychildreen student;

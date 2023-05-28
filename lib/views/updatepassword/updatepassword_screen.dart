@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
+import '../../theme/app_colors.dart';
 import 'widget/password_field_widget.dart';
 import '../../controller/auth_controller/updatepassword_controller.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../../model/payment_model.dart';
 import '../details_payments_parent/details_payment_paid_parents.dart';
 import '../details_payments_parent/details_unpaid_payments_parents.dart';
@@ -36,7 +35,7 @@ class PaymentListItem extends StatelessWidget {
                 trailing: const Icon(Icons.payment,color: Colors.green,),
 
                   onTap: () {
-                    Get.to(() =>  DetailPaymentsPaidParents());
+                    Get.to(() =>  const DetailPaymentsPaidParents());
                   },
 
               ),
@@ -45,7 +44,7 @@ class PaymentListItem extends StatelessWidget {
                 subtitle:Text(paymentTotal.totUnpaid.toString()) ,
                 trailing: const Icon(Icons.payment,color: Colors.red,),
                 onTap: () {
-                  Get.to(() =>  DetailPaymentsUnpaidParents());
+                  Get.to(() =>  const DetailPaymentsUnpaidParents());
                 },
               ),
             ],

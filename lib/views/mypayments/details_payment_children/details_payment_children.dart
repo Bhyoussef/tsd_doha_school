@@ -7,7 +7,7 @@ import '../../../theme/app_colors.dart';
 
 class TotalPaymentsChildren extends StatefulWidget {
   final Mychildreen student;
-    TotalPaymentsChildren({Key? key, required this.student}) : super(key: key);
+    const TotalPaymentsChildren({Key? key, required this.student}) : super(key: key);
 
   @override
   State<TotalPaymentsChildren> createState() => _TotalPaymentsChildrenState();

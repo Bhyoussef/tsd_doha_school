@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
           case DrawerOption.MyChildren:
             return MyChildrenScreen();
           case DrawerOption.MyMessages:
-            return MessagesScreen();
+            return const MessagesScreen();
           case DrawerOption.MyPayments:
             return MyPaymentsScreen();
           case DrawerOption.About:

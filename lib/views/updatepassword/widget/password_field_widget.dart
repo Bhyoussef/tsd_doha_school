@@ -5,7 +5,7 @@ class PasswordFormField extends StatelessWidget {
   final String labelText;
   final FormFieldValidator<String>? validator;
 
-  const PasswordFormField({
+  const PasswordFormField({super.key,
     required this.controller,
     required this.labelText,
     this.validator,

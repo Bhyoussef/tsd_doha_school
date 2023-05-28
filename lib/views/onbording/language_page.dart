@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/views/onbording/widget/topandbuttomwrapper.dart';
 import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/shared_preferences.dart';
+import 'widget/topandbuttomwrapper.dart';
 
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({Key? key}) : super(key: key);

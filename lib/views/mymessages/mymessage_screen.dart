@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../model/message_model.dart';
 import '../../model/message_sent_model.dart';
+import '../../theme/app_colors.dart';
 import '../sendmessage/sendmessage_screen.dart';
 import 'details_message.dart';
 import 'message_sent_details.dart';
@@ -86,7 +86,7 @@ class _MessagesScreenState extends State<MessagesScreen>
           return  Center(
             child: CircularProgressIndicator(color: primarycolor,),
           );
-        } else if (controller.receivedmessage.isEmpty) {
+        } else if (controller.receivedMessage.isEmpty) {
           return const Center(
             child: Text('No received messages'),
           );
@@ -94,9 +94,9 @@ class _MessagesScreenState extends State<MessagesScreen>
           return Padding(
             padding: const EdgeInsets.all(6.0),
             child: ListView.builder(
-              itemCount: controller.receivedmessage.length,
+              itemCount: controller.receivedMessage.length,
               itemBuilder: (context, index) {
-                Message message = controller.receivedmessage[index];
+                Message message = controller.receivedMessage[index];
                 return GestureDetector(
                   onTap: () {
                     if (message.state != 'read') {

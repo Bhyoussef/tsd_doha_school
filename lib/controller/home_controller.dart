@@ -1,9 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/model/auth_model.dart';
-import 'package:tunisian_school_doha/utils/shared_preferences.dart';
+
+import '../model/auth_model.dart';
+import '../utils/shared_preferences.dart';
+
 
 enum DrawerOption {
   MyChildren,

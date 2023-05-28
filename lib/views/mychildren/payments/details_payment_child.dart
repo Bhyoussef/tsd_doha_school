@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/model/child_model.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
+import '../../../model/child_model.dart';
 import '../../../model/payment_details_model.dart';
 import '../../../model/payment_model.dart';
 import '../../../theme/app_colors.dart';
@@ -30,7 +29,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
     super.initState();
 
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       paymentController.fetchingTotalPaymentsStudents(widget.studentId);
     });
 
@@ -340,7 +339,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       });
     });
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchingTotalInPaidDetailsStudent(widget.student.studentId!);
     });
   }

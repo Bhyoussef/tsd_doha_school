@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/controller/mychildren_controller/dowload_file_controller.dart';
 import 'controller/message_controller/message_sent_controller.dart';
 import 'controller/message_controller/send_message_controller.dart';
 import 'controller/drawer_controller.dart';
@@ -7,6 +6,7 @@ import 'controller/home_controller.dart';
 import 'controller/language_controller/language_controller.dart';
 import 'controller/auth_controller/login_controller.dart';
 import 'controller/message_controller/message_received_controller.dart';
+import 'controller/mychildren_controller/dowload_file_controller.dart';
 import 'controller/mychildren_controller/mychildren_controller.dart';
 import 'controller/auth_controller/password_rest_controller.dart';
 import 'controller/payment_controller/payments_controller.dart';

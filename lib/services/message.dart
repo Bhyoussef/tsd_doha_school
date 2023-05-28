@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../constant/constant.dart';
 import '../model/attachement_model.dart';
-import '../model/message_detail.dart';
+import '../model/comments_model.dart';
 import '../model/message_model.dart';
 import '../model/message_sent_model.dart';
 import '../model/send_message_model.dart';
@@ -147,7 +147,7 @@ class ApiServiceMessage {
     return null;
   }
 
-  static Future<List<MessageDetail>> getListComments(
+  static Future<List<Comment>> getListComments(
       int uid, int messageId) async {
     final response = await http.post(
       Uri.parse('${Res.host}/web/getComment'),
@@ -169,9 +169,9 @@ class ApiServiceMessage {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       final messagedetail = jsonResponse['result'];
-      List<MessageDetail> messageData = messagedetail
-          .map<MessageDetail>(
-            (data) => MessageDetail.fromJson(data),
+      List<Comment> messageData = messagedetail
+          .map<Comment>(
+            (data) => Comment.fromJson(data),
           )
           .toList();
       return messageData;

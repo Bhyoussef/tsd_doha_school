@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../controller/auth_controller/password_rest_controller.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/keyboard.dart';
-import 'login_screen.dart';
 import 'widget/BottomTextureOnly.dart';
 
 class PasswordRest extends StatelessWidget {

@@ -24,7 +24,7 @@ class _BookListScreenState extends State<BookListScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchBooksStudents(widget.studentId);
     });
   }

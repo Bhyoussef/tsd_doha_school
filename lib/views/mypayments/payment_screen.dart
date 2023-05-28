@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -122,7 +123,7 @@ class PaymentScreen extends StatelessWidget {
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(color: Colors.transparent),
+                    side: const BorderSide(color: Colors.transparent),
                   ),
                   clipBehavior: Clip.hardEdge,
                   child: Stack(
@@ -130,7 +131,7 @@ class PaymentScreen extends StatelessWidget {
                       Positioned.fill(
                         bottom: 0,
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.deepPurpleAccent,
@@ -141,7 +142,7 @@ class PaymentScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           children:  [
                             Row(
@@ -206,7 +207,9 @@ class PaymentScreen extends StatelessWidget {
     final int amountdeb = amountdebit.toInt();
     String url =
         'https://payment.tsdoha.com/sts/checkout?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amountdeb&$lines';
-    print(url);
+    if (kDebugMode) {
+      print(url);
+    }
     String encodedUrl = Uri.encodeFull(url);
     Navigator.push(
       context,

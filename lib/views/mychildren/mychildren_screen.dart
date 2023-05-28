@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/controller/mychildren_controller/mychildren_controller.dart';
+import '../../controller/mychildren_controller/mychildren_controller.dart';
 import 'children_details_screen.dart';
 import 'widget/child_card_widget.dart';
 

@@ -12,11 +12,11 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController _authController = Get.put(AuthController());
+    final AuthController authController = Get.put(AuthController());
     final size = MediaQuery.of(context).size;
-    final _formKey = GlobalKey<FormState>();
-    final _loginController = TextEditingController(text: '27178800234');
-    final _passwordController = TextEditingController(text: '1234');
+    final formKey = GlobalKey<FormState>();
+    final loginController = TextEditingController(text: '27178800234');
+    final passwordController = TextEditingController(text: '1234');
 
     return Scaffold(
       body: GestureDetector(
@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
         child: Container(
           color: Colors.white,
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: [
                 Expanded(
@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                                   children: [
                                     const SizedBox(height: 50),
                                     LoginTextField(
-                                      controller: _loginController,
+                                      controller: loginController,
                                       labelText: 'parent_id'.tr,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
@@ -57,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 18),
                                     LoginTextField(
-                                      controller: _passwordController,
+                                      controller: passwordController,
                                       labelText: 'password'.tr,
                                       obscureText: true,
                                       validator: (value) {
@@ -75,10 +75,10 @@ class LoginScreen extends StatelessWidget {
                                       color: primarycolor,
                                       textColor: Colors.white,
                                       onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          _authController.authenticateUser(
-                                            _loginController.text,
-                                            _passwordController.text,
+                                        if (formKey.currentState!.validate()) {
+                                          authController.authenticateUser(
+                                            loginController.text,
+                                            passwordController.text,
                                           );
                                         }
                                       },
@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                                       ),
                                     ),
                                     const SizedBox(height: 20),
-                                    Obx(() => _authController.isLoading.value
+                                    Obx(() => authController.isLoading.value
                                         ?  CircularProgressIndicator(color: primarycolor,)
                                         : Container()),
                                   ],
