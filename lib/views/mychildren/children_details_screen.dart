@@ -109,17 +109,17 @@ class DetailScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         children: [
                           _buildGridItem(
-                              context, 'Exercises', navigateToExercisePage),
+                              context, 'exercises', navigateToExercisePage),
                           _buildGridItem(
-                              context, 'Payments', navigateToPaymentPage),
+                              context, 'payments', navigateToPaymentPage),
                           _buildGridItem(
-                              context, 'Discipline', navigateToDisciplinePage),
+                              context, 'discipline', navigateToDisciplinePage),
                           _buildGridItem(
-                              context, 'Time Tables', navigateToTimeTablePage),
+                              context, 'timetable', navigateToTimeTablePage),
                           _buildGridItem(
-                              context, 'GradeBook', navigateToBookPage),
+                              context, 'gradebook', navigateToBookPage),
                           _buildGridItem(
-                              context, 'Recording', navigateToRecordingPage),
+                              context, 'recording', navigateToRecordingPage),
                         ],
                       ),
                     ),
@@ -150,7 +150,7 @@ class DetailScreen extends StatelessWidget {
         return const AssetImage('assets/imgs/paymen.png');
       case 'discipline':
         return const AssetImage('assets/imgs/discipline.png');
-      case 'time tables':
+      case 'timetable':
         return const AssetImage('assets/imgs/elearn.png');
       case 'gradebook':
         return const AssetImage('assets/imgs/course-icon.jpg');
@@ -162,10 +162,12 @@ class DetailScreen extends StatelessWidget {
   }
 
   Widget _buildGridItem(
-    BuildContext context,
-    String title,
-    VoidCallback navigateCallback,
-  ) {
+      BuildContext context,
+      String title,
+      VoidCallback navigateCallback,
+      ) {
+    final translatedTitle = title.tr;
+
     return GestureDetector(
       onTap: navigateCallback,
       child: Container(
@@ -173,7 +175,7 @@ class DetailScreen extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(0.0),
           boxShadow:const  [
-             BoxShadow(
+            BoxShadow(
               color: Colors.black12,
               blurRadius: 10,
               offset: Offset(0, 5),
@@ -191,7 +193,7 @@ class DetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8.0),
             Text(
-              title,
+              translatedTitle,
               style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           ],
@@ -199,6 +201,7 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
+
 
   void navigateToRecordingPage() {
     Get.to(() => const RecordingScreen());
@@ -246,7 +249,7 @@ Widget _buildCircleAvatar(dynamic image) {
   }
   return const CircleAvatar(
     backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
-    radius: 30.0,
+    radius: 40.0,
   );
 }
 

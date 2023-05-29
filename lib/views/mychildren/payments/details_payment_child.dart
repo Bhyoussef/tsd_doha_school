@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/child_model.dart';
 import '../../../model/payment_details_model.dart';
@@ -49,9 +50,9 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: primarycolor,
-        title: const Text(
-          'Payment',
-          style: TextStyle(color: CupertinoColors.white),
+        title:  Text(
+          'mypayments'.tr,
+          style: TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
         ),
       ),
       body: Obx(() {
@@ -59,7 +60,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
 
         if (controller.isLoading.value) {
           return Center(
-            child: CircularProgressIndicator(
+            child: CircularProgressBar(
               color: primarycolor,
             ),
           );
@@ -68,7 +69,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('assets/imgs/notfound.png'),
-              const Text('No payments history found'),
+              Text('nopayments'.tr),
             ],
           );
         }else {
@@ -110,6 +111,8 @@ class ChildCardPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
@@ -129,7 +132,7 @@ class ChildCardPayment extends StatelessWidget {
           _buildCircleAvatar(student.image),
           const SizedBox(width: 10),
           Text(
-            '${student.name ?? ''} ${student.lastName ?? ''}',
+            isArabic?'${student.nameAr ?? ''} ${student.lastNameAr ?? ''}': '${student.name ?? ''} ${student.lastName ?? ''}',
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -192,7 +195,7 @@ class PaymentListItem extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              title: const Text('Total Paid'),
+              title:  Text('totalpaid'.tr),
               subtitle: Text('${paymentTotal.totPaid.toString()} ${paymentTotal.currency}'),
               trailing: const Icon(
                 Icons.payment,
@@ -206,7 +209,7 @@ class PaymentListItem extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-              title: const Text('Total Inpaid'),
+              title:  Text('totalunpaid'.tr),
               subtitle: Text('${paymentTotal.totUnpaid.toString()} ${paymentTotal.currency}'),
               trailing: const Icon(
                 Icons.payment,
@@ -256,9 +259,9 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
           centerTitle: true,
           elevation: 0,
           backgroundColor: primarycolor,
-          title: const Text(
-            'Total Paid',
-            style: TextStyle(
+          title:  Text(
+            'totalpaid'.tr,
+            style:const TextStyle(
               color: CupertinoColors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -268,7 +271,7 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
           () {
             if (paymentController.isLoading.value) {
               return  Center(
-                child: CircularProgressIndicator(color: primarycolor,),
+                child: CircularProgressBar(color: primarycolor,),
               );
             } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
               return const Center(
@@ -363,9 +366,9 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: primarycolor,
-        title: const Text(
-          'My payments',
-          style: TextStyle(
+        title:  Text(
+          'totalunpaid'.tr,
+          style: const TextStyle(
             color: CupertinoColors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -376,7 +379,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
           () {
             if (controller.isLoading.value) {
               return  Center(
-                child: CircularProgressIndicator(color: primarycolor,),
+                child: CircularProgressBar(color: primarycolor,),
               );
             } else {
               return ListView.builder(
@@ -408,8 +411,8 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Price Unit: ${paidDetail.priceUnit} ${paidDetail.currency}'),
-                          Text('Year: ${paidDetail.year}'),
+                          Text('${paidDetail.priceUnit} ${paidDetail.currency}'),
+                          Text('${paidDetail.year}'),
                         ],
                       ),
                       trailing: CupertinoSwitch(
@@ -448,7 +451,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
           }
         },
         child: Text(
-          totalAmount == 0.0 ? 'Select items' : 'Pay  $totalAmount QAR',
+          totalAmount == 0.0 ? 'select'.tr : '${'pay'.tr} $totalAmount QAR',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),

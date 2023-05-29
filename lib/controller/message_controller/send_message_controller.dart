@@ -92,7 +92,6 @@ class SendMessageController extends GetxController {
       final attachmentController = TextEditingController(text: attachmentPath);
       attachmentControllers.add(attachmentController);
       attachmentController.addListener(() {
-        // Remove attachment controller if the text is empty (attachment is cleared)
         if (attachmentController.text.isEmpty) {
           removeAttachment(attachmentControllers.indexOf(attachmentController));
         }

@@ -73,7 +73,7 @@ class ApiServiceMessage {
         {
           "jsonrpc": "2.0",
           "method": "call",
-          "uid": "6523",
+          "uid": uid,
           "params": {"id": messageId}
         },
       ),
@@ -181,7 +181,7 @@ class ApiServiceMessage {
   }
 
   static Future<String?> addComments(
-      int uid, String body, int studentId,String attachementPath) async {
+      int uid, String body, String studentId,String attachementPath) async {
     final response = await http.post(
       Uri.parse('${Res.host}/web/commantedPost'),
       headers: {"Content-Type": "application/json"},

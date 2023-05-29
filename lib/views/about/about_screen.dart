@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -35,18 +36,18 @@ class AboutScreen extends StatelessWidget {
                 onTap: () {
                   launch('https://proosoftcloud.com/');
                 },
-                child: const ListTile(
-                  leading: Icon(Icons.language),
-                  title: Text('Website'),
+                child:  ListTile(
+                  leading: const Icon(Icons.language),
+                  title: Text('website'.tr),
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   launch('info@proosoft.com');
                 },
-                child: const ListTile(
-                  leading: Icon(Icons.email),
-                  title: Text('Email'),
+                child:  ListTile(
+                  leading: const Icon(Icons.email),
+                  title: Text('email'.tr),
                 ),
               ),
               GestureDetector(
@@ -54,9 +55,9 @@ class AboutScreen extends StatelessWidget {
                   launch(
                       'https://www.facebook.com/Proo-School-Erp-102552524734673/');
                 },
-                child: const ListTile(
-                  leading: Icon(Icons.facebook),
-                  title: Text('Facebook'),
+                child:  ListTile(
+                  leading: const Icon(Icons.facebook),
+                  title: Text('facebook'.tr),
                 ),
               ),
             ],

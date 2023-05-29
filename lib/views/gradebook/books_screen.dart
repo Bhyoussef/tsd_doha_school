@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../model/book_model.dart';
@@ -42,7 +43,7 @@ class _BookListScreenState extends State<BookListScreen> {
           },
         ),
         backgroundColor: primarycolor,
-        title:  const  Text('Books',style:  TextStyle(
+        title:    Text('gradebook'.tr,style: const  TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
         actions: [
@@ -63,25 +64,22 @@ class _BookListScreenState extends State<BookListScreen> {
 
             if (bookController.isLoading.value) {
               return  Center(
-                child: CircularProgressIndicator(color: primarycolor,),
+                child: CircularProgressBar(color: primarycolor,),
               );
             } else if (bookController.books.isEmpty) {
               return const Center(
-                child: Text('No books found.'),
+                child: Text('nogradebooks.tr'),
               );
             } else {
               return Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(8.0),
                 child: ListView.builder(
                   itemCount: bookController.books.length,
                   itemBuilder: (context, index) {
                     final book = bookController.books[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BookCard(
-                        book: book,
-                        downloadController: downloadcontroller,
-                      ),
+                    return BookCard(
+                      book: book,
+                      downloadController: downloadcontroller,
                     );
                   },
                 ),

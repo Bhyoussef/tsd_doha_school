@@ -7,7 +7,7 @@ class LoginTextField extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
 
-  const LoginTextField({
+  const LoginTextField({super.key,
      this.controller,
      this.labelText,
     this.obscureText = false,

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../../model/child_model.dart';
 
 class ChildCardPayment extends StatelessWidget {
@@ -11,6 +13,8 @@ class ChildCardPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -33,10 +37,9 @@ class ChildCardPayment extends StatelessWidget {
             const SizedBox(width: 10),
           Expanded(
             child: Container(
-
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                '${student.name ?? ''} ${student.lastName ?? ''}',
+                isArabic?'${student.nameAr ?? ''} ${student.lastNameAr ?? ''}':'${student.name ?? ''} ${student.lastName ?? ''}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

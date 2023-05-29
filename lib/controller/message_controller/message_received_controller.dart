@@ -109,13 +109,12 @@ class MessageReceivedController extends GetxController {
     final base64Image = base64Encode(bytes);
     final imagePath = base64Image.split(',')[1];
     final selectedImgName = imagePath.split('/').last;
-    // Do something with the base64Image and selectedImgName
     attachmentController.value.text = selectedImgName;
   }
 
 
   Future<String?> addComment(
-      int uid, String body, int studentId,String attachementPath
+      int uid, String body, String studentId,String attachementPath
       ) async {
     try {
       isLoading(true);

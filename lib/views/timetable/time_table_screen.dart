@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../model/child_model.dart';
 import '../../model/time_table_model.dart';
@@ -48,9 +49,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
             Get.back();
           },
         ),
-        title: const Text(
-          'Time Table',
-          style: TextStyle(
+        title:  Text(
+          'timetable'.tr,
+          style: const TextStyle(
             color: CupertinoColors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -70,14 +71,14 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
         () {
           if (controller.isLoading.value) {
             return  Center(
-              child: CircularProgressIndicator(color: primarycolor,),
+              child: CircularProgressBar(color: primarycolor,),
             );
           } else if (controller.timetable.isEmpty) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset('assets/imgs/notfound.png'),
-                const Text('No Time Table Found'),
+                 Text('No Time Table Found'),
               ],
             );
           } else {
@@ -172,64 +173,61 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   }
 
   Widget _buildTimetableEntry(TimeTable timetableEntry) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, 5),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: primarycolor,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '${timetableEntry.startTime ?? ''} - ${timetableEntry.endTime ?? ''}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  timetableEntry.day ?? '',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  timetableEntry.teacher ?? '',
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  timetableEntry.subject ?? '',
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    color: primarycolor,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '${timetableEntry.startTime ?? ''} - ${timetableEntry.endTime ?? ''}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    timetableEntry.day ?? '',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    timetableEntry.teacher ?? '',
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    timetableEntry.subject ?? '',
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
       ),
     );

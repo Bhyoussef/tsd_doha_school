@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../constant/constant.dart';
 import '../../model/child_model.dart';
 import '../../theme/app_colors.dart';
 import '../mychildren/payments/details_payment_child.dart';
@@ -41,9 +42,9 @@ class PaymentScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         backgroundColor: primarycolor,
-        title: const Text(
-          'Payment',
-          style: TextStyle(
+        title:  Text(
+          'mypayments'.tr,
+          style:const TextStyle(
             color: CupertinoColors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -87,12 +88,12 @@ class PaymentScreen extends StatelessWidget {
                           children: [
                              Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children:  [
                                 Text(
-                                  'Pay with Credit Card',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  'paywithcredit'.tr,
+                                  style:const TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.credit_card,
                                   size: 40,
                                   color: Colors.deepPurpleAccent,
@@ -147,12 +148,12 @@ class PaymentScreen extends StatelessWidget {
                           children: [
                              Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children:  [
                                 Text(
-                                  'Pay with Debit Card',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  'paywithdebit'.tr,
+                                  style:const TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Icon(
+                               const  Icon(
                                   Icons.credit_card,
                                   size: 40,
                                   color: Colors.deepPurpleAccent,
@@ -283,9 +284,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
           },
         ),
         backgroundColor: primarycolor,
-        title: const Text(
-          'Credit',
-          style: TextStyle(
+        title:  Text(
+          'payment'.tr,
+          style: const TextStyle(
             color: CupertinoColors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -319,7 +320,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
           ),
           if (_isLoading)
              Center(
-              child: CircularProgressIndicator(color: primarycolor,),
+              child: CircularProgressBar(color: primarycolor,),
             ),
         ],
       ),

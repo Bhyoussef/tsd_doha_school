@@ -41,9 +41,9 @@ class SendMessageScreen extends StatelessWidget {
             ),
           ),
         ],
-        title: const Text(
-          'Send Message',
-          style: TextStyle(
+        title:  Text(
+          'sendmessage'.tr,
+          style: const TextStyle(
               color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
         iconTheme: const IconThemeData(color: CupertinoColors.white),
@@ -116,9 +116,9 @@ class SendMessageScreen extends StatelessWidget {
                     );
                   });
                 },
-                child: const Text(
-                  'Send',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child:  Text(
+                  'send'.tr,
+                  style:const  TextStyle(fontWeight: FontWeight.bold,color: CupertinoColors.white),
                 ),
               ),
             ],
@@ -132,14 +132,14 @@ class SendMessageScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'To',
-          style: TextStyle(fontWeight: FontWeight.bold),
+         Text(
+          'to'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         Obx(() => RadioListTile<String>(
               activeColor: primarycolor,
-              title: const Text('Teacher'),
+              title:  Text('teacher'.tr),
               value: 'T',
               groupValue: controller.selectedTo.value,
               onChanged: (value) {
@@ -154,7 +154,7 @@ class SendMessageScreen extends StatelessWidget {
             )),
         Obx(() => RadioListTile<String>(
               activeColor: primarycolor,
-              title: const Text('Administrator'),
+              title:  Text('admin'.tr),
               value: 'A',
               groupValue: controller.selectedTo.value,
               onChanged: (value) {
@@ -206,8 +206,8 @@ class SendMessageScreen extends StatelessWidget {
                         ),
                       )
                       .toList(),
-                  decoration: const InputDecoration(
-                    labelText: 'Recipient',
+                  decoration:  InputDecoration(
+                    labelText: 'receiver'.tr,
                   ),
                   key: ValueKey(controller.selectedTo.value),
                 ),
@@ -223,8 +223,8 @@ class SendMessageScreen extends StatelessWidget {
       onChanged: (value) {
         controller.subject.value = value;
       },
-      decoration: const InputDecoration(
-        labelText: 'Subject',
+      decoration:  InputDecoration(
+        labelText: 'subject'.tr,
       ),
     );
   }
@@ -237,8 +237,8 @@ class SendMessageScreen extends StatelessWidget {
       },
       maxLines: 6,
       keyboardType: TextInputType.multiline,
-      decoration: const InputDecoration(
-        labelText: 'Message',
+      decoration:  InputDecoration(
+        labelText: 'message'.tr,
       ),
     );
   }
@@ -247,8 +247,8 @@ class SendMessageScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Attachments',
+         Text(
+          'attachemnts'.tr,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
@@ -297,9 +297,9 @@ class SendMessageScreen extends StatelessWidget {
       onPressed: () {
         controller.addAttachment();
       },
-      child: const Text(
-        'Add Attachment',
-        style: TextStyle(fontWeight: FontWeight.bold),
+      child:  Text(
+        'addattachment'.tr,
+        style:  const TextStyle(fontWeight: FontWeight.bold,color: CupertinoColors.white),
       ),
     );
   }

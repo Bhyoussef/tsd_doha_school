@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/model/exersice_model.dart';
 import 'package:tunisian_school_doha/model/time_table_model.dart';
@@ -61,6 +62,9 @@ class ChildrenController extends GetxController {
       isLoading(true);
       final fetchedtimetable = await ApiServiceMyChildren.fetchTimeTable(studentId,ClassId);
       timetable.assignAll(fetchedtimetable);
+      if (kDebugMode) {
+        print('here$fetchedtimetable');
+      }
       update();
     } finally {
       isLoading(false);

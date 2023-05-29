@@ -65,8 +65,8 @@ class ApiServiceAuth {
       final jsonResponse = jsonDecode(response.body);
       if (jsonResponse['result']['type'] == 'succes') {
         Get.snackbar(
-          'Success :',
-          'Your password has been successfully changed , Please login again ',
+          'connexion_success_title'.tr,
+          'passwordchange'.tr,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
@@ -75,8 +75,8 @@ class ApiServiceAuth {
         Get.off(() => LoginScreen());
       } else if (jsonResponse['result']['type'] == 'error') {
         Get.snackbar(
-          'Error :',
-          'The new password and its confirmation must be identical ',
+          'connexion_error',
+          'passwordidentical'.tr,
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
@@ -86,8 +86,8 @@ class ApiServiceAuth {
       return jsonResponse["result"]["res"];
     } else {
       Get.snackbar(
-        'Failed :',
-        'Failed To change your password ',
+        'connexion_error',
+        'passwordfailedchange'.tr,
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,

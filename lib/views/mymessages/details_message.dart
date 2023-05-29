@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../model/attachement_model.dart';
@@ -62,9 +63,9 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
             Get.back();
           },
         ),
-        title: const Text(
-          'Message Details',
-          style: TextStyle(
+        title:  Text(
+          'messagedetails'.tr,
+          style: const TextStyle(
             color: CupertinoColors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -107,7 +108,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Comments',
+                        'comments'.tr,
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,
@@ -137,9 +138,9 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
           ),
           primary: primarycolor,
         ),
-        child: const Text(
-          'Add Comment',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        child:  Text(
+          'addcomment'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -286,9 +287,9 @@ class CommentCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Attachments:',
-                    style: TextStyle(
+                   Text(
+                    'attachemnts'.tr,
+                    style:const  TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16.0,
                     ),
@@ -296,7 +297,7 @@ class CommentCard extends StatelessWidget {
                   const SizedBox(height: 8.0),
                   Obx(() {
                     if (controller.isLoading.value) {
-                      return CircularProgressIndicator(color: primarycolor);
+                      return CircularProgressBar(color: primarycolor);
                     } else {
                       return Wrap(
                         spacing: 8.0,
@@ -478,6 +479,8 @@ class MessageCardReceived extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Container(
@@ -544,9 +547,9 @@ class MessageCardReceived extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Attachments:',
-                          style: TextStyle(
+                         Text(
+                          'attachemnts'.tr,
+                          style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
                           ),
@@ -603,7 +606,18 @@ class MessageCardReceived extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(
+            isArabic==true?Positioned(
+              top: 8.0,
+              left: 8.0,
+              child: Container(
+                width: 12.0,
+                height: 12.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isRead =='read'  ? Colors.green : Colors.red,
+                ),
+              ),
+            ): Positioned(
               top: 8.0,
               right: 8.0,
               child: Container(
@@ -615,7 +629,11 @@ class MessageCardReceived extends StatelessWidget {
                 ),
               ),
             ),
-            isAttached ? Container() : const Positioned(
+            isAttached ? Container() : isArabic==true?const Positioned(
+              top: 8.0,
+              left: 25.0,
+              child: Icon(Icons.attach_file,),
+            ): const Positioned(
               top: 8.0,
               right: 25.0,
               child: Icon(Icons.attach_file,),

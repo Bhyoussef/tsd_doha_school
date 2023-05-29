@@ -2,7 +2,7 @@ class TimeTable {
   String? salle;
   String? academicYear;
   String? group;
-  bool? observation;
+  String? observation;
   String? companyName;
   String? startTime;
   String? period;

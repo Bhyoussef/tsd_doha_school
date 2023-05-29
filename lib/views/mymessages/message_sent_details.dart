@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../model/message_sent_model.dart';
 import '../../model/send_message_model.dart';
 import '../../theme/app_colors.dart';
+import '../../utils/shared_preferences.dart';
 
 class MessageSentDetails extends StatefulWidget {
   final MessageSent message;
@@ -17,11 +19,21 @@ class MessageSentDetails extends StatefulWidget {
 class _MessageSentDetailsState extends State<MessageSentDetails> {
   final MesaageSentController controller = Get.find<MesaageSentController>();
 
+
+  int uid=0;
   @override
   void initState() {
     super.initState();
+    _fetchUid();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.getsentmessagedetails(6523, widget.message.id!);
+      controller.getsentmessagedetails(uid, widget.message.id!);
+    });
+  }
+  Future<void> _fetchUid() async {
+    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    setState(() {
+      uid = fetchedUid;
+      print(uid);
     });
   }
 
@@ -29,11 +41,20 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: CupertinoColors.white,
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         centerTitle: true,
         backgroundColor: primarycolor,
-        title: const Text(
-          'Message Details',
-          style: TextStyle(
+        title:  Text(
+          'messagedetails'.tr,
+          style: const TextStyle(
               color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -52,7 +73,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
         () {
           if (controller.isLoading.value) {
             return Center(
-              child: CircularProgressIndicator(
+              child: CircularProgressBar(
                 color: primarycolor,
               ),
             );

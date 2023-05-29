@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../theme/app_colors.dart';
 
@@ -37,7 +38,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
           },
         ),
         backgroundColor: primarycolor,
-        title: const Text('Exercise ',style: TextStyle(
+        title:  Text('exercises'.tr,style: const  TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold),),
         actions: [
           Padding(
@@ -57,14 +58,14 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
 
             if (exerciseController.isLoading.value) {
               return Center(
-                child: CircularProgressIndicator(color: primarycolor),
+                child: CircularProgressBar(color: primarycolor),
               );
             } else if (exerciseController.exersice.isEmpty) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/imgs/notfound.png'),
-                  const Text('No Exercise Found'),
+                   Text('noexercise'.tr),
                 ],
               );
             } else {

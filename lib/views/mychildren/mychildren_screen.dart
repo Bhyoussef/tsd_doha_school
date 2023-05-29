@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/controller/mychildren_controller/mychildren_controller.dart';
+import 'package:tunisian_school_doha/theme/app_colors.dart';
+import '../../constant/constant.dart';
 import 'children_details_screen.dart';
 import 'widget/child_card_widget.dart';
 
@@ -18,8 +20,13 @@ class MyChildrenScreen extends StatelessWidget {
           child: Obx(
             () {
               if (controller.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return  Center(
+                  child: CircularProgressBar(
+
+                    color: primarycolor,
+
+                  )
+                  ,
                 );
               } else {
                 return ListView.builder(

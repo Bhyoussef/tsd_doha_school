@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../theme/app_colors.dart';
 
@@ -28,9 +29,9 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
               Get.back();
             },
           ),
-          title: const Text(
-            'Total Paid',
-            style: TextStyle(color: CupertinoColors.white,
+          title:  Text(
+            'totalpaid'.tr,
+            style: const TextStyle(color: CupertinoColors.white,
                 fontWeight: FontWeight.bold),
           ),
           actions: [
@@ -48,7 +49,7 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
           child: Obx(
             () {
               if (controller.isLoading.value) {
-                return  Center(child: CircularProgressIndicator(color: primarycolor,));
+                return  Center(child: CircularProgressBar(color: primarycolor,));
               } else {
                 return ListView.builder(
                   itemCount: controller.totalpaiddetailsparents.length,
@@ -76,20 +77,20 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
 
                             Text(
                               paidDetail.period.toString(),
-                              style: const TextStyle(
+                              style: const  TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
 
                             Text(
-                              'Price Unit: ${paidDetail.priceUnit}  ${paidDetail.currency}',
+                              ' ${paidDetail.priceUnit} ${paidDetail.currency}',
                             ),
 
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
-                                'Year: ${paidDetail.year}',
+                                ' ${paidDetail.year}',
                               ),
                             ),
                           ],

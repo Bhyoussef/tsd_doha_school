@@ -20,7 +20,7 @@ class DiciplineScreen extends StatelessWidget {
           },
         ),
         backgroundColor: primarycolor,
-        title: const Text('Dicipline',style: TextStyle(
+        title:   Text('discipline'.tr,style:const TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
         actions: [

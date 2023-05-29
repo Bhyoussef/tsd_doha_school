@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/theme/app_colors.dart';
 
+import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 
 
@@ -32,7 +33,7 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
               Get.back();
             },
           ),
-          title: const Text('Total Unpaid',style: TextStyle(
+          title:  Text('totalunpaid'.tr,style: const TextStyle(
               color: CupertinoColors.white,fontWeight: FontWeight.bold
           ),),
           actions: [
@@ -52,7 +53,7 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
             child: Obx(
                   () {
                 if (controller.isLoading.value) {
-                  return  Center(child: CircularProgressIndicator(
+                  return  Center(child: CircularProgressBar(
                     color: primarycolor,
                   ));
                 } else {
@@ -61,45 +62,42 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
                     itemBuilder: (context, index) {
                       final paidDetail = controller.totalinpaiddetailsparents[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(0.0),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 10,
-                                offset: Offset(0, 5),
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(0.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                paidDetail.period.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              Text(
+                                ' ${paidDetail.priceUnit} ${paidDetail.currency}',
+                              ),
+
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  ' ${paidDetail.year}',
+                                ),
                               ),
                             ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  paidDetail.period.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                Text(
-                                  'Price Unit: ${paidDetail.priceUnit} ${paidDetail.currency}',
-                                ),
-
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    'Year: ${paidDetail.year}',
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       );

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../controller/mychildren_controller/dowload_file_controller.dart';
@@ -84,7 +85,7 @@ class _MessagesScreenState extends State<MessagesScreen>
       builder: (controller) {
         if (controller.isLoading.value) {
           return  Center(
-            child: CircularProgressIndicator(color: primarycolor,),
+            child: CircularProgressBar(color: primarycolor,),
           );
         } else if (controller.receivedMessage.isEmpty) {
           return Column(
@@ -140,7 +141,7 @@ class _MessagesScreenState extends State<MessagesScreen>
       builder: (controller) {
         if (controller.isLoading.value) {
           return  Center(
-            child: CircularProgressIndicator(color: primarycolor,),
+            child: CircularProgressBar(color: primarycolor,),
           );
         } else if (controller.sentedmessage.isEmpty) {
           return Column(
@@ -206,6 +207,8 @@ class MessageCardReceived extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
     bool isMessageRead = isRead == 'read';
 
     return Container(
@@ -308,7 +311,18 @@ class MessageCardReceived extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
+          isArabic ==true?Positioned(
+            top: 8.0,
+            left: 8.0,
+            child: Container(
+              width: 12.0,
+              height: 12.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isMessageRead ? Colors.green : Colors.red,
+              ),
+            ),
+          ): Positioned(
             top: 8.0,
             right: 8.0,
             child: Container(
@@ -322,7 +336,11 @@ class MessageCardReceived extends StatelessWidget {
           ),
           isAttached
               ? Container()
-              : const Positioned(
+              : isArabic==true ?const Positioned(
+            top: 8.0,
+            left: 25.0,
+            child: Icon(Icons.attach_file),
+          ):const Positioned(
                   top: 8.0,
                   right: 25.0,
                   child: Icon(Icons.attach_file),

@@ -11,7 +11,7 @@ import '../../theme/app_colors.dart';
 class FileDownloadController extends GetxController {
 
   Future<void> downloadFile(
-      int parentId, String fileId, String fileName) async {
+      int uid, String fileId, String fileName) async {
     try {
       final response = await http.post(
         Uri.parse('${Res.host}/proschool/giveme_base64'),
@@ -19,7 +19,7 @@ class FileDownloadController extends GetxController {
         body: jsonEncode({
           "jsonrpc": "2.0",
           "method": "call",
-          "uid": parentId,
+          "uid": uid,
           "params": {
             "ID": fileId,
           },

@@ -21,7 +21,7 @@ class RecordingScreen extends StatelessWidget {
           },
         ),
         backgroundColor: primarycolor,
-        title: const  Text('Recording',style: TextStyle(
+        title:   Text('recording'.tr,style: const TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
         actions: [
@@ -40,7 +40,7 @@ class RecordingScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/imgs/notfound.png'),
-            const Text('No Records Found ')
+             Text('norecords'.tr)
           ],
         )
       ),

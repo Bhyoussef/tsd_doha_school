@@ -199,23 +199,23 @@ class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Log out'),
+      title:  Text('logout'.tr),
       content: Obx(
         () => _authController.isLoading.value
-            ? const CircularProgressIndicator()
-            : const Text('Are you sure you want to log out?'),
+            ?  CircularProgressIndicator(color: primarycolor,)
+            :  Text('areyousureyouwanttologout'.tr),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => Get.back(),
-          child: const Text('Cancel'),
+          child:  Text('cancel'.tr,style: TextStyle(color: primarycolor),),
         ),
         TextButton(
           onPressed: () {
             _authController.logout();
             Get.back();
           },
-          child: const Text('Log out'),
+          child:  Text('logout'.tr,style: TextStyle(color: primarycolor)),
         ),
       ],
     );

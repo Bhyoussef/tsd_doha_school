@@ -1,17 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../theme/app_colors.dart';
+import '../../utils/shared_preferences.dart';
 import 'widget/password_field_widget.dart';
 import '../../controller/auth_controller/updatepassword_controller.dart';
 
-class UpdatePasswordScreen extends StatelessWidget {
+class UpdatePasswordScreen extends StatefulWidget {
+  @override
+  State<UpdatePasswordScreen> createState() => _UpdatePasswordScreenState();
+}
+
+class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final PasswordChangeController _passwordChangeController =
   Get.put(PasswordChangeController());
 
   final _oldpassword = TextEditingController();
+
   final _newpassword = TextEditingController();
+
   final _confirmpassword = TextEditingController();
+
+   int uid =0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUid();
+
+  }
+
+  Future<void> _fetchUid() async {
+    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    setState(() {
+      uid = fetchedUid;
+      print(uid);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +93,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _passwordChangeController.updatePasswd(
+                          uid,
                           _oldpassword.text,
                           _newpassword.text,
                           _confirmpassword.text,
@@ -82,7 +110,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 32.0),
                 Obx(() => _passwordChangeController.isLoading.value
-                    ? const Center(child: CircularProgressIndicator())
+                    ?  Center(child: CircularProgressBar(color: primarycolor,))
                     : Container()),
               ],
             ),

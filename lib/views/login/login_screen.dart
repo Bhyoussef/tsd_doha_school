@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constant/constant.dart';
 import '../../controller/auth_controller/login_controller.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/keyboard.dart';
@@ -95,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 20),
                                     Obx(() => authController.isLoading.value
-                                        ?  CircularProgressIndicator(color: primarycolor,)
+                                        ?  CircularProgressBar(color: primarycolor,)
                                         : Container()),
                                   ],
                                 ),

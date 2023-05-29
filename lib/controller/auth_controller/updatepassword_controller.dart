@@ -6,12 +6,12 @@ class PasswordChangeController extends GetxController {
 
 
 
-  Future<String?> updatePasswd(
+  Future<String?> updatePasswd(int uid,
       String oldPassword, newPassword, confirmPassword) async {
     try {
       isLoading(true);
       await ApiServiceAuth.changePassword(
-          6523, oldPassword, newPassword, confirmPassword);
+          uid, oldPassword, newPassword, confirmPassword);
     } finally {
       isLoading(false);
     }

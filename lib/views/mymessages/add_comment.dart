@@ -33,9 +33,9 @@ class _AddCommentPageState extends State<AddCommentPage> {
         centerTitle: true,
         backgroundColor: primarycolor,
         automaticallyImplyLeading: false,
-        title: const Text(
-          'Add Comment',
-          style: TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
+        title:  Text(
+          'addcomment'.tr,
+          style: const TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -54,8 +54,8 @@ class _AddCommentPageState extends State<AddCommentPage> {
             TextField(
               controller: commentController,
               maxLines: 3,
-              decoration: const InputDecoration(
-                hintText: 'Enter your comment...',
+              decoration:  InputDecoration(
+                hintText: 'writeyourcomment'.tr,
               ),
             ),
             const SizedBox(height: 20),
@@ -69,11 +69,15 @@ class _AddCommentPageState extends State<AddCommentPage> {
               color: primarycolor,
               textColor: Colors.white,
               onPressed: () {
-                // Send comment logic
+               controller.addComment(
+                   6523,
+                   commentController.text,
+                   widget.message.iD.toString(),
+                   attachmentPath.value.toString());
               },
-              child: const Text(
-                'Send',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              child:  Text(
+                'send'.tr,
+                style:const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -87,9 +91,9 @@ class _AddCommentPageState extends State<AddCommentPage> {
           () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Attachments',
-            style: TextStyle(fontWeight: FontWeight.bold),
+           Text(
+            'attachemnts'.tr,
+            style:const  TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           if (attachmentPath.value.isNotEmpty)
@@ -125,9 +129,9 @@ class _AddCommentPageState extends State<AddCommentPage> {
       onPressed: () {
         showAttachmentSelectionDialog();
       },
-      child: const Text(
-        'Add Attachment',
-        style: TextStyle(fontWeight: FontWeight.bold),
+      child:  Text(
+        'addattachment'.tr,
+        style:const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

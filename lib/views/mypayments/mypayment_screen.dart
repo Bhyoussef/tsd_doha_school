@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tunisian_school_doha/theme/app_colors.dart';
+import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../controller/payment_controller/payments_controller.dart';
 import 'details_payment_children/details_payment_children.dart';
@@ -18,7 +19,7 @@ class MyPaymentsScreen extends StatelessWidget {
         builder: (controller) {
           if (controller.paymentsTotalparents.isEmpty) {
             return  Center(
-              child: CircularProgressIndicator(color: primarycolor,),
+              child: CircularProgressBar(color: primarycolor,),
             );
           }
           return Padding(
