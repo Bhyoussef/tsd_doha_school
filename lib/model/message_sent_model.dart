@@ -31,7 +31,7 @@ class MessageSent {
     date = json['date'];
     model = json['model'];
     id = json['id'];
-    uploadFile = json['upload_file'];
+    //uploadFile = json['upload_file'];
   }
 
   Map<String, dynamic> toJson() {

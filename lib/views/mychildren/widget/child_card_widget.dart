@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../model/child_model.dart';
+import 'package:tunisian_school_doha/model/child_model.dart';
 
 class ChildCardWidget extends StatelessWidget {
   final Mychildreen student;
@@ -10,8 +10,17 @@ class ChildCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(15),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           Padding(

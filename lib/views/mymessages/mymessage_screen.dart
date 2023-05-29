@@ -80,15 +80,19 @@ class _MessagesScreenState extends State<MessagesScreen>
   }
 
   Widget _buildReceivedMessages() {
-    return GetBuilder<MesaageReceivedController>(
+    return GetBuilder<MessageReceivedController>(
       builder: (controller) {
         if (controller.isLoading.value) {
           return  Center(
             child: CircularProgressIndicator(color: primarycolor,),
           );
         } else if (controller.receivedMessage.isEmpty) {
-          return const Center(
-            child: Text('No received messages'),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/imgs/notfound.png'),
+              const Text('No message received found'),
+            ],
           );
         } else {
           return Padding(
@@ -103,21 +107,24 @@ class _MessagesScreenState extends State<MessagesScreen>
                       // Update the message state to 'read'
                       //controller.updateMessageState(message.id);
                     }
-                    Get.to(() => DetailsMessageReceived(message: message));
+                    Get.to(() => DetailsMessageReceived(message: message,downloadController: downloadController,));
                     if (kDebugMode) {
                       print(message.iD);
                     }
                   },
-                  child: MessageCardReceived(
-                    title: message.titleOfMessage ?? '',
-                    image: message.teacherImage ?? '',
-                    sender: message.teacher ?? '',
-                    message: message.message ?? '',
-                    details: '${message.student ?? ''} • ${message.date ?? ''}',
-                    isRead: message.state ?? '',
-                    isAttached: message.attachments!.isEmpty,
-                    attachments: message.attachments!,
-                    downloadController: downloadController,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MessageCardReceived(
+                      title: message.titleOfMessage ?? '',
+                      image: message.teacherImage ?? '',
+                      sender: message.teacher ?? '',
+                      message: message.message ?? '',
+                      details: '${message.student ?? ''} • ${message.date ?? ''}',
+                      isRead: message.state ?? '',
+                      isAttached: message.attachments!.isEmpty,
+                      attachments: message.attachments!,
+                      downloadController: downloadController,
+                    ),
                   ),
                 );
               },
@@ -136,8 +143,12 @@ class _MessagesScreenState extends State<MessagesScreen>
             child: CircularProgressIndicator(color: primarycolor,),
           );
         } else if (controller.sentedmessage.isEmpty) {
-          return const Center(
-            child: Text('No sent messages'),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/imgs/notfound.png'),
+              const Text('No sent messages Found'),
+            ],
           );
         } else {
           return ListView.builder(
@@ -150,11 +161,14 @@ class _MessagesScreenState extends State<MessagesScreen>
                   onTap: (){
                     Get.to(()=>MessageSentDetails(message:message));
                   },
-                  child: MessageCardSent(
-                    title: message.name ?? '',
-                    receiver: message.receiver ?? '',
-                    message: message.message ?? '',
-                    date: message.date ?? '',
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MessageCardSent(
+                      title: message.name ?? '',
+                      receiver: message.receiver ?? '',
+                      message: message.message ?? '',
+                      date: message.date ?? '',
+                    ),
                   ),
                 ),
               );
@@ -194,17 +208,17 @@ class MessageCardReceived extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isMessageRead = isRead == 'read';
 
-    return Card(
-      elevation: isMessageRead ? 2.0 : 2.0,
-      shape: isMessageRead
-          ? RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        side: BorderSide(color: Colors.grey.withOpacity(0.5)),
-      )
-          : RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              side: BorderSide(color: Colors.grey.withOpacity(0.5)),
-            ),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: Stack(
         children: [
           Column(
@@ -252,7 +266,7 @@ class MessageCardReceived extends StatelessWidget {
                   ),
                 ),
               ),
-              if (attachments.isNotEmpty)
+           /*   if (attachments.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -278,7 +292,7 @@ class MessageCardReceived extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
+                ),*/
               const Divider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -334,7 +348,17 @@ class MessageCardSent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -73,8 +73,12 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               child: CircularProgressIndicator(color: primarycolor,),
             );
           } else if (controller.timetable.isEmpty) {
-            return Center(
-              child: Image.asset('assets/imgs/notfound.png'),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/imgs/notfound.png'),
+                const Text('No Time Table Found'),
+              ],
             );
           } else {
             return Column(
@@ -85,7 +89,10 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                     itemCount: controller.timetable.length,
                     itemBuilder: (context, index) {
                       final timetableEntry = controller.timetable[index];
-                      return _buildTimetableEntry(timetableEntry);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildTimetableEntry(timetableEntry),
+                      );
                     },
                   ),
                 ),
@@ -167,10 +174,16 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   Widget _buildTimetableEntry(TimeTable timetableEntry) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),

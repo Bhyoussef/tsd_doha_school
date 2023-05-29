@@ -50,22 +50,22 @@ class Comment {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['body'] = this.body;
-    data['record_name'] = this.recordName;
-    data['vote_user_ids'] = this.voteUserIds;
-    data['write_date'] = this.writeDate;
-    data['date'] = this.date;
-    data['model'] = this.model;
-    data['attachment_ids'] = this.attachmentIds;
-    data['type'] = this.type;
-    data['id'] = this.id;
-    if (this.authorId != null) {
-      data['author_id'] = this.authorId!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['body'] = body;
+    data['record_name'] = recordName;
+    data['vote_user_ids'] = voteUserIds;
+    data['write_date'] = writeDate;
+    data['date'] = date;
+    data['model'] = model;
+    data['attachment_ids'] = attachmentIds;
+    data['type'] = type;
+    data['id'] = id;
+    if (authorId != null) {
+      data['author_id'] = authorId!.toJson();
     }
-    data['res_id'] = this.resId;
-    if (this.attachments != null) {
-      data['attachments'] = this.attachments!.map((attachment) => attachment.toJson()).toList();
+    data['res_id'] = resId;
+    if (attachments != null) {
+      data['attachments'] = attachments!.map((attachment) => attachment.toJson()).toList();
     }
     return data;
   }
@@ -83,9 +83,9 @@ class SubtypeId {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['id'] = id;
     return data;
   }
 }
@@ -104,10 +104,10 @@ class AuthorId {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['image'] = this.image;
-    data['name'] = this.name;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['image'] = image;
+    data['name'] = name;
+    data['id'] = id;
     return data;
   }
 }

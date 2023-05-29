@@ -63,7 +63,9 @@ class ApiServiceMessage {
       throw Exception('Failed to load data');
     }
   }
-  static Future<List<SendMessage>> getMessagesSentedDeatails(uid ,int messageId) async {
+
+  static Future<List<SendMessage>> getMessagesSentedDeatails(
+      uid, int messageId) async {
     final response = await http.post(
       Uri.parse('${Res.host}/proschool/discution_messaging'),
       headers: {"Content-Type": "application/json"},
@@ -72,9 +74,7 @@ class ApiServiceMessage {
           "jsonrpc": "2.0",
           "method": "call",
           "uid": "6523",
-          "params": {
-            "id": messageId
-          }
+          "params": {"id": messageId}
         },
       ),
     );
@@ -85,7 +85,7 @@ class ApiServiceMessage {
       List<SendMessage> data = messagesentdetails
           .map<SendMessage>(
             (data) => SendMessage.fromJson(data),
-      )
+          )
           .toList();
       return data;
     } else {
@@ -93,12 +93,13 @@ class ApiServiceMessage {
     }
   }
 
-  static Future<String?> sendMessage(
+  static Future<String?> createMessage(
     int parentId,
     String receiver,
     String subject,
     String message,
-    String receiverId, String attachmentPath,
+    String receiverId,
+    String attachmentPath,
   ) async {
     final url = Uri.parse('${Res.host}/proschool/send_teacher_messaging');
     final body = jsonEncode({
@@ -147,8 +148,7 @@ class ApiServiceMessage {
     return null;
   }
 
-  static Future<List<Comment>> getListComments(
-      int uid, int messageId) async {
+  static Future<List<Comment>> getListComments(int uid, int messageId) async {
     final response = await http.post(
       Uri.parse('${Res.host}/web/getComment'),
       headers: {"Content-Type": "application/json"},
@@ -180,7 +180,8 @@ class ApiServiceMessage {
     }
   }
 
-  static Future<String?> addComments(int uid ,String body,int studentId) async {
+  static Future<String?> addComments(
+      int uid, String body, int studentId,String attachementPath) async {
     final response = await http.post(
       Uri.parse('${Res.host}/web/commantedPost'),
       headers: {"Content-Type": "application/json"},
@@ -194,7 +195,7 @@ class ApiServiceMessage {
             "model": "proschool.parent.message",
             "res_id": 48812,
             "user_id": 6523,
-            "attachment": null,
+            "attachment": attachementPath,
             "name_attachment": null
           }
         },
@@ -212,7 +213,6 @@ class ApiServiceMessage {
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
-
       } else if (jsonResponse['result'] == null) {
         Get.snackbar(
           'Error :',
@@ -237,9 +237,7 @@ class ApiServiceMessage {
         {
           "jsonrpc": "2.0",
           "method": "call",
-          "params": {
-            "id":attachmentIds
-          }
+          "params": {"id": attachmentIds}
         },
       ),
     );
@@ -247,12 +245,51 @@ class ApiServiceMessage {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       final attachements = jsonResponse['result'];
-      List<Attachment> attachememntdata = attachements.map<Attachment>(
-            (data) => Attachment.fromJson(data),).toList();
+      List<Attachment> attachememntdata = attachements
+          .map<Attachment>(
+            (data) => Attachment.fromJson(data),
+          )
+          .toList();
       print(attachememntdata);
       return attachememntdata;
     } else {
       throw Exception('Failed to load data');
     }
+  }
+
+  static Future<String?> voteComment(int parentId, int messageId) async {
+    final url = Uri.parse('${Res.host}/web/toggleVote');
+    final body = jsonEncode(
+      {
+        "jsonrpc": "2.0",
+        "method": "call",
+        "uid": "6523",
+        "params": {"message_id": messageId, "_uid": 6523}
+      },
+    );
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['result'] != null) {
+      } else if (jsonResponse['result'] == null) {
+
+      }
+      return jsonResponse["result"];
+    } else {
+      Get.snackbar(
+        'Failed :',
+        'Failed To Vote',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(20),
+      );
+    }
+    return null;
   }
 }

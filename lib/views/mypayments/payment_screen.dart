@@ -29,8 +29,6 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -40,6 +38,8 @@ class PaymentScreen extends StatelessWidget {
             Get.back();
           },
         ),
+        centerTitle: true,
+        elevation: 0,
         backgroundColor: primarycolor,
         title: const Text(
           'Payment',
@@ -82,13 +82,13 @@ class PaymentScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding:const  EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            Row(
+                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: const [
-                                 Text(
+                                Text(
                                   'Pay with Credit Card',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -144,8 +144,8 @@ class PaymentScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Column(
-                          children:  [
-                            Row(
+                          children: [
+                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: const [
                                 Text(
@@ -236,8 +236,8 @@ class PaymentScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Get.to(() => TotalImpaidChild(
-                  student: student,
-                ));
+                      student: student,
+                    ));
               },
               child: const Text('OK'),
             ),
@@ -326,4 +326,3 @@ class _WebViewScreenState extends State<WebViewScreen> {
     );
   }
 }
-

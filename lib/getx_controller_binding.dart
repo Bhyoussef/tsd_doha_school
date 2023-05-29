@@ -23,7 +23,7 @@ class ControllersBinding extends Bindings {
     Get.lazyPut(() => LanguageController(), fenix: true);
     Get.lazyPut(() => PasswordChangeController(), fenix: true);
     Get.lazyPut(() => ChildrenController(), fenix: true);
-    Get.lazyPut(() => MesaageReceivedController(), fenix: true);
+    Get.lazyPut(() => MessageReceivedController(), fenix: true);
     Get.lazyPut(() => PaymentsController(), fenix: true);
     Get.lazyPut(() => SendMessageController(), fenix: true);
     Get.lazyPut(() => MesaageSentController(), fenix: true);

@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tunisian_school_doha/model/message_model.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../theme/app_colors.dart';
 
 class AddCommentPage extends StatefulWidget {
-  const AddCommentPage({super.key});
+  final Message message;
+  const AddCommentPage({Key? key, required this.message}) : super(key: key);
 
   @override
   _AddCommentPageState createState() => _AddCommentPageState();
@@ -13,20 +16,14 @@ class AddCommentPage extends StatefulWidget {
 
 class _AddCommentPageState extends State<AddCommentPage> {
   final TextEditingController commentController = TextEditingController();
-  final MesaageReceivedController controller =
-      Get.put(MesaageReceivedController());
-  List<String> attachments = [];
+  final MessageReceivedController controller = Get.put(MessageReceivedController());
+  final RxString attachmentPath = RxString('');
 
-  void addAttachment(String attachment) {
-    setState(() {
-      attachments.add(attachment);
-    });
-  }
 
-  void removeAttachment(int index) {
-    setState(() {
-      attachments.removeAt(index);
-    });
+  @override
+  void initState() {
+
+    super.initState();
   }
 
   @override
@@ -38,8 +35,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
         automaticallyImplyLeading: false,
         title: const Text(
           'Add Comment',
-          style: TextStyle(
-              color: CupertinoColors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -73,7 +69,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
               color: primarycolor,
               textColor: Colors.white,
               onPressed: () {
-                //controller.addComments(uid, body, studentId)
+                // Send comment logic
               },
               child: const Text(
                 'Send',
@@ -87,47 +83,36 @@ class _AddCommentPageState extends State<AddCommentPage> {
   }
 
   Widget _buildAttachmentList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Attachments',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        Obx(
-          () => ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.attachmentControllers.length,
-            itemBuilder: (context, index) {
-              final attachmentController =
-                  controller.attachmentControllers[index];
-              final attachmentName = attachmentController.text
-                  .split('/')
-                  .last; // Extract the attachment name from the full path
-
-              return Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      attachmentName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+    return Obx(
+          () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Attachments',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          if (attachmentPath.value.isNotEmpty)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    attachmentPath.value.split('/').last,
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      controller.removeAttachment(index);
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ],
+                ),
+                IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    attachmentPath.value = '';
+                  },
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 
@@ -138,7 +123,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
       color: primarycolor,
       textColor: Colors.white,
       onPressed: () {
-        controller.addAttachment();
+        showAttachmentSelectionDialog();
       },
       child: const Text(
         'Add Attachment',
@@ -147,31 +132,11 @@ class _AddCommentPageState extends State<AddCommentPage> {
     );
   }
 
-  void showAttachmentSelectionDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Attachment'),
-          content: const Text('Attachment selection goes here...'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Add attachment logic goes here...
-                addAttachment('Attachment path...');
-                Navigator.of(context).pop();
-              },
-              child: const Text('Add'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void sendComment() {
-    // Logic to send the comment goes here...
-    final comment = commentController.text;
-    // Send the comment and attachments to the appropriate destination
+  void showAttachmentSelectionDialog() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      attachmentPath.value = pickedFile.path;
+    }
   }
 }

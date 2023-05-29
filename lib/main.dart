@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'languages/translation.dart';
@@ -13,7 +14,9 @@ void main() async {
 
 void app() async {
   final language = await SharedData.getFromStorage('language', 'string');
-  print('Language saved : == $language');
+  if (kDebugMode) {
+    print('Language saved : == $language');
+  }
   if (language != null) {
     final parent = await SharedData.getFromStorage('parent', 'string');
     if (parent != null) {

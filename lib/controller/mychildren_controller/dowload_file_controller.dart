@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import '../../constant/constant.dart';
+import '../../theme/app_colors.dart';
 
 class FileDownloadController extends GetxController {
 
@@ -41,7 +42,7 @@ class FileDownloadController extends GetxController {
                 onPressed: () {
                   Get.back();
                 },
-                child: Text('OK'),
+                child: Text('OK',style: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),),
               ),
             ],
           );
@@ -52,14 +53,14 @@ class FileDownloadController extends GetxController {
         context: Get.overlayContext!,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to download the file.'),
+            title: const Text('Error'),
+            content: const Text('Failed to download the file.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Get.back();
                 },
-                child: Text('OK'),
+                child: Text('OK',style: TextStyle(color: primarycolor),),
               ),
             ],
           );

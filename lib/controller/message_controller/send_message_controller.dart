@@ -47,11 +47,11 @@ class SendMessageController extends GetxController {
         }
       }
     } catch (e) {
-// Handle error
+        // Handle error
     }
   }
 
-  Future<String?> sendMessage(
+  Future<String?> createMessage(
       int parentId,
       String receiver,
       String subject,
@@ -61,7 +61,7 @@ class SendMessageController extends GetxController {
       ) async {
     try {
       isLoading(true);
-      await ApiServiceMessage.sendMessage(
+      await ApiServiceMessage.createMessage(
         parentId,
         receiver,
         subject,
@@ -74,6 +74,7 @@ class SendMessageController extends GetxController {
     }
     return null;
   }
+
 
   void addAttachment() {
     _pickAttachment();

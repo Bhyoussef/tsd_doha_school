@@ -42,7 +42,7 @@ class _BookListScreenState extends State<BookListScreen> {
           },
         ),
         backgroundColor: primarycolor,
-        title: const  Text('Books',style: TextStyle(
+        title:  const  Text('Books',style:  TextStyle(
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
         actions: [
@@ -71,14 +71,17 @@ class _BookListScreenState extends State<BookListScreen> {
               );
             } else {
               return Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(4.0),
                 child: ListView.builder(
                   itemCount: bookController.books.length,
                   itemBuilder: (context, index) {
                     final book = bookController.books[index];
-                    return BookCard(
-                      book: book,
-                      downloadController: downloadcontroller,
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: BookCard(
+                        book: book,
+                        downloadController: downloadcontroller,
+                      ),
                     );
                   },
                 ),
@@ -102,57 +105,68 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(book.academic ?? ''),
-                      const Divider(),
-                      if (book.attachments!.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: book.attachments!.length,
-                              itemBuilder: (context, index) {
-                                final attachment = book.attachments![index];
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(attachment.fileName ?? ''),
-                                    ),
-                                    IconButton(
-                                      icon:  Icon(Icons.download,
-                                        color: primarycolor ,),
-                                      onPressed: () {
-                                        SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                                          downloadController.downloadFile(
-                                            uid,
-                                            attachment.id.toString(),
-                                            attachment.fileName ?? '',
-                                          );
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(book.academic ?? ''),
+
+                    if (book.attachments!.isNotEmpty)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: book.attachments!.length,
+                            itemBuilder: (context, index) {
+                              final attachment = book.attachments![index];
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(attachment.fileName ?? ''),
+                                  ),
+                                  IconButton(
+                                    icon:  Icon(Icons.download,
+                                      color: primarycolor ,),
+                                    onPressed: () {
+                                      SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                                        downloadController.downloadFile(
+                                          uid,
+                                          attachment!.toString(),
+                                          attachment.fileName ?? '',
+                                        );
+                                      });
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
-              ],
-            )));
+              ),
+            ],
+          )),
+    );
   }
 }

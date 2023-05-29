@@ -23,7 +23,6 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
       paymentController.fetchingTotalPaymentsStudentsDetail(
           widget.student.studentId!);
     });
-
   }
 
   @override
@@ -43,55 +42,56 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
-      body: Obx(
-            () {
-          if (paymentController.isLoading.value) {
-            return Center(
-              child: CircularProgressIndicator(color: primarycolor,),
-            );
-          } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-            return const Center(
-              child: Text('No payments history found.'),
-            );
-          }
-
-          return  ListView.builder(
-            itemCount: paymentController.totalpaiddetailsstudents.length,
-            itemBuilder: (context, index) {
-              final payment = paymentController.totalpaiddetailsstudents[index];
-              return Card(
-                margin: const EdgeInsets.all(10),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        payment.period.toString(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Divider(),
-                      Text(
-                        'Price Unit: ${payment.priceUnit}',
-                      ),
-                      const Divider(),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          'Year: ${payment.year}',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Obx(
+              () {
+            if (paymentController.isLoading.value) {
+              return Center(
+                child: CircularProgressIndicator(color: primarycolor,),
               );
-            },
-          );
+            } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
+              return const Center(
+                child: Text('No payments history found.'),
+              );
+            }
 
-        },
+            return  ListView.builder(
+              itemCount: paymentController.totalpaiddetailsstudents.length,
+              itemBuilder: (context, index) {
+                final payment = paymentController.totalpaiddetailsstudents[index];
+                return Card(
+                  margin: const EdgeInsets.all(4),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          payment.period.toString(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Price Unit: ${payment.priceUnit}',
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            'Year: ${payment.year}',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+
+          },
+        ),
       )
     );
   }

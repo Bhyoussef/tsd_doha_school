@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/message_controller/message_received_controller.dart';
+import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../model/attachement_model.dart';
 import '../../model/child_model.dart';
 import '../../model/comments_model.dart';
@@ -11,18 +12,19 @@ import '../../model/message_model.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 import 'add_comment.dart';
-import 'widget/message_card.dart';
+
 
 class DetailsMessageReceived extends StatefulWidget {
   final Message message;
-  const DetailsMessageReceived({Key? key, required this.message}) : super(key: key);
+  final FileDownloadController downloadController;
+  const DetailsMessageReceived({Key? key, required this.message, required this.downloadController}) : super(key: key);
 
   @override
   State<DetailsMessageReceived> createState() => _DetailsMessageReceivedState();
 }
 
 class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
-  final MesaageReceivedController controller = Get.find<MesaageReceivedController>();
+  final MessageReceivedController controller = Get.find<MessageReceivedController>();
   final TextEditingController commentController = TextEditingController();
 
   @override
@@ -125,7 +127,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => const AddCommentPage(),
+            builder: (context) =>  AddCommentPage(message:widget.message),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -144,15 +146,20 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   }
 
   Widget messageContent() {
-    return MessageCardReceived(
-      title: widget.message.titleOfMessage ?? '',
-      image: widget.message.teacherImage ?? '',
-      sender: widget.message.teacher ?? '',
-      message: widget.message.message ?? '',
-      details: '${widget.message.student ?? ''} • ${widget.message.date ?? ''}',
-      isRead: widget.message.state!,
-      isAttached: widget.message.attachments!.isEmpty,
-      attachments: widget.message.attachments!,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: MessageCardReceived(
+        title: widget.message.titleOfMessage ?? '',
+        image: widget.message.teacherImage ?? '',
+        sender: widget.message.teacher ?? '',
+        message: widget.message.message ?? '',
+        details: '${widget.message.student ?? ''} • ${widget.message.date ?? ''}',
+        isRead: widget.message.state!,
+        isAttached: widget.message.attachments!.isEmpty,
+        attachments: widget.message.attachments!,
+          downloadController:widget.downloadController
+
+      ),
     );
   }
 
@@ -191,7 +198,10 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
         itemCount: controller.comments.length,
         itemBuilder: (context, index) {
           final comment = controller.comments[index];
-          return CommentCard(comment: comment);
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: CommentCard(comment: comment),
+          );
         },
       );
     }
@@ -206,7 +216,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
 }
 
 class CommentCard extends StatelessWidget {
-  final MesaageReceivedController controller = Get.find<MesaageReceivedController>();
+  final MessageReceivedController controller = Get.find<MessageReceivedController>();
   final Comment comment;
 
    CommentCard({
@@ -216,23 +226,34 @@ class CommentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              comment.recordName!,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  comment.recordName!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                buildVoteButton()
+              ],
             ),
           ),
           const Divider(),
@@ -241,7 +262,7 @@ class CommentCard extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: MemoryImage(base64Decode(comment.authorId!.image!)),
+                  backgroundImage: _buildCircleAvatar(comment.authorId!.image!),
                   radius: 40.0,
                 ),
                 const SizedBox(width: 8.0),
@@ -256,16 +277,8 @@ class CommentCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RichText(
-              text: TextSpan(
-                style: const TextStyle(fontSize: 16.0, color: Colors.black),
-                children: [
-                  TextSpan(
-                    text: _removeAllHtmlTags(comment.body!),
-                  ),
-                ],
-              ),
-            ),
+            child: Text( _removeAllHtmlTags(comment.body!),
+           maxLines: 5, ),
           ),
           if (comment.attachments != null && comment.attachments!.isNotEmpty)
             Padding(
@@ -289,7 +302,7 @@ class CommentCard extends StatelessWidget {
                         spacing: 8.0,
                         runSpacing: 8.0,
                         children: comment.attachments!
-                            .map((attachment) => AttachmentWidget(attachment: attachment))
+                            .map((attachment) => AttachmentWidget(attachment: attachment, comment: comment,))
                             .toList(),
                       );
                     }
@@ -313,6 +326,20 @@ class CommentCard extends StatelessWidget {
         ],
       ),
     );
+
+
+  }
+  Widget buildVoteButton() {
+    final bool isVoted = comment.voteUserIds!.isNotEmpty;
+    return IconButton(
+      onPressed: () {
+        controller.voteComment(comment.id!);
+      },
+      icon: Icon(
+        isVoted ? Icons.favorite : Icons.favorite_border,
+        color: isVoted ? Colors.red : Colors.red,
+      ),
+    );
   }
 
   String _removeAllHtmlTags(String htmlText) {
@@ -320,39 +347,65 @@ class CommentCard extends StatelessWidget {
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
     return htmlText.replaceAll(exp, '');
   }
+  ImageProvider _buildCircleAvatar(dynamic image) {
+    if (image != null) {
+      try {
+        final decodedImage = base64Decode(image.toString());
+
+        return MemoryImage(decodedImage);
+      } catch (e) {
+        if (kDebugMode) {
+          print('Invalid image data: $e');
+        }
+      }
+    }
+    return AssetImage('assets/imgs/user-avatar.png');
+  }
+
 }
 
 class AttachmentWidget extends StatelessWidget {
+  final FileDownloadController downloadcontroller =
+  Get.find<FileDownloadController>();
   final Attachment attachment;
+  final Comment comment;
 
-  const AttachmentWidget({
+   AttachmentWidget({
     Key? key,
-    required this.attachment,
+    required this.attachment, required this.comment,
+
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.attachment),
-          const SizedBox(width: 4.0),
-          Flexible(
-            child: Text(
-              attachment.fileName!,
-              maxLines: 5,
-              overflow: TextOverflow.clip,
-              style: const TextStyle(fontSize: 14.0),
-            ),
+    return Row(
+      //mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            attachment.fileName!,
+            maxLines: 5,
+            overflow: TextOverflow.clip,
+            style: const TextStyle(fontSize: 14.0),
           ),
-        ],
-      ),
+        ),
+        IconButton(
+          icon:  Icon(Icons.download,
+            color: primarycolor ,),
+          onPressed: () {
+            String attachementid =  comment.attachmentIds!.toString().substring(1, comment.attachmentIds!.toString().length - 1);
+            SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+              downloadcontroller.downloadFile(
+                uid,
+                attachementid!,
+                attachment.fileName ?? '',
+              );
+            });
+            print('here${attachementid}');
+          },
+        )
+      ],
     );
   }
 }
@@ -397,4 +450,179 @@ class ChildCard extends StatelessWidget {
     );
   }
 
+}
+
+class MessageCardReceived extends StatelessWidget {
+  final String title;
+  final String image;
+  final String sender;
+  final String message;
+  final String details;
+  final String isRead;
+  final bool isAttached;
+  final List<Attachments> attachments;
+  final FileDownloadController downloadController;
+
+
+  const MessageCardReceived({super.key,
+    required this.title,
+    required this.image,
+    required this.sender,
+    required this.message,
+    required this.details,
+    required this.isRead,
+    required this.isAttached,
+    required this.attachments, required this.downloadController,
+
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: MemoryImage(base64Decode(image)),
+                        radius: 40.0,
+                      ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          sender,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: message,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (attachments.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Attachments:',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: attachments.length,
+                          itemBuilder: (context, index) {
+                            final attachment = attachments[index];
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  attachment.fileName ?? '',
+                                  style: const TextStyle(fontSize: 14.0),
+                                ),
+                                IconButton(
+                                  icon:  Icon(Icons.download,
+                                    color: primarycolor ,),
+                                  onPressed: () {
+
+                                    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                                        downloadController.downloadFile(
+                                        uid,
+                                        attachment.id.toString(),
+                                        attachment.fileName ?? '',
+                                      );
+                                    });
+                                    if (kDebugMode) {
+                                      print('here${attachment.id}');
+                                    }
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        details,
+                        style: const TextStyle(fontSize: 14.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 8.0,
+              right: 8.0,
+              child: Container(
+                width: 12.0,
+                height: 12.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isRead =='read'  ? Colors.green : Colors.red,
+                ),
+              ),
+            ),
+            isAttached ? Container() : const Positioned(
+              top: 8.0,
+              right: 25.0,
+              child: Icon(Icons.attach_file,),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

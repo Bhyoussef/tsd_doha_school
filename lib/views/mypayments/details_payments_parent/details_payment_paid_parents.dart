@@ -55,10 +55,21 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
                   itemBuilder: (context, index) {
                     final paidDetail =
                         controller.totalpaiddetailsparents[index];
-                    return Card(
-                      margin: const EdgeInsets.all(12.0),
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(0.0),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(4.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -70,11 +81,11 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const Divider(),
+
                             Text(
-                              'Price Unit: ${paidDetail.priceUnit}',
+                              'Price Unit: ${paidDetail.priceUnit}  ${paidDetail.currency}',
                             ),
-                            const Divider(),
+
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Text(

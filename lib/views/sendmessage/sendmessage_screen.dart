@@ -106,7 +106,7 @@ class SendMessageScreen extends StatelessWidget {
 
                   SharedData.getFromStorage('parent', 'object', 'uid')
                       .then((uid) {
-                    controller.sendMessage(
+                    controller.createMessage(
                       uid,
                       selectedTo,
                       subject,

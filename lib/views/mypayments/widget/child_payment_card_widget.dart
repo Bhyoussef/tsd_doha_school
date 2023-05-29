@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import '../../../model/child_model.dart';
 
@@ -10,33 +11,41 @@ class ChildCardPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 150,
-      child: Card(
-        margin: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: _buildCircleAvatar(student.image),
-            ),
-              const SizedBox(width: 10),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  '${student.name ?? ''} ${student.lastName ?? ''}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: _buildCircleAvatar(student.image),
+          ),
+            const SizedBox(width: 10),
+          Expanded(
+            child: Container(
+
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                '${student.name ?? ''} ${student.lastName ?? ''}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+
+        ],
       ),
     );
   }
@@ -52,9 +61,7 @@ Widget _buildCircleAvatar(dynamic image) {
       );
     } catch (e) {
 
-      if (kDebugMode) {
-        print('Invalid image data: $e');
-      }
+      print('Invalid image data: $e');
     }
   }
   return const CircleAvatar(

@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../../model/message_model.dart';
+import '../../../theme/app_colors.dart';
+import '../../../utils/shared_preferences.dart';
 
 
 
@@ -14,6 +17,7 @@ class MessageCardReceived extends StatelessWidget {
   final bool isAttached;
   final List<Attachments> attachments;
 
+
   const MessageCardReceived({super.key,
     required this.title,
     required this.image,
@@ -23,6 +27,7 @@ class MessageCardReceived extends StatelessWidget {
     required this.isRead,
     required this.isAttached,
     required this.attachments,
+
   });
 
   @override
@@ -100,9 +105,29 @@ class MessageCardReceived extends StatelessWidget {
                           itemCount: attachments.length,
                           itemBuilder: (context, index) {
                             final attachment = attachments[index];
-                            return Text(
-                              attachment.fileName ?? '',
-                              style: const TextStyle(fontSize: 14.0),
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  attachment.fileName ?? '',
+                                  style: const TextStyle(fontSize: 14.0),
+                                ),
+                                IconButton(
+                                  icon:  Icon(Icons.download,
+                                    color: primarycolor ,),
+                                  onPressed: () {
+
+                                    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                                    /*  downloadController.downloadFile(
+                                        uid,
+                                        attachment.id.toString(),
+                                        attachment.fileName ?? '',
+                                      );*/
+                                    });
+                                    print('here${attachment.id}');
+                                  },
+                                )
+                              ],
                             );
                           },
                         ),
