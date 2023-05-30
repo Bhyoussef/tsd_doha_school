@@ -174,6 +174,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
 
   Widget _buildTimetableEntry(TimeTable timetableEntry) {
     return Container(
+      padding: const EdgeInsets.all(14),
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -184,51 +185,48 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.circle,
-                  color: primarycolor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.circle,
+                color: primarycolor,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '${timetableEntry.startTime ?? ''} - ${timetableEntry.endTime ?? ''}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  '${timetableEntry.startTime ?? ''} - ${timetableEntry.endTime ?? ''}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                timetableEntry.day ?? '',
+                style: const TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                timetableEntry.teacher ?? '',
+                style: const TextStyle(
+                  fontSize: 14,
                 ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  timetableEntry.day ?? '',
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                timetableEntry.subject ?? '',
+                style: const TextStyle(
+                  fontSize: 14,
                 ),
-                Text(
-                  timetableEntry.teacher ?? '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  timetableEntry.subject ?? '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

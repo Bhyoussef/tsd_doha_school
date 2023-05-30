@@ -71,18 +71,15 @@ class _BookListScreenState extends State<BookListScreen> {
                 child: Text('nogradebooks.tr'),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  itemCount: bookController.books.length,
-                  itemBuilder: (context, index) {
-                    final book = bookController.books[index];
-                    return BookCard(
-                      book: book,
-                      downloadController: downloadcontroller,
-                    );
-                  },
-                ),
+              return ListView.builder(
+                itemCount: bookController.books.length,
+                itemBuilder: (context, index) {
+                  final book = bookController.books[index];
+                  return BookCard(
+                    book: book,
+                    downloadController: downloadcontroller,
+                  );
+                },
               );
             }
           },
@@ -104,6 +101,7 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(18),
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -114,57 +112,55 @@ class BookCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(book.academic ?? ''),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(book.academic ?? ''),
 
-                    if (book.attachments!.isNotEmpty)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: book.attachments!.length,
-                            itemBuilder: (context, index) {
-                              final attachment = book.attachments![index];
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(attachment.fileName ?? ''),
-                                  ),
-                                  IconButton(
-                                    icon:  Icon(Icons.download,
-                                      color: primarycolor ,),
-                                    onPressed: () {
-                                      SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                                        downloadController.downloadFile(
-                                          uid,
-                                          attachment!.toString(),
-                                          attachment.fileName ?? '',
-                                        );
-                                      });
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
+                if (book.attachments!.isNotEmpty)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: book.attachments!.length,
+                        itemBuilder: (context, index) {
+                          final attachment = book.attachments![index];
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: Text(attachment.fileName ?? ''),
+                              ),
+                              IconButton(
+                                icon:  Icon(Icons.download,
+                                  color: primarycolor ,),
+                                onPressed: () {
+                                  SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
+                                    downloadController.downloadFile(
+                                      uid,
+                                      attachment!.toString(),
+                                      attachment.fileName ?? '',
+                                    );
+                                  });
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                  ],
-                ),
-              ),
-            ],
-          )),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

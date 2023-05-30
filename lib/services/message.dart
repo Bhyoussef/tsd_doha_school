@@ -180,54 +180,62 @@ class ApiServiceMessage {
     }
   }
 
-  static Future<String?> addComments(
-      int uid, String body, String studentId,String attachementPath) async {
-    final response = await http.post(
-      Uri.parse('${Res.host}/web/commantedPost'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "jsonrpc": "2.0",
-          "method": "call",
-          "uid": 6523,
-          "params": {
-            "body": "body",
-            "model": "proschool.parent.message",
-            "res_id": 48812,
-            "user_id": 6523,
-            "attachment": attachementPath,
-            "name_attachment": null
-          }
-        },
-      ),
-    );
+  static Future<String?> addComments(int uid, String body, String messageId) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${Res.host}/web/commantedPost'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "uid": uid,
+            "params": {
+              "body": body,
+              "model": "proschool.parent.message",
+              "res_id": messageId,
+              "user_id": uid,
+              "attachment": "",
+              "name_attachment": null
+            }
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['result'] != null) {
-        Get.snackbar(
-          'Success :',
-          'Your comment have been succsufully added ',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: const EdgeInsets.all(20),
-        );
-      } else if (jsonResponse['result'] == null) {
-        Get.snackbar(
-          'Error :',
-          'Something wrong happened ',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: const EdgeInsets.all(20),
-        );
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final result = jsonResponse['result'];
+
+        if (result != null) {
+          Get.snackbar(
+            'Success ',
+            'Your comment has been successfully added',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.all(20),
+          );
+        } else {
+          Get.snackbar(
+            'Error ',
+            'Something went wrong',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.all(20),
+          );
+        }
+        return result.toString();
+      } else {
+        throw Exception('Failed to load data');
       }
-      return jsonResponse["result"];
-    } else {
-      throw Exception('Failed to load data');
+    } catch (e) {
+      print('Exception occurred: $e');
+      return null; // Or handle the exception accordingly
     }
   }
+
+
 
   static Future<List<Attachment>> getAllattachements(attachmentIds) async {
     final response = await http.post(
@@ -257,14 +265,14 @@ class ApiServiceMessage {
     }
   }
 
-  static Future<String?> voteComment(int parentId, int messageId) async {
+  static Future<String?> voteComment(int uid, int messageId) async {
     final url = Uri.parse('${Res.host}/web/toggleVote');
     final body = jsonEncode(
       {
         "jsonrpc": "2.0",
         "method": "call",
         "uid": "6523",
-        "params": {"message_id": messageId, "_uid": 6523}
+        "params": {"message_id": messageId, "_uid": uid}
       },
     );
     final response = await http.post(

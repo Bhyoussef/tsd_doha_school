@@ -69,11 +69,11 @@ class MessageReceivedController extends GetxController {
     }
   }
 
-  Future<String?> voteComment(int messageId) async {
+  Future<String?> voteComment(int uid,int messageId) async {
     try {
       isLoading(true);
       await ApiServiceMessage.voteComment(
-        6523, // Assuming parentId is already assigned in the controller
+        uid,
         messageId,
       );
       // You can handle the response or update the comments list accordingly
@@ -114,15 +114,15 @@ class MessageReceivedController extends GetxController {
 
 
   Future<String?> addComment(
-      int uid, String body, String studentId,String attachementPath
+      int uid, String body, String messageId
       ) async {
     try {
       isLoading(true);
       await ApiServiceMessage.addComments(
         uid,
         body,
-        studentId,
-        attachementPath,
+        messageId,
+        //attachementPath,
       );
     } finally {
       isLoading(false);

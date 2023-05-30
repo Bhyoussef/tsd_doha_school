@@ -43,66 +43,61 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
             color: CupertinoColors.white,fontWeight: FontWeight.bold
         ),),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Obx(
-              () {
-            if (paymentController.isLoading.value) {
-              return Center(
-                child: CircularProgressBar(color: primarycolor,),
-              );
-            } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-              return const Center(
-                child: Text('No payments history found.'),
-              );
-            }
-
-            return  ListView.builder(
-              itemCount: paymentController.totalpaiddetailsstudents.length,
-              itemBuilder: (context, index) {
-                final payment = paymentController.totalpaiddetailsstudents[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(0.0),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                        offset: Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          payment.period.toString(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          ' ${payment.priceUnit} ${payment.currency}',
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Text(
-                            ' ${payment.year}',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+      body: Obx(
+            () {
+          if (paymentController.isLoading.value) {
+            return Center(
+              child: CircularProgressBar(color: primarycolor,),
             );
+          } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
+            return const Center(
+              child: Text('No payments history found.'),
+            );
+          }
 
-          },
-        ),
+          return  ListView.builder(
+            itemCount: paymentController.totalpaiddetailsstudents.length,
+            itemBuilder: (context, index) {
+              final payment = paymentController.totalpaiddetailsstudents[index];
+              return Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(0.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      payment.period.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      ' ${payment.priceUnit} ${payment.currency}',
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        ' ${payment.year}',
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+
+        },
       )
     );
   }

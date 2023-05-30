@@ -85,7 +85,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
             () {
           if (controller.isLoading.value) {
             return  Center(
-              child: CircularProgressIndicator(color: primarycolor,),
+              child: CircularProgressBar(color: primarycolor,),
             );
           } else if (controller.comments.isEmpty) {
             return Center(
@@ -216,8 +216,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   }
 }
 
-class CommentCard extends StatelessWidget {
-  final MessageReceivedController controller = Get.find<MessageReceivedController>();
+class CommentCard extends StatefulWidget {
   final Comment comment;
 
    CommentCard({
@@ -225,6 +224,28 @@ class CommentCard extends StatelessWidget {
     required this.comment,
   }) : super(key: key);
 
+  @override
+  State<CommentCard> createState() => _CommentCardState();
+}
+
+class _CommentCardState extends State<CommentCard> {
+  final MessageReceivedController controller = Get.find<MessageReceivedController>();
+  int uid =0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUid();
+
+  }
+
+  Future<void> _fetchUid() async {
+    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    setState(() {
+      uid = fetchedUid;
+      print(uid);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -247,7 +268,7 @@ class CommentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  comment.recordName!,
+                  widget.comment.recordName!,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -263,13 +284,13 @@ class CommentCard extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: _buildCircleAvatar(comment.authorId!.image!),
+                  backgroundImage: _buildCircleAvatar(widget.comment.authorId!.image!),
                   radius: 40.0,
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: Text(
-                    comment.authorId!.name!,
+                    widget.comment.authorId!.name!,
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ),
@@ -278,10 +299,10 @@ class CommentCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text( _removeAllHtmlTags(comment.body!),
+            child: Text( _removeAllHtmlTags(widget.comment.body!),
            maxLines: 5, ),
           ),
-          if (comment.attachments != null && comment.attachments!.isNotEmpty)
+          if (widget.comment.attachments != null && widget.comment.attachments!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -302,8 +323,8 @@ class CommentCard extends StatelessWidget {
                       return Wrap(
                         spacing: 8.0,
                         runSpacing: 8.0,
-                        children: comment.attachments!
-                            .map((attachment) => AttachmentWidget(attachment: attachment, comment: comment,))
+                        children: widget.comment.attachments!
+                            .map((attachment) => AttachmentWidget(attachment: attachment, comment: widget.comment,))
                             .toList(),
                       );
                     }
@@ -330,11 +351,12 @@ class CommentCard extends StatelessWidget {
 
 
   }
+
   Widget buildVoteButton() {
-    final bool isVoted = comment.voteUserIds!.isNotEmpty;
+    final bool isVoted = widget.comment.voteUserIds!.isNotEmpty;
     return IconButton(
       onPressed: () {
-        controller.voteComment(comment.id!);
+        controller.voteComment(uid,widget.comment.id!);
       },
       icon: Icon(
         isVoted ? Icons.favorite : Icons.favorite_border,
@@ -348,6 +370,7 @@ class CommentCard extends StatelessWidget {
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
     return htmlText.replaceAll(exp, '');
   }
+
   ImageProvider _buildCircleAvatar(dynamic image) {
     if (image != null) {
       try {
@@ -362,7 +385,6 @@ class CommentCard extends StatelessWidget {
     }
     return AssetImage('assets/imgs/user-avatar.png');
   }
-
 }
 
 class AttachmentWidget extends StatelessWidget {

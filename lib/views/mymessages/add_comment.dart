@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tunisian_school_doha/model/message_model.dart';
 import '../../controller/message_controller/message_received_controller.dart';
+import '../../model/message_model.dart';
 import '../../theme/app_colors.dart';
+import '../../utils/shared_preferences.dart';
 
 class AddCommentPage extends StatefulWidget {
   final Message message;
@@ -20,12 +21,24 @@ class _AddCommentPageState extends State<AddCommentPage> {
   final RxString attachmentPath = RxString('');
 
 
+  int uid =0;
+
   @override
   void initState() {
-
     super.initState();
+    _fetchUid();
+
   }
 
+  Future<void> _fetchUid() async {
+    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    setState(() {
+      uid = fetchedUid;
+      print(uid);
+      print(widget.message.iD.toString());
+      print(commentController.text);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,10 +83,13 @@ class _AddCommentPageState extends State<AddCommentPage> {
               textColor: Colors.white,
               onPressed: () {
                controller.addComment(
-                   6523,
+                   uid,
                    commentController.text,
-                   widget.message.iD.toString(),
-                   attachmentPath.value.toString());
+                   widget.message.iD.toString());
+                   //attachmentPath.value.toString());
+               print(uid);
+               print(widget.message.iD.toString());
+               print(commentController.text);
               },
               child:  Text(
                 'send'.tr,

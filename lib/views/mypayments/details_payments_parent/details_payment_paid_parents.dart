@@ -57,6 +57,7 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
                     final paidDetail =
                         controller.totalpaiddetailsparents[index];
                     return Container(
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(0.0),

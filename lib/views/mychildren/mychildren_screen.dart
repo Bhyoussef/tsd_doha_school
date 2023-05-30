@@ -38,7 +38,7 @@ class MyChildrenScreen extends StatelessWidget {
                         Get.to(() => DetailScreen(student: student));
                       },
                       child: Padding(
-                        padding: const  EdgeInsets.only(bottom: 10,top: 20),
+                        padding: const  EdgeInsets.only(bottom: 10),
                         child: ChildCardWidget(student: student),
                       ),
                     );

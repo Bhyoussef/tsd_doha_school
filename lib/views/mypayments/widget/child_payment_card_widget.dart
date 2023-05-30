@@ -16,6 +16,7 @@ class ChildCardPayment extends StatelessWidget {
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
     return Container(
+      padding: const EdgeInsets.all(14),
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [

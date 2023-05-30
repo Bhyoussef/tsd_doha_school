@@ -73,28 +73,25 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
             ],
           );
         }else {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
-                ChildCardPayment(
-                  student: widget.student,
-                ),
-                const SizedBox(height: 15),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.paymentsTotalstudents.length,
-                  itemBuilder: (context, index) {
-                    final paymentTotal = controller.paymentsTotalstudents[index];
-                    return PaymentListItem(
-                      paymentTotal: paymentTotal,
-                      student: widget.student,
-                    );
-                  },
-                ),
-              ],
-            ),
+          return ListView(
+            children: [
+              ChildCardPayment(
+                student: widget.student,
+              ),
+              const SizedBox(height: 15),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.paymentsTotalstudents.length,
+                itemBuilder: (context, index) {
+                  final paymentTotal = controller.paymentsTotalstudents[index];
+                  return PaymentListItem(
+                    paymentTotal: paymentTotal,
+                    student: widget.student,
+                  );
+                },
+              ),
+            ],
           );
         }
       }),
@@ -114,7 +111,8 @@ class ChildCardPayment extends StatelessWidget {
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(14),
+
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -307,12 +305,12 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
                         ),
                       ),
                       Text(
-                        'Price Unit: ${payment.priceUnit} ${payment.currency}',
+                        '${payment.priceUnit} ${payment.currency}',
                       ),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          'Year: ${payment.year}',
+                          '${payment.year}',
                         ),
                       ),
                     ],

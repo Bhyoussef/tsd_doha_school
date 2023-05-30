@@ -48,64 +48,62 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
           ],
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Obx(
-                  () {
-                if (controller.isLoading.value) {
-                  return  Center(child: CircularProgressBar(
-                    color: primarycolor,
-                  ));
-                } else {
-                  return ListView.builder(
-                    itemCount: controller.totalinpaiddetailsparents.length,
-                    itemBuilder: (context, index) {
-                      final paidDetail = controller.totalinpaiddetailsparents[index];
+          child: Obx(
+                () {
+              if (controller.isLoading.value) {
+                return  Center(child: CircularProgressBar(
+                  color: primarycolor,
+                ));
+              } else {
+                return ListView.builder(
+                  itemCount: controller.totalinpaiddetailsparents.length,
+                  itemBuilder: (context, index) {
+                    final paidDetail = controller.totalinpaiddetailsparents[index];
 
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(0.0),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10,
-                              offset: Offset(0, 5),
+                    return Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(0.0),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              paidDetail.period.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            Text(
+                              ' ${paidDetail.priceUnit} ${paidDetail.currency}',
+                            ),
+
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                ' ${paidDetail.year}',
+                              ),
                             ),
                           ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                paidDetail.period.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-
-                              Text(
-                                ' ${paidDetail.priceUnit} ${paidDetail.currency}',
-                              ),
-
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  ' ${paidDetail.year}',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
         )
     );

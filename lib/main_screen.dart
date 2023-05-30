@@ -147,14 +147,14 @@ class MainScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(
+            leading:  Icon(
               Icons.logout,
-              color: Colors.red,
+              color: primarycolor,
             ),
             title: Text(
               'logout'.tr,
-              style: const TextStyle(
-                  color: Colors.red, fontWeight: FontWeight.bold),
+              style:  TextStyle(
+                  color: primarycolor, fontWeight: FontWeight.bold),
             ),
             onTap: () {
               Get.dialog(LogoutDialog());
