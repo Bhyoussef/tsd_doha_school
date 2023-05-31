@@ -144,9 +144,11 @@ class BookCard extends StatelessWidget {
                                   SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
                                     downloadController.downloadFile(
                                       uid,
-                                      attachment!.toString(),
+                                      attachment.id.toString(),
                                       attachment.fileName ?? '',
+
                                     );
+                                    print(attachment.id);
                                   });
                                 },
                               ),

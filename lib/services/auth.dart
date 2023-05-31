@@ -75,7 +75,7 @@ class ApiServiceAuth {
         Get.off(() => LoginScreen());
       } else if (jsonResponse['result']['type'] == 'error') {
         Get.snackbar(
-          'connexion_error',
+          'connexion_error'.tr,
           'passwordidentical'.tr,
           backgroundColor: Colors.red,
           colorText: Colors.white,
@@ -86,7 +86,7 @@ class ApiServiceAuth {
       return jsonResponse["result"]["res"];
     } else {
       Get.snackbar(
-        'connexion_error',
+        'connexion_error'.tr,
         'passwordfailedchange'.tr,
         backgroundColor: Colors.red,
         colorText: Colors.white,

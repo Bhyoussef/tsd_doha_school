@@ -41,7 +41,8 @@ class MessageReceivedController extends GetxController {
   Future<void> getChildDetail(uid, int studentId) async {
     try {
       isLoading(true);
-      final childDetail = await ApiServicePersonal.getSingleChild(uid, studentId);
+      final childDetail =
+          await ApiServicePersonal.getSingleChild(uid, studentId);
       this.childDetail.assignAll(childDetail);
       update();
     } finally {
@@ -52,13 +53,15 @@ class MessageReceivedController extends GetxController {
   Future<void> getComments(uid, int messageId) async {
     try {
       isLoading(true);
-      final commentsList = await ApiServiceMessage.getListComments(uid, messageId);
+      final commentsList =
+          await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
       // Check if comments have attachment IDs and fetch attachments if available
       for (var comment in commentsList) {
         if (comment.attachmentIds!.isNotEmpty) {
           isLoading(true);
-          final attachments = await ApiServiceMessage.getAllattachements(comment.attachmentIds);
+          final attachments =
+              await ApiServiceMessage.getAllattachements(comment.attachmentIds);
           comment.attachments = attachments;
           isLoading(false);
         }
@@ -69,13 +72,21 @@ class MessageReceivedController extends GetxController {
     }
   }
 
-  Future<String?> voteComment(int uid,int messageId) async {
+  Future<String?> voteComment(int uid, int messageId) async {
     try {
-      isLoading(true);
       await ApiServiceMessage.voteComment(
         uid,
         messageId,
       );
+    } finally {
+    }
+    return null;
+  }
+
+  Future<String?> updateMessageState(int  uid,int messageId) async {
+    try {
+      isLoading(true);
+      await ApiServiceMessage.updatemessagestate(uid,messageId);
       // You can handle the response or update the comments list accordingly
     } finally {
       isLoading(false);
@@ -112,13 +123,8 @@ class MessageReceivedController extends GetxController {
     attachmentController.value.text = selectedImgName;
   }
 
-
   Future<void> addCommentWithAttachment(
-      String body,
-      int messageId,
-      String attachmentPath,
-      int uid
-      ) async {
+      String body, int messageId, String attachmentPath, int uid) async {
     try {
       isLoading.value = true;
       final String? result = await ApiServiceMessage.addComments(
@@ -139,6 +145,4 @@ class MessageReceivedController extends GetxController {
       isLoading.value = false;
     }
   }
-
-
 }

@@ -1,26 +1,26 @@
 class SendMessage {
-  String? date;
-  String? displayName;
-  List<int>? attachmentIds;
   List<String>? attachmentName;
+  String? displayName;
+  List<String>? attachmentIds;
+  String? date;
   String? authorId;
   String? message;
   int? id;
 
   SendMessage(
-      {this.date,
+      {this.attachmentName,
         this.displayName,
         this.attachmentIds,
-        this.attachmentName,
+        this.date,
         this.authorId,
         this.message,
         this.id});
 
   SendMessage.fromJson(Map<String, dynamic> json) {
-    date = json['date'];
-    displayName = json['display_name'];
-    attachmentIds = json['attachment_ids'].cast<int>();
     attachmentName = json['attachment_name'].cast<String>();
+    displayName = json['display_name'];
+    attachmentIds = json['attachment_ids'].cast<String>();
+    date = json['date'];
     authorId = json['author_id'];
     message = json['message'];
     id = json['id'];
@@ -28,10 +28,10 @@ class SendMessage {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
+    data['attachment_name'] = this.attachmentName;
     data['display_name'] = this.displayName;
     data['attachment_ids'] = this.attachmentIds;
-    data['attachment_name'] = this.attachmentName;
+    data['date'] = this.date;
     data['author_id'] = this.authorId;
     data['message'] = this.message;
     data['id'] = this.id;

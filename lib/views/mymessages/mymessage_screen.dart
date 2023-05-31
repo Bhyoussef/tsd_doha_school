@@ -10,6 +10,7 @@ import '../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../model/message_model.dart';
 import '../../model/message_sent_model.dart';
 import '../../theme/app_colors.dart';
+import '../../utils/shared_preferences.dart';
 import '../sendmessage/sendmessage_screen.dart';
 import 'details_message.dart';
 import 'message_sent_details.dart';
@@ -26,11 +27,21 @@ class _MessagesScreenState extends State<MessagesScreen>
   late TabController _tabController;
   late FileDownloadController downloadController;
 
+  int uid=0;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     downloadController = Get.put(FileDownloadController());
+    _fetchUid();
+  }
+  Future<void> _fetchUid() async {
+    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    setState(() {
+      uid = fetchedUid;
+      print(uid);
+    });
   }
 
   @override
@@ -52,7 +63,7 @@ class _MessagesScreenState extends State<MessagesScreen>
               border: Border(
                 top: BorderSide(
                   color: CupertinoColors.white,
-                  width: 5.0,
+                  width: 3.0,
                 ),
               ),
             ),
@@ -114,7 +125,7 @@ class _MessagesScreenState extends State<MessagesScreen>
                 onTap: () {
                   if (message.state != 'read') {
                     // Update the message state to 'read'
-                    //controller.updateMessageState(message.id);
+                    controller.updateMessageState(uid,message.iD!);
                   }
                   Get.to(() => DetailsMessageReceived(
                     message: message,
@@ -148,45 +159,48 @@ class _MessagesScreenState extends State<MessagesScreen>
 
 
   Widget _buildSentMessages() {
-    return Obx(() {
-      final controller = Get.find<MesaageSentController>();
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Obx(() {
+        final controller = Get.find<MesaageSentController>();
 
-      if (controller.isLoading.value) {
-        return Center(
-          child: CircularProgressBar(color: primarycolor),
-        );
-      } else if (controller.sentedmessage.isEmpty) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/imgs/notfound.png'),
-            const Text('No sent messages Found'),
-          ],
-        );
-      } else {
-        return ListView.builder(
-          itemCount: controller.sentedmessage.length,
-          itemBuilder: (context, index) {
-            MessageSent message = controller.sentedmessage[index];
-            return GestureDetector(
-              onTap: () {
-                Get.to(() => MessageSentDetails(message: message));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: MessageCardSent(
-                  title: message.name ?? '',
-                  receiver: message.receiver ?? '',
-                  message: message.message ?? '',
-                  date: message.date ?? '',
-                  uploadedfile:message.uploadFile??''
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressBar(color: primarycolor),
+          );
+        } else if (controller.sentedmessage.isEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/imgs/notfound.png'),
+              const Text('No sent messages Found'),
+            ],
+          );
+        } else {
+          return ListView.builder(
+            itemCount: controller.sentedmessage.length,
+            itemBuilder: (context, index) {
+              MessageSent message = controller.sentedmessage[index];
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => MessageSentDetails(message: message));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: MessageCardSent(
+                    title: message.name ?? '',
+                    receiver: message.receiver ?? '',
+                    message: message.message ?? '',
+                    date: message.date ?? '',
+                    uploadedfile:message.uploadFile??''
+                  ),
                 ),
-              ),
-            );
-          },
-        );
-      }
-    });
+              );
+            },
+          );
+        }
+      }),
+    );
   }
 
 }
@@ -394,17 +408,14 @@ class MessageCardSent extends StatelessWidget {
             ),
           ),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  date,
-                  style: const TextStyle(fontSize: 14.0),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                date,
+                style: const TextStyle(fontSize: 14.0),
+              ),
+            ],
           ),
         ],
       ),

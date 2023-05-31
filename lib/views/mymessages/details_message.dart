@@ -209,11 +209,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   }
 
 
-  void sendComment() {
-    final comment = commentController.text;
-    // send the comment
-    commentController.clear();
-  }
+
 }
 
 class CommentCard extends StatefulWidget {
@@ -231,11 +227,13 @@ class CommentCard extends StatefulWidget {
 class _CommentCardState extends State<CommentCard> {
   final MessageReceivedController controller = Get.find<MessageReceivedController>();
   int uid =0;
+  bool isVoted = false;
 
   @override
   void initState() {
     super.initState();
     _fetchUid();
+
 
   }
 
@@ -243,6 +241,7 @@ class _CommentCardState extends State<CommentCard> {
     final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
+      isVoted = widget.comment.voteUserIds!.contains(uid);
       print(uid);
     });
   }
@@ -333,11 +332,11 @@ class _CommentCardState extends State<CommentCard> {
               ),
             ),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   '',
                   style: TextStyle(fontSize: 14.0),
@@ -353,14 +352,16 @@ class _CommentCardState extends State<CommentCard> {
   }
 
   Widget buildVoteButton() {
-    final bool isVoted = widget.comment.voteUserIds!.isNotEmpty;
     return IconButton(
       onPressed: () {
-        controller.voteComment(uid,widget.comment.id!);
+        setState(() {
+          isVoted = !isVoted; // Toggle the vote state
+        });
+        controller.voteComment(uid, widget.comment.id!);
       },
       icon: Icon(
         isVoted ? Icons.favorite : Icons.favorite_border,
-        color: isVoted ? Colors.red : Colors.red,
+        color: isVoted ? Colors.red : Colors.red, // Use different colors for voted and not voted states
       ),
     );
   }
@@ -425,7 +426,9 @@ class AttachmentWidget extends StatelessWidget {
                 attachment.fileName ?? '',
               );
             });
-            print('here${attachementid}');
+            if (kDebugMode) {
+              print('here$attachementid');
+            }
           },
         )
       ],

@@ -18,6 +18,8 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -85,10 +87,15 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
                             ),
 
                             Text(
-                              ' ${paidDetail.priceUnit} ${paidDetail.currency}',
+                              ' ${paidDetail.priceUnit!.toInt()} ${paidDetail.currency}',
                             ),
 
-                            Align(
+                           isArabic ?Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                ' ${paidDetail.year}',
+                              ),
+                            ):Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
                                 ' ${paidDetail.year}',

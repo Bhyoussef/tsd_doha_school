@@ -77,7 +77,15 @@ const Map<String, String> ar = {
   'connexion_success_text':'لقد قمت بتسجيل الدخول بنجاح',
   'passwordchange':'تم تغيير كلمة المرور الخاصة بك بنجاح ، يرجى تسجيل الدخول مرة أخرى',
   'passwordidentical':'يجب أن تكون كلمة المرور الجديدة وتأكيدها متطابقين',
-  'passwordfailedchange':'فشل في تغيير كلمة المرور الخاصة بك'
+  'passwordfailedchange':'فشل في تغيير كلمة المرور الخاصة بك',
+  'downloadcompleted':'انتهاء التحميل',
+  'filesavedat':'تم حفظ الملف في :',
+  'failedtodownloadfile':'فشل تحميل الملف',
+  'error':'خطأ',
+  'responsesent':'تم إرسال ردك بنجاح',
+  'commentadd':'تم إضافة تعليقك بنجاح',
+  'addResponse':'أضف الرد',
+  'messagesent':'تم ارسال رسالتك بنجاح'
 
 
 

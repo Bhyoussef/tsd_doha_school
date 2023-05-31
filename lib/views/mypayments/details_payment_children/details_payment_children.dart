@@ -28,6 +28,8 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
     return  Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -85,7 +87,12 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
                     Text(
                       ' ${payment.priceUnit} ${payment.currency}',
                     ),
-                    Align(
+                   isArabic? Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        ' ${payment.year}',
+                      ),
+                    ):Align(
                       alignment: Alignment.bottomRight,
                       child: Text(
                         ' ${payment.year}',

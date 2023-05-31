@@ -57,7 +57,7 @@ const Map<String, String> en = {
   'to':'To',
   'areyousureyouwanttologout':'Are you sure you want to log out?',
   'totalpaid':'Total Paid',
-  'totaunlpaid':'Total amount unpaid',
+  'totalunpaid':'Total amount unpaid',
   'select':'Select',
   'credit':'Credit Card',
   'debit':'Debit Card',
@@ -77,7 +77,15 @@ const Map<String, String> en = {
   'connexion_success_text':'You successfully logged in',
   'passwordchange':'Your password has been successfully changed , Please login again',
   'passwordidentical':'The new password and its confirmation must be identical',
-  'passwordfailedchange':'Failed To change your password '
+  'passwordfailedchange':'Failed To change your password ',
+  'downloadcompleted':'Download Completed',
+  'filesavedat':'File saved at :',
+  'failedtodownloadfile':'Failed to download file',
+  'error':'Error',
+  'responsesent':'Your response has been successfully sent',
+  'commentadd':'Your comment has been successfully added',
+  'addResponse':'Add response',
+  'messagesent':'Your message has been sent successfully'
 
 
 
