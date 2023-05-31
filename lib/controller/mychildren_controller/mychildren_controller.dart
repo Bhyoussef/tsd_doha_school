@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/model/exersice_model.dart';
-import 'package:tunisian_school_doha/model/time_table_model.dart';
-import 'package:tunisian_school_doha/utils/shared_preferences.dart';
-import 'package:tunisian_school_doha/model/book_model.dart';
-import 'package:tunisian_school_doha/model/child_model.dart';
-import 'package:tunisian_school_doha/services/mychildren.dart';
+import 'package:tsdoha/model/exersice_model.dart';
+import 'package:tsdoha/model/time_table_model.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+import 'package:tsdoha/model/book_model.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/services/mychildren.dart';
 
 class ChildrenController extends GetxController {
   final children = <Mychildreen>[].obs;

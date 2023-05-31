@@ -52,7 +52,7 @@ class MessageReceivedController extends GetxController {
   Future<void> getComments(uid, int messageId) async {
     try {
       isLoading(true);
-      final commentsList = await ApiServiceMessage.getListComments(6523, messageId);
+      final commentsList = await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
       // Check if comments have attachment IDs and fetch attachments if available
       for (var comment in commentsList) {
@@ -113,21 +113,31 @@ class MessageReceivedController extends GetxController {
   }
 
 
-  Future<String?> addComment(
-      int uid, String body, String messageId
+  Future<void> addCommentWithAttachment(
+      String body,
+      int messageId,
+      String attachmentPath,
+      int uid
       ) async {
     try {
-      isLoading(true);
-      await ApiServiceMessage.addComments(
+      isLoading.value = true;
+      final String? result = await ApiServiceMessage.addComments(
         uid,
         body,
         messageId,
-        //attachementPath,
+        attachmentPath,
       );
+      if (result != null) {
+        //Get.back();
+        // Refresh comments
+      } else {
+        // Failed to add comment
+      }
+    } catch (error) {
+      // Handle error
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
-    return null;
   }
 
 

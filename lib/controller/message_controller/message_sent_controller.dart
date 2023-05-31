@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/model/send_message_model.dart';
+import 'package:tsdoha/model/send_message_model.dart';
 
 import '../../model/message_sent_model.dart';
 import '../../services/message.dart';

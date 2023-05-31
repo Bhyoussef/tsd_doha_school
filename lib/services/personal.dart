@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:tunisian_school_doha/model/child_model.dart';
+import 'package:tsdoha/model/child_model.dart';
 import '../constant/constant.dart';
 import '../model/personal_model.dart';
 

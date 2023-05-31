@@ -1,9 +1,9 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:tunisian_school_doha/views/home/home_screen.dart';
-import 'package:tunisian_school_doha/views/login/login_screen.dart';
-import 'package:tunisian_school_doha/views/mymessages/mymessage_screen.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
+import 'package:tsdoha/views/login/login_screen.dart';
+import 'package:tsdoha/views/mymessages/mymessage_screen.dart';
 
-import 'package:tunisian_school_doha/views/onbording/spalsh_screen.dart';
+import 'package:tsdoha/views/onbording/spalsh_screen.dart';
 
 import '../getx_controller_binding.dart';
 

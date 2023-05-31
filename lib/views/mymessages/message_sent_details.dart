@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../model/message_sent_model.dart';
@@ -19,21 +24,24 @@ class MessageSentDetails extends StatefulWidget {
 class _MessageSentDetailsState extends State<MessageSentDetails> {
   final MesaageSentController controller = Get.find<MesaageSentController>();
 
+  int uid = 0;
 
-  int uid=0;
   @override
   void initState() {
     super.initState();
     _fetchUid();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       controller.getsentmessagedetails(uid, widget.message.id!);
     });
   }
+
   Future<void> _fetchUid() async {
     final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
-      print(uid);
+      if (kDebugMode) {
+        print(uid);
+      }
     });
   }
 
@@ -52,10 +60,12 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
         ),
         centerTitle: true,
         backgroundColor: primarycolor,
-        title:  Text(
+        title: Text(
           'messagedetails'.tr,
           style: const TextStyle(
-              color: CupertinoColors.white, fontWeight: FontWeight.bold),
+            color: CupertinoColors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         elevation: 0,
         actions: [
@@ -69,36 +79,54 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
           ),
         ],
       ),
-      body: Obx(
-        () {
-          if (controller.isLoading.value) {
-            return Center(
-              child: CircularProgressBar(
-                color: primarycolor,
-              ),
-            );
-          } else if (controller.detailssentmessage.isEmpty) {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/imgs/notfound.png'),
-                const Text('No Messages Found')
-              ],
-            ));
-          } else {
-            return ListView.builder(
-                itemCount: controller.detailssentmessage.length,
-                itemBuilder: (context, index) {
-                  final messagelist = controller.detailssentmessage[index];
-                  return MessageCardSent(messagelist);
-                });
-          }
-        },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            MessageContentSent(message: widget.message),
+            Obx(
+                  () {
+                if (controller.isLoading.value) {
+                  return Center(
+                    child: CircularProgressBar(
+                      color: primarycolor,
+                    ),
+                  );
+                } else if (controller.detailssentmessage.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:const  [
+                          Text('No conversation history found')
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return SizedBox(
+                    height: 400, // Provide a specific height for the inner ListView
+                    child: ListView.builder(
+                      itemCount: controller.detailssentmessage.length,
+                      itemBuilder: (context, index) {
+                        final messagelist = controller.detailssentmessage[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: MessageCardSent(messagelist),
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class MessageCardSent extends StatelessWidget {
   final SendMessage message;
@@ -107,7 +135,18 @@ class MessageCardSent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -125,7 +164,7 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'To: ${message.authorId}',
+              "${'to'.tr} : ${message.authorId!}",
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -163,3 +202,132 @@ class MessageCardSent extends StatelessWidget {
     return htmlText.replaceAll(exp, '');
   }
 }
+
+
+
+
+class MessageContentSent extends StatefulWidget {
+  final MessageSent message;
+
+  const MessageContentSent({Key? key, required this.message}) : super(key: key);
+
+  @override
+  State<MessageContentSent> createState() => _MessageContentSentState();
+}
+
+class _MessageContentSentState extends State<MessageContentSent> {
+
+
+  Future<void> downloadFile() async {
+    final base64FileData = widget.message.uploadFile;
+    if (base64FileData != null) {
+      final decodedBytes = base64.decode(base64FileData);
+      final fileName = widget.message.fileName!;
+      final directory = await getExternalStorageDirectory();
+
+      final savedFile = File('${directory!.path}/$fileName');
+      await savedFile.writeAsBytes(decodedBytes);
+
+      await FlutterDownloader.enqueue(
+        url: savedFile.path,
+        savedDir: directory.path,
+        fileName: fileName,
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+    }}
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.message.name!,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "${'to'.tr} : ${widget.message.receiver!}",
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _removeAllHtmlTags(widget.message.message!),
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.message.fileName!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.download,
+                    color: primarycolor,
+                  ),
+                  onPressed: downloadFile,
+                )
+              ],
+            ),
+          ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  widget.message.date!,
+                  style: const TextStyle(fontSize: 14.0),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _removeAllHtmlTags(String htmlText) {
+    if (htmlText == null) return 'N/A';
+    RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+
+    return htmlText.replaceAll(exp, '');
+  }
+}
+
+

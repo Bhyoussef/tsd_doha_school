@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class MessageSent {
   String? name;
   String? fileName;
@@ -9,42 +7,43 @@ class MessageSent {
   String? date;
   String? model;
   int? id;
-  File? uploadFile;
+  String? uploadFile;
 
-  MessageSent(
-      {this.name,
-        this.fileName,
-        this.message,
-        //this.managerId,
-        this.receiver,
-        this.date,
-        this.model,
-        this.id,
-        this.uploadFile});
+  MessageSent({
+    this.name,
+    this.fileName,
+    this.message,
+    this.managerId,
+    this.receiver,
+    this.date,
+    this.model,
+    this.id,
+    this.uploadFile,
+  });
 
   MessageSent.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     fileName = json['file_name'].toString();
     message = json['message'];
-    managerId = json['manager_id'].toString();
+    //managerId = json['manager_id'] as String?;
     receiver = json['receiver'];
     date = json['date'];
     model = json['model'];
     id = json['id'];
-    //uploadFile = json['upload_file'];
+    uploadFile = json['upload_file'] as String?; // Updated type to String
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['file_name'] = this.fileName;
-    data['message'] = this.message;
-    data['manager_id'] = this.managerId.toString();
-    data['receiver'] = this.receiver;
-    data['date'] = this.date;
-    data['model'] = this.model;
-    data['id'] = this.id;
-    data['upload_file'] = this.uploadFile;
+    final Map<String, dynamic> data = {};
+    data['name'] = name;
+    data['file_name'] = fileName;
+    data['message'] = message;
+    data['manager_id'] = managerId;
+    data['receiver'] = receiver;
+    data['date'] = date;
+    data['model'] = model;
+    data['id'] = id;
+    data['upload_file'] = uploadFile;
     return data;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 
 import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';

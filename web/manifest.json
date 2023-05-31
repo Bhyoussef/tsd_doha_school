@@ -1,6 +1,6 @@
 {
-    "name": "tunisian_school_doha",
-    "short_name": "tunisian_school_doha",
+    "name": "tsdoha",
+    "short_name": "tsdoha",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

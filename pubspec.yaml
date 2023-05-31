@@ -1,4 +1,4 @@
-name: tunisian_school_doha
+name: tsdoha
 description: A new Flutter project.
 
 publish_to: 'none'
@@ -29,6 +29,7 @@ dependencies:
   image_picker: ^0.8.4+4
   intl: ^0.18.1
   flutter_spinkit: ^5.1.0
+  flutter_downloader: ^1.6.3
 
 
 dev_dependencies:

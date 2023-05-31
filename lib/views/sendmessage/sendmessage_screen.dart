@@ -1,19 +1,52 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../constant/constant.dart';
 import '../../controller/message_controller/send_message_controller.dart';
 import '../../model/personal_model.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 
-class SendMessageScreen extends StatelessWidget {
-  final SendMessageController controller = Get.put(SendMessageController());
-  final TextEditingController toController = TextEditingController();
-  final TextEditingController recipientController = TextEditingController();
-  final TextEditingController subjectController = TextEditingController();
-  final TextEditingController messageController = TextEditingController();
+class SendMessageScreen extends StatefulWidget {
 
   SendMessageScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SendMessageScreen> createState() => _SendMessageScreenState();
+}
+
+class _SendMessageScreenState extends State<SendMessageScreen> {
+  final SendMessageController controller = Get.put(SendMessageController());
+
+  final TextEditingController toController = TextEditingController();
+
+  final TextEditingController recipientController = TextEditingController();
+
+  final TextEditingController subjectController = TextEditingController();
+
+  final TextEditingController messageController = TextEditingController();
+
+
+  final RxString attachmentPath = RxString('');
+
+  int uid =0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUid();
+
+  }
+
+  Future<void> _fetchUid() async {
+    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    setState(() {
+      uid = fetchedUid;
+      print(uid);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,46 +114,66 @@ class SendMessageScreen extends StatelessWidget {
                 color: primarycolor,
                 textColor: Colors.white,
                 onPressed: () {
-                  final selectedTo = toController.text;
+                /*  final selectedTo = toController.text;
                   final selectedRecipient = recipientController.text;
                   final subject = subjectController.text;
                   final message = messageController.text;
-                  final attachments = controller.attachmentControllers;
+                  final attachments = controller.attachmentController;*/
 
                   String receiverId = '0';
 
-                  if (selectedTo == 'T') {
+                  if (toController.text == 'T') {
                     final selectedTeacher =
                         controller.teacherRecipients.firstWhere(
-                      (teacher) => teacher.name == selectedRecipient,
+                      (teacher) => teacher.name == recipientController.text,
                       orElse: () => Personal(),
                     );
                     receiverId = selectedTeacher.id?.toString() ?? '0';
-                  } else if (selectedTo == 'A') {
+                  } else if (toController.text == 'A') {
                     final selectedAdmin = controller.adminRecipients.firstWhere(
-                      (admin) => admin.name == selectedRecipient,
+                      (admin) => admin.name == recipientController.text,
                       orElse: () => Personal(),
                     );
                     receiverId = selectedAdmin.id?.toString() ?? '0';
                   }
-
-                  SharedData.getFromStorage('parent', 'object', 'uid')
-                      .then((uid) {
-                    controller.createMessage(
+                  controller.createMessage(
                       uid,
-                      selectedTo,
-                      subject,
-                      message,
+                      toController.text,
+                      subjectController.text,
+                      messageController.text,
                       receiverId,
-                      attachments as List<String>,
-                    );
-                  });
+                      attachmentPath.value.toString()
+                  );
+
+                  if (kDebugMode) {
+                    print(toController);
+                  }
+                  if (kDebugMode) {
+                    print(uid);
+                  }
+                  if (kDebugMode) {
+                    print(subjectController.text);
+                  }
+                  if (kDebugMode) {
+                    print(messageController.text);
+                  }
+                  if (kDebugMode) {
+                    print(receiverId);
+                  }
+                  if (kDebugMode) {
+                    print(attachmentPath.value.toString());
+                  }
+
                 },
                 child:  Text(
                   'send'.tr,
                   style:const  TextStyle(fontWeight: FontWeight.bold,color: CupertinoColors.white),
                 ),
               ),
+              const SizedBox(height: 20,),
+              Obx(() => controller.isLoading.value
+                  ?  Center(child: CircularProgressBar(color: primarycolor,))
+                  : Container()),
             ],
           ),
         ),
@@ -244,47 +297,36 @@ class SendMessageScreen extends StatelessWidget {
   }
 
   Widget _buildAttachmentList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-         Text(
-          'attachemnts'.tr,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        Obx(
-          () => ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.attachmentControllers.length,
-            itemBuilder: (context, index) {
-              final attachmentController =
-                  controller.attachmentControllers[index];
-              final attachmentName = attachmentController.text
-                  .split('/')
-                  .last; // Extract the attachment name from the full path
-
-              return Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      attachmentName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+    return Obx(
+          () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'attachemnts'.tr,
+            style:const  TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          if (attachmentPath.value.isNotEmpty)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    attachmentPath.value.split('/').last,
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      controller.removeAttachment(index);
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ],
+                ),
+                IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    attachmentPath.value = '';
+                  },
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 
@@ -295,12 +337,21 @@ class SendMessageScreen extends StatelessWidget {
       color: primarycolor,
       textColor: Colors.white,
       onPressed: () {
-        controller.addAttachment();
+        showAttachmentSelectionDialog();
       },
       child:  Text(
         'addattachment'.tr,
-        style:  const TextStyle(fontWeight: FontWeight.bold,color: CupertinoColors.white),
+        style:const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
+
+  void showAttachmentSelectionDialog() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      attachmentPath.value = pickedFile.path;
+    }
+  }
+
 }

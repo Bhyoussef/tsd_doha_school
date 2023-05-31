@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/utils/shared_preferences.dart';
+import '../../utils/shared_preferences.dart';
+
 
 class LanguageController extends GetxController {
   var savedLang = "EN".obs;

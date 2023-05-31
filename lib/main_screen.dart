@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:tunisian_school_doha/theme/app_colors.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 import 'controller/home_controller.dart';
 import 'controller/auth_controller/login_controller.dart';
 

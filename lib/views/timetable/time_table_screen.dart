@@ -90,10 +90,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                     itemCount: controller.timetable.length,
                     itemBuilder: (context, index) {
                       final timetableEntry = controller.timetable[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: _buildTimetableEntry(timetableEntry),
-                      );
+                      return _buildTimetableEntry(timetableEntry);
                     },
                   ),
                 ),

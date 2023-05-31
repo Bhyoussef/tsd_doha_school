@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../constant/constant.dart';
+import '../controller/message_controller/message_received_controller.dart';
 import '../model/attachement_model.dart';
 import '../model/comments_model.dart';
 import '../model/message_model.dart';
@@ -93,27 +95,81 @@ class ApiServiceMessage {
     }
   }
 
-  static Future<String?> createMessage(
-    int parentId,
-    String receiver,
-    String subject,
-    String message,
-    String receiverId,
-    String attachmentPath,
-  ) async {
-    final url = Uri.parse('${Res.host}/proschool/send_teacher_messaging');
+  static Future<void> createMessage(
+      int parentId,
+      String receiver,
+      String subject,
+      String message,
+      String receiverId,
+      String attachmentPath,
+      ) async {
+     try {
+       final File attachmentFile = File(attachmentPath);
+       final List<int> attachmentBytes = await attachmentFile.readAsBytes();
+       final String attachmentBase64 = base64Encode(attachmentBytes);
+       final url = Uri.parse('${Res.host}/proschool/send_teacher_messaging');
+       final body = jsonEncode({
+         "jsonrpc": "2.0",
+         "method": "call",
+         "params": {
+           "receiver": receiver,
+           "id": receiverId,
+           "uid": parentId,
+           "subject": subject,
+           "message": message,
+           "attachment": attachmentBase64,
+           "name_attachment": attachmentFile.path.split('/').last
+         }
+       });
+       final response = await http.post(
+         url,
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: body,
+       );
+       if (response.statusCode == 200) {
+         final jsonResponse = jsonDecode(response.body);
+         if (jsonResponse['result'][0]['Resultat'] == 'True') {
+           final id = jsonResponse['result'][0]['id'];
+           try {
+             await sendMessage(id);
+             return; // Message sent successfully, exit the method
+           } catch (e) {
+             Get.snackbar(
+               'Error',
+               'Failed to send the message',
+               backgroundColor: Colors.red,
+               colorText: Colors.white,
+               snackPosition: SnackPosition.BOTTOM,
+               margin: const EdgeInsets.all(20),
+             );
+             return; // Return without throwing an exception
+           }
+         }
+       }
+       Get.snackbar(
+         'Error',
+         'Failed to send the message',
+         backgroundColor: Colors.red,
+         colorText: Colors.white,
+         snackPosition: SnackPosition.BOTTOM,
+         margin: const EdgeInsets.all(20),
+       );
+     }catch (e) {
+    print('Exception occurred: $e');
+    return null; // Or handle the exception accordingly
+    }
+  }
+
+
+
+  static Future<void> sendMessage(int idMsg) async {
+    final url = Uri.parse('${Res.host}/proschool/send_parent_messaging');
     final body = jsonEncode({
       "jsonrpc": "2.0",
       "method": "call",
-      "params": {
-        "receiver": receiver,
-        "id": receiverId,
-        "uid": parentId,
-        "subject": subject,
-        "message": message,
-        "attachment": attachmentPath,
-        "name_attachment": ""
-      }
+      "params": {"id": idMsg}
     });
     final response = await http.post(
       url,
@@ -124,29 +180,23 @@ class ApiServiceMessage {
     );
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['result'][0]['Resultat'] == 'True') {
+      if (jsonResponse['result'] == true) {
         Get.snackbar(
-          'Success :',
-          'Your message has been sent successfully ',
+          'Success',
+          'Your message has been sent successfully',
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
         Get.to(() => HomeScreen());
-      } else if (jsonResponse['result'][0]['Resultat'] == 'False') {
-        Get.snackbar(
-          'Error :',
-          'Failed to send your message ',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: const EdgeInsets.all(20),
-        );
+        return; // Message sent successfully, exit the method
       }
     }
-    return null;
+    throw Exception('Failed to send the message');
   }
+
+
 
   static Future<List<Comment>> getListComments(int uid, int messageId) async {
     final response = await http.post(
@@ -180,8 +230,17 @@ class ApiServiceMessage {
     }
   }
 
-  static Future<String?> addComments(int uid, String body, String messageId) async {
+  static Future<String?> addComments(
+    int uid,
+    String body,
+    int messageId,
+    String attachmentPath,
+  ) async {
     try {
+      final File attachmentFile = File(attachmentPath);
+      final List<int> attachmentBytes = await attachmentFile.readAsBytes();
+      final String attachmentBase64 = base64Encode(attachmentBytes);
+
       final response = await http.post(
         Uri.parse('${Res.host}/web/commantedPost'),
         headers: {"Content-Type": "application/json"},
@@ -191,12 +250,12 @@ class ApiServiceMessage {
             "method": "call",
             "uid": uid,
             "params": {
-              "body": body,
-              "model": "proschool.parent.message",
-              "res_id": messageId,
-              "user_id": uid,
-              "attachment": "",
-              "name_attachment": null
+              'body': body,
+              'model': 'proschool.parent.message',
+              'res_id': messageId,
+              'user_id': uid,
+              'attachment': attachmentBase64,
+              'name_attachment': attachmentFile.path.split('/').last
             }
           },
         ),
@@ -207,17 +266,20 @@ class ApiServiceMessage {
         final result = jsonResponse['result'];
 
         if (result != null) {
+          Get.back();
           Get.snackbar(
-            'Success ',
+            'Success',
             'Your comment has been successfully added',
             backgroundColor: Colors.green,
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
             margin: const EdgeInsets.all(20),
           );
+          final MessageReceivedController controller = Get.find();
+          await controller.getComments(uid, messageId);
         } else {
           Get.snackbar(
-            'Error ',
+            'Error',
             'Something went wrong',
             backgroundColor: Colors.red,
             colorText: Colors.white,
@@ -234,8 +296,6 @@ class ApiServiceMessage {
       return null; // Or handle the exception accordingly
     }
   }
-
-
 
   static Future<List<Attachment>> getAllattachements(attachmentIds) async {
     final response = await http.post(
@@ -284,9 +344,7 @@ class ApiServiceMessage {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       if (jsonResponse['result'] != null) {
-      } else if (jsonResponse['result'] == null) {
-
-      }
+      } else if (jsonResponse['result'] == null) {}
       return jsonResponse["result"];
     } else {
       Get.snackbar(

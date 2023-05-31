@@ -47,9 +47,15 @@ class _MessagesScreenState extends State<MessagesScreen>
         child: SafeArea(
           child: TabBar(
             labelColor: Colors.white,
-            indicatorColor: CupertinoColors.white,
-            automaticIndicatorColorAdjustment: true,
-            indicatorWeight: 3.0,
+            labelStyle: const TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
+            indicator:const  BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: CupertinoColors.white,
+                  width: 5.0,
+                ),
+              ),
+            ),
 
             controller: _tabController,
             tabs: [
@@ -61,6 +67,7 @@ class _MessagesScreenState extends State<MessagesScreen>
               ),
             ],
           ),
+
         ),
       ),
       body: TabBarView(
@@ -81,11 +88,14 @@ class _MessagesScreenState extends State<MessagesScreen>
   }
 
   Widget _buildReceivedMessages() {
-    return GetBuilder<MessageReceivedController>(
-      builder: (controller) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Obx(() {
+        final controller = Get.find<MessageReceivedController>();
+
         if (controller.isLoading.value) {
-          return  Center(
-            child: CircularProgressBar(color: primarycolor,),
+          return Center(
+            child: CircularProgressBar(color: primarycolor),
           );
         } else if (controller.receivedMessage.isEmpty) {
           return Column(
@@ -96,89 +106,89 @@ class _MessagesScreenState extends State<MessagesScreen>
             ],
           );
         } else {
-          return Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: ListView.builder(
-              itemCount: controller.receivedMessage.length,
-              itemBuilder: (context, index) {
-                Message message = controller.receivedMessage[index];
-                return GestureDetector(
-                  onTap: () {
-                    if (message.state != 'read') {
-                      // Update the message state to 'read'
-                      //controller.updateMessageState(message.id);
-                    }
-                    Get.to(() => DetailsMessageReceived(message: message,downloadController: downloadController,));
-                    if (kDebugMode) {
-                      print(message.iD);
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MessageCardReceived(
-                      title: message.titleOfMessage ?? '',
-                      image: message.teacherImage ?? '',
-                      sender: message.teacher ?? '',
-                      message: message.message ?? '',
-                      details: '${message.student ?? ''} • ${message.date ?? ''}',
-                      isRead: message.state ?? '',
-                      isAttached: message.attachments!.isEmpty,
-                      attachments: message.attachments!,
-                      downloadController: downloadController,
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildSentMessages() {
-    return GetBuilder<MesaageSentController>(
-      builder: (controller) {
-        if (controller.isLoading.value) {
-          return  Center(
-            child: CircularProgressBar(color: primarycolor,),
-          );
-        } else if (controller.sentedmessage.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/imgs/notfound.png'),
-              const Text('No sent messages Found'),
-            ],
-          );
-        } else {
           return ListView.builder(
-            itemCount: controller.sentedmessage.length,
+            itemCount: controller.receivedMessage.length,
             itemBuilder: (context, index) {
-              MessageSent message = controller.sentedmessage[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: (){
-                    Get.to(()=>MessageSentDetails(message:message));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MessageCardSent(
-                      title: message.name ?? '',
-                      receiver: message.receiver ?? '',
-                      message: message.message ?? '',
-                      date: message.date ?? '',
-                    ),
+              Message message = controller.receivedMessage[index];
+              return GestureDetector(
+                onTap: () {
+                  if (message.state != 'read') {
+                    // Update the message state to 'read'
+                    //controller.updateMessageState(message.id);
+                  }
+                  Get.to(() => DetailsMessageReceived(
+                    message: message,
+                    downloadController: downloadController,
+                  ));
+                  if (kDebugMode) {
+                    print(message.iD);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: MessageCardReceived(
+                    title: message.titleOfMessage ?? '',
+                    image: message.teacherImage ?? '',
+                    sender: message.teacher ?? '',
+                    message: message.message ?? '',
+                    details: '${message.student ?? ''} • ${message.date ?? ''}',
+                    isRead: message.state ?? '',
+                    isAttached: message.attachments!.isEmpty,
+                    attachments: message.attachments!,
+                    downloadController: downloadController,
                   ),
                 ),
               );
             },
           );
         }
-      },
+      }),
     );
   }
+
+
+  Widget _buildSentMessages() {
+    return Obx(() {
+      final controller = Get.find<MesaageSentController>();
+
+      if (controller.isLoading.value) {
+        return Center(
+          child: CircularProgressBar(color: primarycolor),
+        );
+      } else if (controller.sentedmessage.isEmpty) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/imgs/notfound.png'),
+            const Text('No sent messages Found'),
+          ],
+        );
+      } else {
+        return ListView.builder(
+          itemCount: controller.sentedmessage.length,
+          itemBuilder: (context, index) {
+            MessageSent message = controller.sentedmessage[index];
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => MessageSentDetails(message: message));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: MessageCardSent(
+                  title: message.name ?? '',
+                  receiver: message.receiver ?? '',
+                  message: message.message ?? '',
+                  date: message.date ?? '',
+                  uploadedfile:message.uploadFile??''
+                ),
+              ),
+            );
+          },
+        );
+      }
+    });
+  }
+
 }
 
 class MessageCardReceived extends StatelessWidget {
@@ -269,33 +279,6 @@ class MessageCardReceived extends StatelessWidget {
                   ),
                 ),
               ),
-           /*   if (attachments.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Attachments:',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: attachments.length,
-                        itemBuilder: (context, index) {
-                          final attachment = attachments[index];
-                          return Text(
-                            attachment.fileName ?? '',
-                            style: const TextStyle(fontSize: 14.0),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),*/
               const Divider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -356,17 +339,19 @@ class MessageCardSent extends StatelessWidget {
   final String receiver;
   final String message;
   final String date;
+  final String uploadedfile;
 
-  const MessageCardSent({
+  const MessageCardSent({super.key,
     required this.title,
     required this.receiver,
     required this.message,
-    required this.date,
+    required this.date,required this.uploadedfile,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -394,7 +379,7 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'To: $receiver',
+              "${'to'.tr} : $receiver",
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,

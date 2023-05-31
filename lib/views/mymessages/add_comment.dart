@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../constant/constant.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../model/message_model.dart';
 import '../../theme/app_colors.dart';
@@ -59,44 +61,58 @@ class _AddCommentPageState extends State<AddCommentPage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: commentController,
-              maxLines: 3,
-              decoration:  InputDecoration(
-                hintText: 'writeyourcomment'.tr,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                controller: commentController,
+                maxLines: 5,
+                decoration:  InputDecoration(
+                  hintText: 'writeyourcomment'.tr,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _buildAttachmentList(),
-            const SizedBox(height: 20),
-            _buildAddAttachmentButton(),
-            const SizedBox(height: 20),
-            MaterialButton(
-              minWidth: MediaQuery.of(context).size.width,
-              height: 50,
-              color: primarycolor,
-              textColor: Colors.white,
-              onPressed: () {
-               controller.addComment(
-                   uid,
-                   commentController.text,
-                   widget.message.iD.toString());
-                   //attachmentPath.value.toString());
-               print(uid);
-               print(widget.message.iD.toString());
-               print(commentController.text);
-              },
-              child:  Text(
-                'send'.tr,
-                style:const TextStyle(fontWeight: FontWeight.bold),
+              const SizedBox(height: 20),
+              _buildAttachmentList(),
+              const SizedBox(height: 20),
+              _buildAddAttachmentButton(),
+              const SizedBox(height: 20),
+              MaterialButton(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 50,
+                color: primarycolor,
+                textColor: Colors.white,
+                onPressed: () {
+                 controller.addCommentWithAttachment(
+                     commentController.text,
+                     widget.message.iD!,
+                     attachmentPath.value.toString(), uid,);
+                 if (kDebugMode) {
+                   print(uid);
+                 }
+                 if (kDebugMode) {
+                   print(widget.message.iD.toString());
+                 }
+                 if (kDebugMode) {
+                   print(commentController.text);
+                 }
+                 if (kDebugMode) {
+                   print(attachmentPath.value.toString());
+                 }
+                },
+                child:  Text(
+                  'send'.tr,
+                  style:const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20,),
+              Obx(() => controller.isLoading.value
+                  ?  Center(child: CircularProgressBar(color: primarycolor,))
+                  : Container()),
+            ],
+          ),
         ),
       ),
     );

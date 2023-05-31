@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:tunisian_school_doha/services/payment.dart';
+import 'package:tsdoha/services/payment.dart';
 import '../../model/payment_details_model.dart';
 import '../../model/payment_model.dart';
 import '../../utils/shared_preferences.dart';

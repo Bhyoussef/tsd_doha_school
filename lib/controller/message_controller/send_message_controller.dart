@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -12,11 +14,12 @@ class SendMessageController extends GetxController {
   var selectedRecipient = RxString('');
   var subject = RxString('');
   var message = RxString('');
-  var attachmentControllers = <TextEditingController>[].obs; // Updated list type
+  final attachmentController = TextEditingController().obs;
   var teacherRecipients = <Personal>[].obs;
   var adminRecipients = <Personal>[].obs;
   var recipientVisible = RxBool(false);
   var isLoading = false.obs;
+
 
   @override
   void onInit() {
@@ -47,7 +50,7 @@ class SendMessageController extends GetxController {
         }
       }
     } catch (e) {
-        // Handle error
+      // Handle error
     }
   }
 
@@ -57,7 +60,7 @@ class SendMessageController extends GetxController {
       String subject,
       String message,
       String receiverId,
-      List<String> attachmentPaths,
+      String attachmentPath,
       ) async {
     try {
       isLoading(true);
@@ -67,7 +70,7 @@ class SendMessageController extends GetxController {
         subject,
         message,
         receiverId,
-        attachmentPaths as String,
+        attachmentPath,
       );
     } finally {
       isLoading(false);
@@ -75,26 +78,32 @@ class SendMessageController extends GetxController {
     return null;
   }
 
-
   void addAttachment() {
-    _pickAttachment();
+    pickFile();
   }
 
-  void removeAttachment(int index) {
-    attachmentControllers.removeAt(index);
+  void removeAttachment() {
+    attachmentController.value.text = '';
   }
 
-  Future<void> _pickAttachment() async {
+  Future<void> pickFile() async {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      final attachmentPath = pickedFile.path;
-      final attachmentController = TextEditingController(text: attachmentPath);
-      attachmentControllers.add(attachmentController);
-      attachmentController.addListener(() {
-        if (attachmentController.text.isEmpty) {
-          removeAttachment(attachmentControllers.indexOf(attachmentController));
-        }
-      });
+      final filePath = pickedFile.path;
+      final selectedImg = filePath.split('/').last;
+      convertToBase64(selectedImg);
+    } else {
+      // Handle case when no file is picked
     }
-  }}
+  }
+
+  void convertToBase64(String path) async {
+    final file = File(path);
+    final bytes = await file.readAsBytes();
+    final base64Image = base64Encode(bytes);
+    final imagePath = base64Image.split(',')[1];
+    final selectedImgName = imagePath.split('/').last;
+    attachmentController.value.text = selectedImgName;
+  }
+}

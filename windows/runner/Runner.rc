@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "tunisian_school_doha" "\0"
+            VALUE "FileDescription", "tsdoha" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "tunisian_school_doha" "\0"
+            VALUE "InternalName", "tsdoha" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "tunisian_school_doha.exe" "\0"
-            VALUE "ProductName", "tunisian_school_doha" "\0"
+            VALUE "OriginalFilename", "tsdoha.exe" "\0"
+            VALUE "ProductName", "tsdoha" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

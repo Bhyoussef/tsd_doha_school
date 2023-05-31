@@ -1,4 +1,4 @@
-package com.example.tunisian_school_doha
+package com.tsdoha.parent
 
 import io.flutter.embedding.android.FlutterActivity
 
