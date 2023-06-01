@@ -206,27 +206,27 @@ class _MessagesScreenState extends State<MessagesScreen>
 }
 
 class MessageCardReceived extends StatelessWidget {
-  final String title;
-  final String image;
-  final String sender;
-  final String message;
-  final String details;
-  final String isRead;
-  final bool isAttached;
-  final List<Attachments> attachments;
-  final FileDownloadController downloadController;
+  final String? title;
+  final String? image;
+  final String? sender;
+  final String? message;
+  final String? details;
+  final String? isRead;
+  final bool? isAttached;
+  final List<Attachments>? attachments;
+  final FileDownloadController? downloadController;
 
   const MessageCardReceived({
     Key? key,
-    required this.title,
-    required this.image,
-    required this.sender,
-    required this.message,
-    required this.details,
-    required this.isRead,
-    required this.isAttached,
-    required this.attachments,
-    required this.downloadController,
+     this.title,
+     this.image,
+     this.sender,
+     this.message,
+     this.details,
+     this.isRead,
+     this.isAttached,
+     this.attachments,
+     this.downloadController,
   }) : super(key: key);
 
   @override
@@ -254,7 +254,7 @@ class MessageCardReceived extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  title,
+                  title!,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -267,13 +267,13 @@ class MessageCardReceived extends StatelessWidget {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: MemoryImage(base64Decode(image)),
-                      radius: 40.0,
+                      backgroundImage: MemoryImage(base64Decode(image!)),
+                      radius: 30.0,
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
                       child: Text(
-                        sender,
+                        sender!,
                         style: const TextStyle(fontSize: 16.0),
                       ),
                     ),
@@ -300,7 +300,7 @@ class MessageCardReceived extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      details,
+                      details!,
                       style: const TextStyle(fontSize: 14.0),
                     ),
                   ],
@@ -331,7 +331,7 @@ class MessageCardReceived extends StatelessWidget {
               ),
             ),
           ),
-          isAttached
+          isAttached!
               ? Container()
               : isArabic==true ?const Positioned(
             top: 8.0,
@@ -349,17 +349,17 @@ class MessageCardReceived extends StatelessWidget {
 }
 
 class MessageCardSent extends StatelessWidget {
-  final String title;
-  final String receiver;
-  final String message;
-  final String date;
-  final String uploadedfile;
+  final String? title;
+  final String? receiver;
+  final String? message;
+  final String? date;
+  final String? uploadedfile;
 
   const MessageCardSent({super.key,
-    required this.title,
-    required this.receiver,
-    required this.message,
-    required this.date,required this.uploadedfile,
+     this.title,
+     this.receiver,
+     this.message,
+     this.date, this.uploadedfile,
   });
 
   @override
@@ -382,7 +382,7 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              title,
+              title!,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
@@ -403,7 +403,7 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              message,
+              message!,
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
@@ -412,7 +412,7 @@ class MessageCardSent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                date,
+                date!,
                 style: const TextStyle(fontSize: 14.0),
               ),
             ],

@@ -7,9 +7,9 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../../model/child_model.dart';
 
 class ChildCardPayment extends StatelessWidget {
-  final Mychildreen student;
+  final Mychildreen? student;
 
-  const ChildCardPayment({Key? key, required this.student}) : super(key: key);
+  const ChildCardPayment({Key? key,  this.student}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +33,14 @@ class ChildCardPayment extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: _buildCircleAvatar(student.image),
+            child: _buildCircleAvatar(student!.image!),
           ),
             const SizedBox(width: 10),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                isArabic?'${student.nameAr ?? ''} ${student.lastNameAr ?? ''}':'${student.name ?? ''} ${student.lastName ?? ''}',
+                isArabic?'${student!.nameAr! ?? ''} ${student!.lastNameAr! ?? ''}':'${student!.name! ?? ''} ${student!.lastName! ?? ''}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

@@ -84,7 +84,7 @@ const Map<String, String> en = {
   'error':'Error',
   'responsesent':'Your response has been successfully sent',
   'commentadd':'Your comment has been successfully added',
-  'addResponse':'Add response',
+  'addResponse':'Add Response',
   'messagesent':'Your message has been sent successfully'
 
 

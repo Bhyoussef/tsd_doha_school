@@ -77,10 +77,9 @@ class ChildCardWidget extends StatelessWidget {
     if (image != null) {
       try {
         final decodedImage = base64Decode(image.toString());
-
         return CircleAvatar(
           backgroundImage: MemoryImage(decodedImage),
-          radius: 40.0,
+          radius: 30.0,
         );
       } catch (e) {
         if (kDebugMode) {
@@ -90,7 +89,7 @@ class ChildCardWidget extends StatelessWidget {
     }
     return const CircleAvatar(
       backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
-      radius: 40.0,
+      radius: 30.0,
     );
   }
 }

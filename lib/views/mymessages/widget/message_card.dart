@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../../controller/mychildren_controller/dowload_file_controller.dart';
 import '../../../model/message_model.dart';
 import '../../../theme/app_colors.dart';
 import '../../../utils/shared_preferences.dart';
@@ -8,25 +7,25 @@ import '../../../utils/shared_preferences.dart';
 
 
 class MessageCardReceived extends StatelessWidget {
-  final String title;
-  final String image;
-  final String sender;
-  final String message;
-  final String details;
-  final String isRead;
-  final bool isAttached;
-  final List<Attachments> attachments;
+  final String? title;
+  final String? image;
+  final String? sender;
+  final String? message;
+  final String? details;
+  final String? isRead;
+  final bool? isAttached;
+  final List<Attachments>? attachments;
 
 
   const MessageCardReceived({super.key,
-    required this.title,
-    required this.image,
-    required this.sender,
-    required this.message,
-    required this.details,
-    required this.isRead,
-    required this.isAttached,
-    required this.attachments,
+     this.title,
+     this.image,
+     this.sender,
+     this.message,
+     this.details,
+     this.isRead,
+     this.isAttached,
+     this.attachments,
 
   });
 
@@ -48,7 +47,7 @@ class MessageCardReceived extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    title,
+                    title!,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16.0,
@@ -61,13 +60,13 @@ class MessageCardReceived extends StatelessWidget {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: MemoryImage(base64Decode(image)),
+                        backgroundImage: MemoryImage(base64Decode(image!)),
                         radius: 40.0,
                       ),
                       const SizedBox(width: 8.0),
                       Expanded(
                         child: Text(
-                          sender,
+                          sender!,
                           style: const TextStyle(fontSize: 16.0),
                         ),
                       ),
@@ -87,7 +86,7 @@ class MessageCardReceived extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (attachments.isNotEmpty)
+                if (attachments!.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -102,9 +101,9 @@ class MessageCardReceived extends StatelessWidget {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: attachments.length,
+                          itemCount: attachments!.length,
                           itemBuilder: (context, index) {
-                            final attachment = attachments[index];
+                            final attachment = attachments![index];
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -142,7 +141,7 @@ class MessageCardReceived extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        details,
+                        details!,
                         style: const TextStyle(fontSize: 14.0),
                       ),
                     ],
@@ -162,7 +161,7 @@ class MessageCardReceived extends StatelessWidget {
                 ),
               ),
             ),
-            isAttached ? Container() : const Positioned(
+            isAttached! ? Container() : const Positioned(
               top: 8.0,
               right: 25.0,
               child: Icon(Icons.attach_file,),

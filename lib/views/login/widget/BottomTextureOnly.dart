@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class BottomTextureOnly extends StatelessWidget {
   const BottomTextureOnly({
     Key? key,
-    required this.child,
+     this.child,
   }) : super(key: key);
-  final Widget child;
+  final Widget? child;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -16,7 +16,7 @@ class BottomTextureOnly extends StatelessWidget {
           right: 0,
           child: Image.asset('assets/imgs/splashBackgroundTextureBottom.png'),
         ),
-        child,
+        child!,
       ],
     );
   }

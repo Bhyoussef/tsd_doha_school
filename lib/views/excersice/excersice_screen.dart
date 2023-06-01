@@ -6,9 +6,9 @@ import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../theme/app_colors.dart';
 
 class ExerciseScreen extends StatefulWidget {
-  final int studentId;
+  final int? studentId;
 
-  const ExerciseScreen({Key? key, required this.studentId}) : super(key: key);
+  const ExerciseScreen({Key? key,  this.studentId}) : super(key: key);
 
   @override
   State<ExerciseScreen> createState() => _ExerciseScreenState();
@@ -21,7 +21,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchExerciseStudent(widget.studentId);
+      controller.fetchExerciseStudent(widget.studentId!);
     });
   }
 

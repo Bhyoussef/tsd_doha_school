@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../model/auth_model.dart';
+import '../../routes/routes.dart';
 import '../../services/auth.dart';
 import '../../utils/shared_preferences.dart';
 import '../../views/home/home_screen.dart';
@@ -44,8 +45,8 @@ class AuthController extends GetxController {
   }
 
   void logout() async {
-    SharedData.logout();
     SharedData.clearStorage();
-    Get.off(() => const SplashScreen());
+    SharedData.logout();
+    Get.toNamed(Routes.getspalsh());
   }
 }

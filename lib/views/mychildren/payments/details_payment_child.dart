@@ -14,10 +14,10 @@ import '../../../utils/shared_preferences.dart';
 import '../../mypayments/payment_screen.dart';
 
 class DetailsPaymentChild extends StatefulWidget {
-  final int studentId;
-  final Mychildreen student;
+  final int? studentId;
+  final Mychildreen? student;
   const DetailsPaymentChild(
-      {Key? key, required this.studentId, required this.student})
+      {Key? key,  this.studentId,  this.student})
       : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      paymentController.fetchingTotalPaymentsStudents(widget.studentId);
+      paymentController.fetchingTotalPaymentsStudents(widget.studentId!);
     });
   }
 
@@ -76,7 +76,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
           return ListView(
             children: [
               ChildCardPayment(
-                student: widget.student,
+                student: widget.student!,
               ),
               const SizedBox(height: 15),
               ListView.builder(
@@ -87,7 +87,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
                   final paymentTotal = controller.paymentsTotalstudents[index];
                   return PaymentListItem(
                     paymentTotal: paymentTotal,
-                    student: widget.student,
+                    student: widget.student!,
                   );
                 },
               ),

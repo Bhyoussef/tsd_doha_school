@@ -6,9 +6,9 @@ import '../details_payments_parent/details_payment_paid_parents.dart';
 import '../details_payments_parent/details_unpaid_payments_parents.dart';
 
 class PaymentListItem extends StatelessWidget {
-  final Payment paymentTotal;
+  final Payment? paymentTotal;
 
-  const PaymentListItem({Key? key, required this.paymentTotal})
+  const PaymentListItem({Key? key,  this.paymentTotal})
       : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class PaymentListItem extends StatelessWidget {
                   'totalpaid'.tr,
                   style:const  TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('${paymentTotal.totPaid.toString()} ${paymentTotal.currency}'),
+                subtitle: Text('${paymentTotal!.totPaid!.toString()} ${paymentTotal!.currency!}'),
                 trailing: const Icon(
                   Icons.payment,
                   color: Colors.green,
@@ -50,7 +50,7 @@ class PaymentListItem extends StatelessWidget {
                   'totalunpaid'.tr,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('${paymentTotal.totUnpaid.toString()} ${paymentTotal.currency}'),
+                subtitle: Text('${paymentTotal!.totUnpaid!.toString()} ${paymentTotal!.currency!}'),
                 trailing: const Icon(
                   Icons.payment,
                   color: Colors.red,

@@ -10,8 +10,8 @@ import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 
 class AddCommentPage extends StatefulWidget {
-  final Message message;
-  const AddCommentPage({Key? key, required this.message}) : super(key: key);
+  final Message? message;
+  const AddCommentPage({Key? key,  this.message}) : super(key: key);
 
   @override
   _AddCommentPageState createState() => _AddCommentPageState();
@@ -37,7 +37,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
     setState(() {
       uid = fetchedUid;
       print(uid);
-      print(widget.message.iD.toString());
+      print(widget.message!.iD.toString());
       print(commentController.text);
     });
   }
@@ -87,13 +87,13 @@ class _AddCommentPageState extends State<AddCommentPage> {
                 onPressed: () {
                  controller.addCommentWithAttachment(
                      commentController.text,
-                     widget.message.iD!,
+                     widget.message!.iD!,
                      attachmentPath.value.toString(), uid,);
                  if (kDebugMode) {
                    print(uid);
                  }
                  if (kDebugMode) {
-                   print(widget.message.iD.toString());
+                   print(widget.message!.iD.toString());
                  }
                  if (kDebugMode) {
                    print(commentController.text);

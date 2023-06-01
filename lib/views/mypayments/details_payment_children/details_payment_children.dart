@@ -7,8 +7,8 @@ import '../../../model/child_model.dart';
 import '../../../theme/app_colors.dart';
 
 class TotalPaymentsChildren extends StatefulWidget {
-  final Mychildreen student;
-    const TotalPaymentsChildren({Key? key, required this.student}) : super(key: key);
+  final Mychildreen? student;
+    const TotalPaymentsChildren({Key? key,  this.student}) : super(key: key);
 
   @override
   State<TotalPaymentsChildren> createState() => _TotalPaymentsChildrenState();
@@ -22,7 +22,7 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       paymentController.fetchingTotalPaymentsStudentsDetail(
-          widget.student.studentId!);
+          widget.student!.studentId!);
     });
   }
 

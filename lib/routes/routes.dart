@@ -33,12 +33,12 @@ class Routes {
     ),
     GetPage(
       name: messagescreen,
-      page: () => MessagesScreen(),
+      page: () => const MessagesScreen(),
       binding: ControllersBinding(),
     ),
     GetPage(
       name: splashscreen,
-      page: () => const SplashScreen(),
+      page: () =>  const SplashScreen(),
       binding: ControllersBinding(),
     ),
   ];

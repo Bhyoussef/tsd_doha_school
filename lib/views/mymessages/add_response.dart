@@ -10,8 +10,9 @@ import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 
 class AddResponse extends StatefulWidget {
-  final MessageSent message;
-  const AddResponse({Key? key, required this.message}) : super(key: key);
+  final MessageSent? message;
+  final Function? refreshCallback;
+  const AddResponse({Key? key,  this.message,  this.refreshCallback}) : super(key: key);
 
   @override
   State<AddResponse> createState() => _AddResponseState();
@@ -87,13 +88,13 @@ class _AddResponseState extends State<AddResponse> {
                 onPressed: () {
                   controller.addCommentWithAttachment(
                     responsecontroller.text,
-                    widget.message.id!,
+                    widget.message!.id!,
                     attachmentPath.value.toString(), uid,);
                   if (kDebugMode) {
                     print(uid);
                   }
                   if (kDebugMode) {
-                    print(widget.message.id.toString());
+                    print(widget.message!.id.toString());
                   }
                   if (kDebugMode) {
                     print(responsecontroller.text);
@@ -101,6 +102,7 @@ class _AddResponseState extends State<AddResponse> {
                   if (kDebugMode) {
                     print(attachmentPath.value.toString());
                   }
+                  //widget.refreshCallback();
                 },
                 child:  Text(
                   'send'.tr,

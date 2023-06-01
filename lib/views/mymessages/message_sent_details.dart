@@ -9,6 +9,7 @@ import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../model/message_sent_model.dart';
 import '../../model/send_message_model.dart';
+import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 import 'add_response.dart';
@@ -44,6 +45,13 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
       }
     });
   }
+  void _refreshMessageDetails() {
+    print(widget.message.id);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      controller.getsentmessagedetails(uid, widget.message.id!);
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +79,15 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],
@@ -101,11 +114,11 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
               return ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
-                  MessageContentSent(message: widget.message),
+                 // MessageContentSent(message: widget.message),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:  [
-                      Padding(
+                   /*   Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           'Response'.tr,
@@ -115,7 +128,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
                             fontSize: 25,
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                   response()
@@ -130,7 +143,8 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) =>  AddResponse(message:widget.message),
+            builder: (context) =>  AddResponse(message:widget.message,
+                refreshCallback: _refreshMessageDetails),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -146,6 +160,8 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
         ),
       ),
     );
+
+
 
   }
 
@@ -174,7 +190,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
           return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.detailssentmessage.length,
+            itemCount: controller.detailssentmessage.length -1,
             itemBuilder: (context, index) {
               final messagelist = controller.detailssentmessage[index];
               return Padding(
@@ -302,9 +318,9 @@ class MessageCardSent extends StatelessWidget {
 
 
 class MessageContentSent extends StatefulWidget {
-  final MessageSent message;
+  final MessageSent? message;
 
-  const MessageContentSent({Key? key, required this.message}) : super(key: key);
+  const MessageContentSent({Key? key,  this.message}) : super(key: key);
 
   @override
   State<MessageContentSent> createState() => _MessageContentSentState();
@@ -331,7 +347,7 @@ class _MessageContentSentState extends State<MessageContentSent> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.message.name!,
+              widget.message!.name!,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
@@ -342,7 +358,7 @@ class _MessageContentSentState extends State<MessageContentSent> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "${'to'.tr} : ${widget.message.receiver!}",
+              "${'to'.tr} : ${widget.message!.receiver!}",
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -356,17 +372,17 @@ class _MessageContentSentState extends State<MessageContentSent> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              _removeAllHtmlTags(widget.message.message!),
+              _removeAllHtmlTags(widget.message!.message!),
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
-         widget.message.fileName == "false"?Container(): Padding(
+         widget.message!.fileName! == "false"?Container(): Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.message.fileName!,
+                  widget.message!.fileName!,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -378,7 +394,7 @@ class _MessageContentSentState extends State<MessageContentSent> {
                     color: primarycolor,
                   ),
                   onPressed: () {
-                    _downloadFile(widget.message.fileName!, widget.message.uploadFile!);
+                    _downloadFile(widget.message!.fileName!, widget.message!.uploadFile!);
                   },
                 ),
               ],
@@ -391,7 +407,7 @@ class _MessageContentSentState extends State<MessageContentSent> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  widget.message.date!,
+                  widget.message!.date!,
                   style: const TextStyle(fontSize: 14.0),
                 ),
               ],

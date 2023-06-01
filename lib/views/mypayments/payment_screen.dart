@@ -9,21 +9,21 @@ import '../../theme/app_colors.dart';
 import '../mychildren/payments/details_payment_child.dart';
 
 class PaymentScreen extends StatelessWidget {
-  final Mychildreen student;
-  final String schoolCode;
-  final int parentID;
-  final int childID;
-  final double amount;
-  final List<int> lineIDs;
+  final Mychildreen? student;
+  final String? schoolCode;
+  final int? parentID;
+  final int? childID;
+  final double? amount;
+  final List<int>? lineIDs;
 
   const PaymentScreen({
     Key? key,
-    required this.schoolCode,
-    required this.parentID,
-    required this.childID,
-    required this.amount,
-    required this.lineIDs,
-    required this.student,
+     this.schoolCode,
+     this.parentID,
+     this.childID,
+     this.amount,
+     this.lineIDs,
+     this.student,
   }) : super(key: key);
 
   @override
@@ -181,7 +181,7 @@ class PaymentScreen extends StatelessWidget {
   }
 
   void openCreditBrowser(BuildContext context) {
-    List<String> encodedLines = lineIDs.map((item) => 'lines[]=$item').toList();
+    List<String> encodedLines = lineIDs!.map((item) => 'lines[]=$item').toList();
     String lines = encodedLines.join('&');
 
     String url =
@@ -202,9 +202,9 @@ class PaymentScreen extends StatelessWidget {
   }
 
   void openDebitBrowser(BuildContext context) {
-    List<String> encodedLines = lineIDs.map((item) => 'lines[]=$item').toList();
+    List<String> encodedLines = lineIDs!.map((item) => 'lines[]=$item').toList();
     String lines = encodedLines.join('&');
-    final double amountdebit = amount * 100;
+    final double amountdebit = amount! * 100;
     final int amountdeb = amountdebit.toInt();
     String url =
         'https://payment.tsdoha.com/sts/checkout?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amountdeb&$lines';
@@ -237,7 +237,7 @@ class PaymentScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Get.to(() => TotalImpaidChild(
-                      student: student,
+                      student: student!,
                     ));
               },
               child: const Text('OK'),
@@ -250,15 +250,15 @@ class PaymentScreen extends StatelessWidget {
 }
 
 class WebViewScreen extends StatefulWidget {
-  final String url;
-  final VoidCallback successCallback;
-  final VoidCallback errorCallback;
+  final String? url;
+  final VoidCallback? successCallback;
+  final VoidCallback? errorCallback;
 
   const WebViewScreen({
     Key? key,
-    required this.url,
-    required this.successCallback,
-    required this.errorCallback,
+     this.url,
+     this.successCallback,
+     this.errorCallback,
   }) : super(key: key);
 
   @override
@@ -299,10 +299,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
             javascriptMode: JavascriptMode.unrestricted,
             navigationDelegate: (NavigationRequest request) {
               if (request.url.contains('payment/success')) {
-                widget.successCallback();
+                widget!.successCallback!();
                 return NavigationDecision.prevent;
               } else if (request.url.contains('payment/error')) {
-                widget.errorCallback();
+                widget!.errorCallback!();
                 return NavigationDecision.prevent;
               }
               return NavigationDecision.navigate;

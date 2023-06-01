@@ -118,9 +118,9 @@ class LoginScreen extends StatelessWidget {
 }
 
 class TopRedSection extends StatelessWidget {
-  final Size size;
+  final Size? size;
 
-  const TopRedSection({super.key, required this.size});
+  const TopRedSection({super.key,  this.size});
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

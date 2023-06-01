@@ -14,8 +14,8 @@ import '../timetable/time_table_screen.dart';
 import 'payments/details_payment_child.dart';
 
 class DetailScreen extends StatelessWidget {
-  final Mychildreen student;
-  const DetailScreen({Key? key, required this.student}) : super(key: key);
+  final Mychildreen? student;
+  const DetailScreen({Key? key,  this.student}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,32 +54,32 @@ class DetailScreen extends StatelessWidget {
                     width: double.infinity,
                     child: Column(
                       children: [
-                        _buildCircleAvatar(student.image),
+                        _buildCircleAvatar(student!.image),
                         const SizedBox(height: 8.0),
                         Text(
-                          '${student.name ?? ''} ${student.lastName ?? ''}',
+                          '${student!.name ?? ''} ${student!.lastName ?? ''}',
                           style: const TextStyle(
                               fontSize: 20, color: Colors.white),
                         ),
                         const SizedBox(height: 4.0),
                         Text(
-                          '${student.nameAr ?? ''} ${student.lastNameAr ?? ''}',
+                          '${student!.nameAr ?? ''} ${student!.lastNameAr ?? ''}',
                           style: const TextStyle(
                               fontSize: 16, color: Colors.white),
                         ),
                         const SizedBox(height: 4.0),
                         Text(
-                          student.academicYear.toString(),
+                          student!.academicYear.toString(),
                           style: const TextStyle(
                               fontSize: 16, color: Colors.white),
                         ),
                         GestureDetector(
                           onTap: () =>
-                              _showQrImageDialog(context, student.ref!),
+                              _showQrImageDialog(context, student!.ref!),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: QrImageView(
-                              data: student.ref!,
+                              data: student!.ref!,
                               version: QrVersions.auto,
                               backgroundColor: Colors.white,
                               size: 100.0,
@@ -89,7 +89,7 @@ class DetailScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: Text(
-                            student.ref.toString(),
+                            student!.ref.toString(),
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.white),
                           ),
@@ -208,11 +208,11 @@ class DetailScreen extends StatelessWidget {
   }
 
   void navigateToExercisePage() {
-    Get.to(() => ExerciseScreen(studentId: student.studentId!));
+    Get.to(() => ExerciseScreen(studentId: student!.studentId!));
   }
 
   void navigateToBookPage() {
-    Get.to(() => BookListScreen(studentId: student.studentId!));
+    Get.to(() => BookListScreen(studentId: student!.studentId!));
   }
 
   void navigateToDisciplinePage() {
@@ -221,14 +221,14 @@ class DetailScreen extends StatelessWidget {
 
   void navigateToPaymentPage() {
     Get.to(() => DetailsPaymentChild(
-          studentId: student.studentId!,
-          student: student,
+          studentId: student!.studentId!,
+          student: student!,
         ));
   }
 
   void navigateToTimeTablePage() {
     Get.to(
-        () => TimeTableScreen(studentId: student.studentId!, student: student));
+        () => TimeTableScreen(studentId: student!.studentId!, student: student!));
   }
 }
 

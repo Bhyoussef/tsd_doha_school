@@ -114,11 +114,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                 color: primarycolor,
                 textColor: Colors.white,
                 onPressed: () {
-                /*  final selectedTo = toController.text;
-                  final selectedRecipient = recipientController.text;
-                  final subject = subjectController.text;
-                  final message = messageController.text;
-                  final attachments = controller.attachmentController;*/
+
 
                   String receiverId = '0';
 

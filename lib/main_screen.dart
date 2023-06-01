@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tsdoha/theme/app_colors.dart';
+import 'constant/constant.dart';
 import 'controller/home_controller.dart';
 import 'controller/auth_controller/login_controller.dart';
 
@@ -202,7 +203,7 @@ class LogoutDialog extends StatelessWidget {
       title:  Text('logout'.tr),
       content: Obx(
         () => _authController.isLoading.value
-            ?  CircularProgressIndicator(color: primarycolor,)
+            ?  CircularProgressBar(color: primarycolor,)
             :  Text('areyousureyouwanttologout'.tr),
       ),
       actions: <Widget>[

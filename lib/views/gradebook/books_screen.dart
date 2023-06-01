@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constant/constant.dart';
@@ -9,9 +10,9 @@ import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 
 class BookListScreen extends StatefulWidget {
-  final int studentId;
+  final int? studentId;
 
-  const BookListScreen({Key? key, required this.studentId}) : super(key: key);
+  const BookListScreen({Key? key,  this.studentId}) : super(key: key);
 
   @override
   State<BookListScreen> createState() => _BookListScreenState();
@@ -26,7 +27,7 @@ class _BookListScreenState extends State<BookListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchBooksStudents(widget.studentId);
+      controller.fetchBooksStudents(widget.studentId!);
     });
   }
 
@@ -91,11 +92,11 @@ class _BookListScreenState extends State<BookListScreen> {
 }
 
 class BookCard extends StatelessWidget {
-  final Book book;
-  final FileDownloadController downloadController;
+  final Book? book;
+  final FileDownloadController? downloadController;
 
   const BookCard(
-      {Key? key, required this.book, required this.downloadController})
+      {Key? key,  this.book,  this.downloadController})
       : super(key: key);
 
   @override
@@ -120,18 +121,18 @@ class BookCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(book.academic ?? ''),
+                Text(book!.academic ?? ''),
 
-                if (book.attachments!.isNotEmpty)
+                if (book!.attachments!.isNotEmpty)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: book.attachments!.length,
+                        itemCount: book!.attachments!.length,
                         itemBuilder: (context, index) {
-                          final attachment = book.attachments![index];
+                          final attachment = book!.attachments![index];
                           return Row(
                             children: [
                               Expanded(
@@ -142,13 +143,15 @@ class BookCard extends StatelessWidget {
                                   color: primarycolor ,),
                                 onPressed: () {
                                   SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                                    downloadController.downloadFile(
+                                    downloadController!.downloadFile(
                                       uid,
                                       attachment.id.toString(),
                                       attachment.fileName ?? '',
 
                                     );
-                                    print(attachment.id);
+                                    if (kDebugMode) {
+                                      print(attachment.id);
+                                    }
                                   });
                                 },
                               ),

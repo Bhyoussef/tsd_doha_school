@@ -29,7 +29,7 @@ class MesaageSentController extends GetxController {
       isLoading(true);
       final messageList =
           await ApiServiceMessage.getMessagesSented(uid);
-      sentedmessage.assignAll(messageList);
+      sentedmessage.assignAll(messageList.reversed.toList());
       update();
     } finally {
       isLoading(false);
@@ -90,8 +90,10 @@ class MesaageSentController extends GetxController {
         attachmentPath,
       );
       if (result != null) {
-        //Get.back();
-        // Refresh comments
+
+        await getsentmessagedetails(uid, messageId);
+
+
       } else {
         // Failed to add comment
       }

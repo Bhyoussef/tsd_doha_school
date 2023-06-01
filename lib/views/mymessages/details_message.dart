@@ -213,11 +213,11 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
 }
 
 class CommentCard extends StatefulWidget {
-  final Comment comment;
+  final Comment? comment;
 
    CommentCard({
     Key? key,
-    required this.comment,
+     this.comment,
   }) : super(key: key);
 
   @override
@@ -241,7 +241,7 @@ class _CommentCardState extends State<CommentCard> {
     final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
-      isVoted = widget.comment.voteUserIds!.contains(uid);
+      isVoted = widget.comment!.voteUserIds!.contains(uid);
       print(uid);
     });
   }
@@ -267,7 +267,7 @@ class _CommentCardState extends State<CommentCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.comment.recordName!,
+                  widget.comment!.recordName!,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -283,13 +283,13 @@ class _CommentCardState extends State<CommentCard> {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: _buildCircleAvatar(widget.comment.authorId!.image!),
-                  radius: 40.0,
+                  backgroundImage: _buildCircleAvatar(widget.comment!.authorId!.image!),
+                  radius: 30.0,
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: Text(
-                    widget.comment.authorId!.name!,
+                    widget.comment!.authorId!.name!,
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ),
@@ -298,10 +298,10 @@ class _CommentCardState extends State<CommentCard> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text( _removeAllHtmlTags(widget.comment.body!),
+            child: Text( _removeAllHtmlTags(widget.comment!.body!),
            maxLines: 5, ),
           ),
-          if (widget.comment.attachments != null && widget.comment.attachments!.isNotEmpty)
+          if (widget.comment!.attachments != null && widget.comment!.attachments!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -322,8 +322,8 @@ class _CommentCardState extends State<CommentCard> {
                       return Wrap(
                         spacing: 8.0,
                         runSpacing: 8.0,
-                        children: widget.comment.attachments!
-                            .map((attachment) => AttachmentWidget(attachment: attachment, comment: widget.comment,))
+                        children: widget.comment!.attachments!
+                            .map((attachment) => AttachmentWidget(attachment: attachment, comment: widget.comment!,))
                             .toList(),
                       );
                     }
@@ -357,7 +357,7 @@ class _CommentCardState extends State<CommentCard> {
         setState(() {
           isVoted = !isVoted; // Toggle the vote state
         });
-        controller.voteComment(uid, widget.comment.id!);
+        controller.voteComment(uid, widget.comment!.id!);
       },
       icon: Icon(
         isVoted ? Icons.favorite : Icons.favorite_border,
@@ -541,7 +541,7 @@ class MessageCardReceived extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundImage: MemoryImage(base64Decode(image)),
-                        radius: 40.0,
+                        radius: 30.0,
                       ),
                       const SizedBox(width: 8.0),
                       Expanded(
