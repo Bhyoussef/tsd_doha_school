@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'languages/translation.dart';
 import 'routes/routes.dart';
@@ -9,8 +8,6 @@ import 'utils/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize();
-  // SharedData.clearStorage();
   app();
 }
 
@@ -31,12 +28,12 @@ void app() async {
       }
     }
     runApp(
-      MyApp(route: Routes.loginscreen, language: language),
+      MyApp(route: Routes.loginScreen, language: language),
     );
   }
 
   runApp(
-    MyApp(route: Routes.splashscreen, language: 'en'),
+    MyApp(route: Routes.splashScreen, language: 'en'),
   );
 }
 

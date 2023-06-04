@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> pushNextScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 4));
     Get.to(() => const LanguageScreen());
   }
 }

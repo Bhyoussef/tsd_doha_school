@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
+import '../../controller/dowload_file_controller.dart';
 import '../../model/message_sent_model.dart';
 import '../../model/send_message_model.dart';
 import '../../routes/routes.dart';
@@ -106,7 +107,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset('assets/imgs/notfound.png'),
-                      const Text('No conversation history found')
+                        Text('noconversationfound'.tr)
                     ],
                   )
               );
@@ -115,7 +116,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                  // MessageContentSent(message: widget.message),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:  [
                    /*   Padding(
@@ -141,9 +142,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) =>  AddResponse(message:widget.message,
+         Get.to(()=> AddResponse(message:widget.message,
                 refreshCallback: _refreshMessageDetails),
           );
         },
@@ -175,13 +174,13 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
             ),
           );
         } else if (controller.detailssentmessage.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.all(8.0),
+          return  Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('No conversation history found')
+                  Text('noconversationfound'.tr)
                 ],
               ),
             ),
@@ -206,11 +205,17 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
 }
 
 
-class MessageCardSent extends StatelessWidget {
+class MessageCardSent extends StatefulWidget {
   final SendMessage message;
 
   const MessageCardSent(this.message, { Key? key});
 
+  @override
+  State<MessageCardSent> createState() => _MessageCardSentState();
+}
+
+class _MessageCardSentState extends State<MessageCardSent> {
+  final FileDownloadController controller = Get.find<FileDownloadController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -231,7 +236,7 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              message.displayName!,
+              widget.message.displayName!,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
@@ -242,7 +247,7 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "${'to'.tr} : ${message.authorId!}",
+              "${'to'.tr} : ${widget.message.authorId!}",
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -252,43 +257,58 @@ class MessageCardSent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              _removeAllHtmlTags(message.message!),
+              _removeAllHtmlTags(widget.message.message!),
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
 
-          message.attachmentName!.isEmpty?Container():Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: message.attachmentName!.length,
-                    itemBuilder: (context, index) {
-                      final attachmentName = message.attachmentName![index];
-                      return Text(
-                        attachmentName,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.download,
-                    color: primarycolor,
-                  ),
-                  onPressed: () {
+          widget.message.attachmentName!.isEmpty?Container():Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: widget.message.attachmentName!.length,
+                  itemBuilder: (context, index) {
+                    final attachmentName = widget.message.attachmentName![index];
+                    final attachmentId = widget.message.attachmentIds![index];
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
 
+                            attachmentName,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.download,
+                            color: primarycolor,
+                          ),
+                          onPressed: () {
+                            final cleanedBase64Image = attachmentId.replaceAll('\n', '');
+                            controller.download(
+                                cleanedBase64Image,attachmentName);
+                            print(attachmentId);
+                            print(attachmentName);
+
+                            },
+                        ),
+                      ],
+                    );
                   },
                 ),
-              ],
-            ),
+              ),
+
+            ],
           ),
           const Divider(),
           Padding(
@@ -297,7 +317,7 @@ class MessageCardSent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  message.date!,
+                  widget.message.date!,
                   style: const TextStyle(fontSize: 14.0),
                 ),
               ],
@@ -397,6 +417,7 @@ class _MessageContentSentState extends State<MessageContentSent> {
                     _downloadFile(widget.message!.fileName!, widget.message!.uploadFile!);
                   },
                 ),
+
               ],
             ),
           ),

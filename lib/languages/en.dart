@@ -85,7 +85,12 @@ const Map<String, String> en = {
   'responsesent':'Your response has been successfully sent',
   'commentadd':'Your comment has been successfully added',
   'addResponse':'Add Response',
-  'messagesent':'Your message has been sent successfully'
+  'messagesent':'Your message has been sent successfully',
+  'moyenne':'Average :',
+  'nopaymentshistoryfound':'No payments history found',
+  'noconversationfound':'No conversation found',
+  'nomessagefound':'No message found',
+  'notimetablefound':'No time table found',
 
 
 

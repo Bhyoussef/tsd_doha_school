@@ -15,25 +15,23 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final PasswordChangeController _passwordChangeController =
-  Get.put(PasswordChangeController());
+      Get.put(PasswordChangeController());
 
   final _oldpassword = TextEditingController();
-
   final _newpassword = TextEditingController();
-
   final _confirmpassword = TextEditingController();
 
-   int uid =0;
+  int uid = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchUid();
-
   }
 
   Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final fetchedUid =
+        await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
       print(uid);
@@ -51,7 +49,6 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 PasswordFormField(
                   controller: _oldpassword,
                   labelText: 'oldpassword'.tr,
@@ -103,14 +100,16 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                     child: Text(
                       'update'.tr,
                       style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
                 const SizedBox(height: 32.0),
                 Obx(() => _passwordChangeController.isLoading.value
-                    ?  Center(child: CircularProgressBar(color: primarycolor,))
+                    ? Center(
+                        child: CircularProgressBar(
+                        color: primarycolor,
+                      ))
                     : Container()),
               ],
             ),
@@ -120,5 +119,3 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     );
   }
 }
-
-

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
-import '../../constant/constant.dart';
-import '../../theme/app_colors.dart';
+import '../constant/constant.dart';
+import '../theme/app_colors.dart';
 
 class FileDownloadController extends GetxController {
   Future<void> downloadFile(int uid, String fileId, String fileName) async {
@@ -31,174 +31,89 @@ class FileDownloadController extends GetxController {
 
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
-        // Add more permissions to request here if needed.
       ].request();
 
-      if (statuses[Permission.storage]!.isGranted) {
-        var dir = await DownloadsPathProvider.downloadsDirectory;
-        if (dir != null) {
-          String saveName = fileName;
-          String savePath = "${dir.path}/$saveName";
-          print(savePath);
-
-          try {
-            await File(savePath).writeAsBytes(fileBytes, flush: true);
-            showDialog(
-              context: Get.overlayContext!,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Download Completed'),
-                  content: Text('File saved at: $savePath'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child:  Text(
-                        'OK',
-                        style: TextStyle(
-                          color: primarycolor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          } on IOException catch (e) {
-            showDialog(
-              context: Get.overlayContext!,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Error'),
-                  content: const Text('Failed to download the file.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child:  Text(
-                        'OK',
-                        style: TextStyle(color: primarycolor),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        }
-      } else {
-        print("No permission to read and write.");
-      }
-    } catch (error) {
-      showDialog(
-        context: Get.overlayContext!,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Failed to download the file.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child:  Text(
-                  'OK',
-                  style: TextStyle(color: primarycolor),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-      if (kDebugMode) {
-        print(error);
-      }
-    }
-  }
-
-
-
-
-  Future<void> download( String attachement ,String attachementName) async {
-    try {
-
-
-
-      final fileBytes = base64Decode(attachement);
-      Map<Permission, PermissionStatus> statuses = await [
-        Permission.storage,
-
-      ].request();
-
-      if (statuses[Permission.storage]!.isGranted) {
-        var dir = await DownloadsPathProvider.downloadsDirectory;
-        if (dir != null) {
-          String saveName = attachementName;
-          String savePath = "${dir.path}/$saveName";
-          if (kDebugMode) {
-            print(savePath);
-          }
-
-          try {
-            await File(savePath).writeAsBytes(fileBytes, flush: true);
-            showDialog(
-              context: Get.overlayContext!,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Download Completed'),
-                  content: Text('File saved at: $savePath'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child:  Text(
-                        'ok'.tr,
-                        style: TextStyle(
-                          color: primarycolor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          } on IOException catch (e) {
-            showDialog(
-              context: Get.overlayContext!,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Error'),
-                  content: const Text('Failed to download the file.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child:  Text(
-                        'ok'.tr,
-                        style: TextStyle(color: primarycolor),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        }
-      } else {
+      var dir = await DownloadsPathProvider.downloadsDirectory;
+      if (dir != null) {
+        String savePath = await getUniqueFilePath(dir.path, fileName);
         if (kDebugMode) {
-          print("No permission to read and write.");
+          print(savePath);
+        }
+
+        try {
+          await File(savePath).writeAsBytes(fileBytes, flush: true);
+
+          final file = File(savePath);
+          if (await file.exists()) {
+            showDialog(
+              context: Get.overlayContext!,
+              builder: (context) {
+                return AlertDialog(
+                  title:  Text('downloadcompleted'.tr),
+                  content: Text('${'filesavedat'.tr} $savePath'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child:  Text(
+                        'ok'.tr,
+                        style: TextStyle(
+                          color: primarycolor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            showDialog(
+              context: Get.overlayContext!,
+              builder: (context) {
+                return AlertDialog(
+                  title:  Text('error'.tr),
+                  content:  Text('failedtodownloadfile'.tr),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child:  Text(
+                        'ok'.tr,
+                        style: TextStyle(color: primarycolor),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        } on IOException catch (e) {
+          showDialog(
+            context: Get.overlayContext!,
+            builder: (context) {
+              return AlertDialog(
+                title:  Text('error'.tr),
+                content:  Text('failedtodownloadfile'.tr),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child:  Text(
+                      'ok'.tr,
+                      style: TextStyle(color: primarycolor),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+          if (kDebugMode) {
+            print(e);
+          }
         }
       }
     } catch (error) {
@@ -206,8 +121,8 @@ class FileDownloadController extends GetxController {
         context: Get.overlayContext!,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Failed to download the file.'),
+            title:  Text('error'.tr),
+            content:  Text('failedtodownloadfile'.tr),
             actions: [
               TextButton(
                 onPressed: () {
@@ -227,6 +142,154 @@ class FileDownloadController extends GetxController {
       }
     }
   }
+
+  Future<void> download(String attachment, String attachmentName) async {
+    try {
+      final fileBytes = base64Decode(attachment);
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+      ].request();
+
+      var dir = await DownloadsPathProvider.downloadsDirectory;
+      if (dir != null) {
+        String savePath = await getUniqueFilePath(dir.path, attachmentName);
+        if (kDebugMode) {
+          print(savePath);
+        }
+
+        try {
+          await File(savePath).writeAsBytes(fileBytes, flush: true);
+
+          final file = File(savePath);
+          if (await file.exists()) {
+            showDialog(
+              context: Get.overlayContext!,
+              builder: (context) {
+                return AlertDialog(
+                  title:  Text('downloadcompleted'.tr),
+                  content: Text('${'filesavedat'.tr} $savePath'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child:  Text(
+                        'ok',
+                        style: TextStyle(
+                          color: primarycolor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            showDialog(
+              context: Get.overlayContext!,
+              builder: (context) {
+                return AlertDialog(
+                  title:  Text('error'.tr),
+                  content:  Text('failedtodownloadfile'.tr),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child:  Text(
+                        'ok'.tr,
+                        style: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        } on IOException catch (e) {
+          showDialog(
+            context: Get.overlayContext!,
+            builder: (context) {
+              return AlertDialog(
+                title:  Text('error'.tr),
+                content:  Text('failedtodownloadfile'.tr),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child:  Text(
+                      'ok'.tr,
+                      style: TextStyle(color: primarycolor),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+          if (kDebugMode) {
+            print(e);
+          }
+        }
+      }
+    } catch (error) {
+      showDialog(
+        context: Get.overlayContext!,
+        builder: (context) {
+          return AlertDialog(
+            title:  Text('error'.tr),
+            content:  Text('failedtodownloadfile'.tr),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child:  Text(
+                  'ok'.tr,
+                  style: TextStyle(color: primarycolor),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }
+
+  Future<String> getUniqueFilePath(String directory, String fileName) async {
+    String filePath = '$directory/$fileName';
+    File file = File(filePath);
+    int fileNumber = 1;
+
+    // Check if the file already exists
+    while (await file.exists()) {
+      String newFileName =
+          '${getFileNameWithoutExtension(fileName)}_$fileNumber.${getFileExtension(fileName)}';
+      filePath = '$directory/$newFileName';
+      file = File(filePath);
+      fileNumber++;
+    }
+
+    return filePath;
+  }
+
+  String getFileNameWithoutExtension(String fileName) {
+    int extensionIndex = fileName.lastIndexOf('.');
+    if (extensionIndex != -1) {
+      return fileName.substring(0, extensionIndex);
+    }
+    return fileName;
+  }
+
+  String getFileExtension(String fileName) {
+    int extensionIndex = fileName.lastIndexOf('.');
+    if (extensionIndex != -1 && extensionIndex < fileName.length - 1) {
+      return fileName.substring(extensionIndex + 1);
+    }
+    return '';
+  }
 }
-
-

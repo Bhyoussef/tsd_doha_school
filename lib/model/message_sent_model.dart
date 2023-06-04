@@ -30,7 +30,7 @@ class MessageSent {
     date = json['date'];
     model = json['model'];
     id = json['id'];
-    uploadFile = json['upload_file'] as String?; // Updated type to String
+    //uploadFile = json['upload_file'] as String?; // Updated type to String
   }
 
   Map<String, dynamic> toJson() {
@@ -43,7 +43,7 @@ class MessageSent {
     data['date'] = date;
     data['model'] = model;
     data['id'] = id;
-    data['upload_file'] = uploadFile;
+    //data['upload_file'] = uploadFile;
     return data;
   }
 }

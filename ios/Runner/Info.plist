@@ -47,5 +47,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>this app need to use storage.</string>
+    <key>NSDownloadsUsageDescription</key>
+    <string>Permission to access the Downloads directory is required to download files.</string>
+
 </dict>
 </plist>

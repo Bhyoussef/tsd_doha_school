@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:tsdoha/model/child_model.dart';
 import '../../../model/payment_model.dart';
 import '../details_payments_parent/details_payment_paid_parents.dart';
 import '../details_payments_parent/details_unpaid_payments_parents.dart';
 
 class PaymentListItem extends StatelessWidget {
   final Payment? paymentTotal;
+  final Mychildreen? student;
 
-  const PaymentListItem({Key? key,  this.paymentTotal})
+  const PaymentListItem({Key? key,  this.paymentTotal, this.student})
       : super(key: key);
 
   @override
@@ -35,13 +36,13 @@ class PaymentListItem extends StatelessWidget {
                   'totalpaid'.tr,
                   style:const  TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('${paymentTotal!.totPaid!.toString()} ${paymentTotal!.currency!}'),
+                subtitle: Text('${paymentTotal!.totPaid!.toString()??''} ${paymentTotal!.currency!}'),
                 trailing: const Icon(
                   Icons.payment,
                   color: Colors.green,
                 ),
                 onTap: () {
-                  Get.to(() => DetailPaymentsPaidParents());
+                  Get.to(() => const DetailPaymentsPaidParents());
                 },
               ),
               const Divider(),

@@ -10,7 +10,6 @@ import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
 
 class SendMessageScreen extends StatefulWidget {
-
   SendMessageScreen({Key? key}) : super(key: key);
 
   @override
@@ -18,33 +17,26 @@ class SendMessageScreen extends StatefulWidget {
 }
 
 class _SendMessageScreenState extends State<SendMessageScreen> {
+
   final SendMessageController controller = Get.put(SendMessageController());
-
   final TextEditingController toController = TextEditingController();
-
   final TextEditingController recipientController = TextEditingController();
-
   final TextEditingController subjectController = TextEditingController();
-
   final TextEditingController messageController = TextEditingController();
-
-
   final RxString attachmentPath = RxString('');
-
-  int uid =0;
+  int uid = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchUid();
-
   }
 
   Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final fetchedUid =
+        await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
-      print(uid);
     });
   }
 
@@ -74,7 +66,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
             ),
           ),
         ],
-        title:  Text(
+        title: Text(
           'sendmessage'.tr,
           style: const TextStyle(
               color: CupertinoColors.white, fontWeight: FontWeight.bold),
@@ -114,8 +106,6 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                 color: primarycolor,
                 textColor: Colors.white,
                 onPressed: () {
-
-
                   String receiverId = '0';
 
                   if (toController.text == 'T') {
@@ -138,37 +128,23 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                       subjectController.text,
                       messageController.text,
                       receiverId,
-                      attachmentPath.value.toString()
-                  );
-
-                  if (kDebugMode) {
-                    print(toController);
-                  }
-                  if (kDebugMode) {
-                    print(uid);
-                  }
-                  if (kDebugMode) {
-                    print(subjectController.text);
-                  }
-                  if (kDebugMode) {
-                    print(messageController.text);
-                  }
-                  if (kDebugMode) {
-                    print(receiverId);
-                  }
-                  if (kDebugMode) {
-                    print(attachmentPath.value.toString());
-                  }
-
+                      attachmentPath.value.toString());
                 },
-                child:  Text(
+                child: Text(
                   'send'.tr,
-                  style:const  TextStyle(fontWeight: FontWeight.bold,color: CupertinoColors.white),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: CupertinoColors.white),
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Obx(() => controller.isLoading.value
-                  ?  Center(child: CircularProgressBar(color: primarycolor,))
+                  ? Center(
+                      child: CircularProgressBar(
+                      color: primarycolor,
+                    ))
                   : Container()),
             ],
           ),
@@ -181,14 +157,14 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text(
+        Text(
           'to'.tr,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         Obx(() => RadioListTile<String>(
               activeColor: primarycolor,
-              title:  Text('teacher'.tr),
+              title: Text('teacher'.tr),
               value: 'T',
               groupValue: controller.selectedTo.value,
               onChanged: (value) {
@@ -203,7 +179,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
             )),
         Obx(() => RadioListTile<String>(
               activeColor: primarycolor,
-              title:  Text('admin'.tr),
+              title: Text('admin'.tr),
               value: 'A',
               groupValue: controller.selectedTo.value,
               onChanged: (value) {
@@ -255,7 +231,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                         ),
                       )
                       .toList(),
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'receiver'.tr,
                   ),
                   key: ValueKey(controller.selectedTo.value),
@@ -272,7 +248,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
       onChanged: (value) {
         controller.subject.value = value;
       },
-      decoration:  InputDecoration(
+      decoration: InputDecoration(
         labelText: 'subject'.tr,
       ),
     );
@@ -286,7 +262,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
       },
       maxLines: 6,
       keyboardType: TextInputType.multiline,
-      decoration:  InputDecoration(
+      decoration: InputDecoration(
         labelText: 'message'.tr,
       ),
     );
@@ -294,12 +270,12 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
 
   Widget _buildAttachmentList() {
     return Obx(
-          () => Column(
+      () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'attachemnts'.tr,
-            style:const  TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           if (attachmentPath.value.isNotEmpty)
@@ -335,9 +311,9 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
       onPressed: () {
         showAttachmentSelectionDialog();
       },
-      child:  Text(
+      child: Text(
         'addattachment'.tr,
-        style:const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -349,5 +325,4 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
       attachmentPath.value = pickedFile.path;
     }
   }
-
 }

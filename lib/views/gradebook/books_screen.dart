@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constant/constant.dart';
-import '../../controller/mychildren_controller/dowload_file_controller.dart';
+import '../../controller/dowload_file_controller.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
-import '../../model/book_model.dart';
 import '../../theme/app_colors.dart';
-import '../../utils/shared_preferences.dart';
+import 'widget/book_card.dart';
 
 class BookListScreen extends StatefulWidget {
   final int? studentId;
@@ -68,8 +66,13 @@ class _BookListScreenState extends State<BookListScreen> {
                 child: CircularProgressBar(color: primarycolor,),
               );
             } else if (bookController.books.isEmpty) {
-              return const Center(
-                child: Text('nogradebooks.tr'),
+              return  Center(
+                child: Column(
+                  children: [
+                    Image.asset('assets/imgs/notfound.png'),
+                    const Text('nogradebooks.tr'),
+                  ],
+                ),
               );
             } else {
               return ListView.builder(
@@ -91,81 +94,4 @@ class _BookListScreenState extends State<BookListScreen> {
   }
 }
 
-class BookCard extends StatelessWidget {
-  final Book? book;
-  final FileDownloadController? downloadController;
 
-  const BookCard(
-      {Key? key,  this.book,  this.downloadController})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(book!.academic ?? ''),
-
-                if (book!.attachments!.isNotEmpty)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: book!.attachments!.length,
-                        itemBuilder: (context, index) {
-                          final attachment = book!.attachments![index];
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: Text(attachment.fileName ?? ''),
-                              ),
-                              IconButton(
-                                icon:  Icon(Icons.download,
-                                  color: primarycolor ,),
-                                onPressed: () {
-                                  SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                                    downloadController!.downloadFile(
-                                      uid,
-                                      attachment.id.toString(),
-                                      attachment.fileName ?? '',
-
-                                    );
-                                    if (kDebugMode) {
-                                      print(attachment.id);
-                                    }
-                                  });
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

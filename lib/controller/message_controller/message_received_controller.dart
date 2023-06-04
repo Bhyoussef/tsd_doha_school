@@ -56,7 +56,6 @@ class MessageReceivedController extends GetxController {
       final commentsList =
           await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
-      // Check if comments have attachment IDs and fetch attachments if available
       for (var comment in commentsList) {
         if (comment.attachmentIds!.isNotEmpty) {
           isLoading(true);
@@ -87,7 +86,6 @@ class MessageReceivedController extends GetxController {
     try {
       isLoading(true);
       await ApiServiceMessage.updatemessagestate(uid,messageId);
-      // You can handle the response or update the comments list accordingly
     } finally {
       isLoading(false);
     }

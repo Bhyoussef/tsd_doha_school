@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
-import '../../controller/mychildren_controller/dowload_file_controller.dart';
+import '../../controller/dowload_file_controller.dart';
 import '../../model/message_model.dart';
 import '../../model/message_sent_model.dart';
 import '../../theme/app_colors.dart';
@@ -392,8 +392,14 @@ class MessageCardSent extends StatelessWidget {
           const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "${'to'.tr} : $receiver",
+            child: receiver =='T'?Text(
+              "${'to'.tr} : ${'teacher'.tr}",
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ):Text(
+              "${'to'.tr} : ${'admin'.tr}",
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,

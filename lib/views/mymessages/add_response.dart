@@ -62,7 +62,7 @@ class _AddResponseState extends State<AddResponse> {
           ),
         ],
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -90,19 +90,6 @@ class _AddResponseState extends State<AddResponse> {
                     responsecontroller.text,
                     widget.message!.id!,
                     attachmentPath.value.toString(), uid,);
-                  if (kDebugMode) {
-                    print(uid);
-                  }
-                  if (kDebugMode) {
-                    print(widget.message!.id.toString());
-                  }
-                  if (kDebugMode) {
-                    print(responsecontroller.text);
-                  }
-                  if (kDebugMode) {
-                    print(attachmentPath.value.toString());
-                  }
-                  //widget.refreshCallback();
                 },
                 child:  Text(
                   'send'.tr,
@@ -125,7 +112,7 @@ class _AddResponseState extends State<AddResponse> {
           () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          if (attachmentPath.value.isNotEmpty)Text(
             'attachemnts'.tr,
             style:const  TextStyle(fontWeight: FontWeight.bold),
           ),

@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tsdoha/model/send_message_model.dart';
-
 import '../../model/message_sent_model.dart';
 import '../../services/message.dart';
 import '../../utils/shared_preferences.dart';

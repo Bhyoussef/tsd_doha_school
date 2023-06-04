@@ -14,7 +14,7 @@ import '../updatepassword/updatepassword_screen.dart';
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
 
-   HomeScreen({super.key});
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +25,13 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: Obx(() =>
-            Text(
-          controller.pageTitle.value,style:
-        const TextStyle(
-          color: CupertinoColors.white,
-          fontWeight: FontWeight.bold,
-        ),)),
+        title: Obx(() => Text(
+          controller.pageTitle.value,
+          style: const TextStyle(
+            color: CupertinoColors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        )),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -42,7 +42,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
-
       ),
       drawer: MainScreen(),
       body: Obx(() {
@@ -59,7 +58,7 @@ class HomeScreen extends StatelessWidget {
             return UpdatePasswordScreen();
           case DrawerOption.Configuration:
             return const SettingsScreen();
-            default:
+          default:
             return MyChildrenScreen();
         }
       }),

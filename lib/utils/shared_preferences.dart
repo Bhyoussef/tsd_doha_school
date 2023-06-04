@@ -23,7 +23,6 @@ class SharedData {
   static void saveToStorage(item, value, type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (type == 'string') {
-      print(111111);
       await prefs.setString(item, value);
     } else if (type == 'bool') {
       await prefs.setBool(item, value);

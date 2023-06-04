@@ -181,7 +181,7 @@ class MessageCardSent extends StatelessWidget {
   final String message;
   final String date;
 
-  const MessageCardSent({
+  const MessageCardSent({super.key,
     required this.title,
     required this.receiver,
     required this.message,

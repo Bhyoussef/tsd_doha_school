@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../model/auth_model.dart';
@@ -6,7 +7,7 @@ import '../../routes/routes.dart';
 import '../../services/auth.dart';
 import '../../utils/shared_preferences.dart';
 import '../../views/home/home_screen.dart';
-import '../../views/onbording/spalsh_screen.dart';
+
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
@@ -17,7 +18,9 @@ class AuthController extends GetxController {
       final result = await ApiServiceAuth.authenticate(login, password);
 
       if (result is Authentificate) {
-        print(jsonEncode(result.result));
+        if (kDebugMode) {
+          print(jsonEncode(result.result));
+        }
 
         SharedData.saveToStorage('parent', jsonEncode(result.result), 'string');
         Get.snackbar(
@@ -45,8 +48,8 @@ class AuthController extends GetxController {
   }
 
   void logout() async {
-    SharedData.clearStorage();
-    SharedData.logout();
-    Get.toNamed(Routes.getspalsh());
+     SharedData.logout();
+     SharedData.clearStorage();
+     Get.offAllNamed(Routes.getSpalsh());
   }
 }

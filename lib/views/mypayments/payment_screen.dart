@@ -7,6 +7,7 @@ import '../../constant/constant.dart';
 import '../../model/child_model.dart';
 import '../../theme/app_colors.dart';
 import '../mychildren/payments/details_payment_child.dart';
+import '../mychildren/payments/total_impaid_child.dart';
 
 class PaymentScreen extends StatelessWidget {
   final Mychildreen? student;

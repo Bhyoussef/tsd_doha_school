@@ -61,58 +61,56 @@ class _AddCommentPageState extends State<AddCommentPage> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                controller: commentController,
-                maxLines: 5,
-                decoration:  InputDecoration(
-                  hintText: 'writeyourcomment'.tr,
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: commentController,
+              maxLines: 5,
+              decoration:  InputDecoration(
+                hintText: 'writeyourcomment'.tr,
               ),
-              const SizedBox(height: 20),
-              _buildAttachmentList(),
-              const SizedBox(height: 20),
-              _buildAddAttachmentButton(),
-              const SizedBox(height: 20),
-              MaterialButton(
-                minWidth: MediaQuery.of(context).size.width,
-                height: 50,
-                color: primarycolor,
-                textColor: Colors.white,
-                onPressed: () {
-                 controller.addCommentWithAttachment(
-                     commentController.text,
-                     widget.message!.iD!,
-                     attachmentPath.value.toString(), uid,);
-                 if (kDebugMode) {
-                   print(uid);
-                 }
-                 if (kDebugMode) {
-                   print(widget.message!.iD.toString());
-                 }
-                 if (kDebugMode) {
-                   print(commentController.text);
-                 }
-                 if (kDebugMode) {
-                   print(attachmentPath.value.toString());
-                 }
-                },
-                child:  Text(
-                  'send'.tr,
-                  style:const TextStyle(fontWeight: FontWeight.bold),
-                ),
+            ),
+            const SizedBox(height: 20),
+            _buildAttachmentList(),
+            const SizedBox(height: 20),
+            _buildAddAttachmentButton(),
+            const SizedBox(height: 20),
+            MaterialButton(
+              minWidth: MediaQuery.of(context).size.width,
+              height: 50,
+              color: primarycolor,
+              textColor: Colors.white,
+              onPressed: () {
+               controller.addCommentWithAttachment(
+                   commentController.text,
+                   widget.message!.iD!,
+                   attachmentPath.value.toString(), uid,);
+               if (kDebugMode) {
+                 print(uid);
+               }
+               if (kDebugMode) {
+                 print(widget.message!.iD.toString());
+               }
+               if (kDebugMode) {
+                 print(commentController.text);
+               }
+               if (kDebugMode) {
+                 print(attachmentPath.value.toString());
+               }
+              },
+              child:  Text(
+                'send'.tr,
+                style:const TextStyle(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 20,),
-              Obx(() => controller.isLoading.value
-                  ?  Center(child: CircularProgressBar(color: primarycolor,))
-                  : Container()),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20,),
+            Obx(() => controller.isLoading.value
+                ?  Center(child: CircularProgressBar(color: primarycolor,))
+                : Container()),
+          ],
         ),
       ),
     );

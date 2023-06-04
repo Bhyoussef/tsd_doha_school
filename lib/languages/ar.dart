@@ -85,7 +85,12 @@ const Map<String, String> ar = {
   'responsesent':'تم إرسال ردك بنجاح',
   'commentadd':'تم إضافة تعليقك بنجاح',
   'addResponse':'أضف الرد',
-  'messagesent':'تم ارسال رسالتك بنجاح'
+  'messagesent':'تم ارسال رسالتك بنجاح',
+  'moyenne':'المعدل :',
+  'nopaymentshistoryfound':'لم يتم العثور على تاريخ المدفوعات',
+  'noconversationfound':'لم يتم العثور على سجل محادثة',
+  'nomessagefound':'لا توجد رسائل',
+  'notimetablefound':'لم يتم العثور على جدول زمني',
 
 
 
