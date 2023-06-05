@@ -11,6 +11,7 @@ import '../../../utils/shared_preferences.dart';
 import '../../mypayments/payment_screen.dart';
 import '../../mypayments/widget/child_payment_card_widget.dart';
 import '../../mypayments/widget/payment_list_widget.dart';
+import '../widget/payment_list_widget_child.dart';
 
 class DetailsPaymentChild extends StatefulWidget {
   final int? studentId;
@@ -29,7 +30,6 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       paymentController.fetchingTotalPaymentsStudents(widget.studentId!);
     });
@@ -51,21 +51,19 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
         backgroundColor: primarycolor,
         title:  Text(
           'mypayments'.tr,
-          style: TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
+          style: const TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Obx(() {
-          final controller = Get.find<PaymentsController>();
-
-          if (controller.isLoading.value) {
+          if (paymentController.isLoading.value) {
             return Center(
               child: CircularProgressBar(
                 color: primarycolor,
               ),
             );
-          } else if (controller.paymentsTotalstudents.isEmpty) {
+          } else if (paymentController.paymentsTotalstudents.isEmpty) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -83,10 +81,10 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.paymentsTotalstudents.length,
+                  itemCount: paymentController.paymentsTotalstudents.length,
                   itemBuilder: (context, index) {
-                    final paymentTotal = controller.paymentsTotalstudents[index];
-                    return PaymentListItem(
+                    final paymentTotal = paymentController.paymentsTotalstudents[index];
+                    return PaymentChildListItem(
                       paymentTotal: paymentTotal,
                       student: widget.student!,
                     );

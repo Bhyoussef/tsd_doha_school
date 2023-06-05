@@ -10,8 +10,8 @@ import '../../../theme/app_colors.dart';
 import '../../../utils/shared_preferences.dart';
 
 class TotalImpaidChild extends StatefulWidget {
-  final Mychildreen student;
-  const TotalImpaidChild({Key? key, required this.student}) : super(key: key);
+  final Mychildreen? student;
+  const TotalImpaidChild({Key? key, this.student}) : super(key: key);
 
   @override
   _TotalImpaidChildState createState() => _TotalImpaidChildState();
@@ -33,7 +33,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
     });
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      controller.fetchingTotalInPaidDetailsStudent(widget.student.studentId!);
+      controller.fetchingTotalInPaidDetailsStudent(widget.student!.studentId!);
     });
   }
 
@@ -135,7 +135,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
           }
         },
         child: Text(
-          totalAmount == 0.0 ? 'select'.tr : '${'pay'.tr} $totalAmount QAR',
+          totalAmount == 0.0 ? 'select'.tr : '${ 'pay'.tr} $totalAmount QAR',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -160,9 +160,9 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       context,
       MaterialPageRoute(
         builder: (context) => PaymentScreen(
-          schoolCode: widget.student.schoolCode!,
+          schoolCode: widget.student!.schoolCode!,
           parentID: parentId,
-          childID: widget.student.studentId!,
+          childID: widget.student!.studentId!,
           amount: totalAmount,
           lineIDs: lineIDs,
           student: widget.student,

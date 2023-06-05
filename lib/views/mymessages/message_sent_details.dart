@@ -234,7 +234,7 @@ class _MessageCardSentState extends State<MessageCardSent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0.0),
             child: Text(
               widget.message.displayName!,
               style: const TextStyle(
@@ -245,7 +245,7 @@ class _MessageCardSentState extends State<MessageCardSent> {
           ),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             child: Text(
               "${'to'.tr} : ${widget.message.authorId!}",
               style: const TextStyle(
@@ -254,8 +254,9 @@ class _MessageCardSentState extends State<MessageCardSent> {
               ),
             ),
           ),
+
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             child: Text(
               _removeAllHtmlTags(widget.message.message!),
               style: const TextStyle(fontSize: 16.0),
@@ -278,7 +279,6 @@ class _MessageCardSentState extends State<MessageCardSent> {
                       children: [
                         Flexible(
                           child: Text(
-
                             attachmentName,
                             style: const TextStyle(
                               fontSize: 16.0,
@@ -297,9 +297,6 @@ class _MessageCardSentState extends State<MessageCardSent> {
                             final cleanedBase64Image = attachmentId.replaceAll('\n', '');
                             controller.download(
                                 cleanedBase64Image,attachmentName);
-                            print(attachmentId);
-                            print(attachmentName);
-
                             },
                         ),
                       ],

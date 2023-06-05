@@ -91,6 +91,10 @@ const Map<String, String> ar = {
   'noconversationfound':'لم يتم العثور على سجل محادثة',
   'nomessagefound':'لا توجد رسائل',
   'notimetablefound':'لم يتم العثور على جدول زمني',
+  'paymentfailed':'فشل الدفع',
+  'paymentsucces':'الدفع ناجح',
+  'paymentok':'تم الدفع الخاص بك بنجاح.',
+  'paymentfail':'عملية الدفع فشلت. حاول مرة اخرى.'
 
 
 

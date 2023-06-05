@@ -6,7 +6,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../constant/constant.dart';
 import '../../model/child_model.dart';
 import '../../theme/app_colors.dart';
-import '../mychildren/payments/details_payment_child.dart';
 import '../mychildren/payments/total_impaid_child.dart';
 
 class PaymentScreen extends StatelessWidget {
@@ -230,9 +229,9 @@ class PaymentScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(isSuccess ? 'Payment Successful' : 'Payment Failed'),
+          title: Text(isSuccess ? 'paymentsucces'.tr : 'paymentfailed'.tr),
           content: Text(isSuccess
-              ? 'Your payment was successful.'
+              ? 'paymentok'.tr
               : 'Payment failed. Please try again.'),
           actions: [
             TextButton(
@@ -241,7 +240,7 @@ class PaymentScreen extends StatelessWidget {
                       student: student!,
                     ));
               },
-              child: const Text('OK'),
+              child:  Text('ok'.tr),
             ),
           ],
         );

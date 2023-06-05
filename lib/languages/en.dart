@@ -56,7 +56,7 @@ const Map<String, String> en = {
   'recording':'Recording',
   'to':'To',
   'areyousureyouwanttologout':'Are you sure you want to log out?',
-  'totalpaid':'Total Paid',
+  'totalpaid':'Total amount paid',
   'totalunpaid':'Total amount unpaid',
   'select':'Select',
   'credit':'Credit Card',
@@ -91,6 +91,10 @@ const Map<String, String> en = {
   'noconversationfound':'No conversation found',
   'nomessagefound':'No message found',
   'notimetablefound':'No time table found',
+  'paymentfailed':'Payment failed',
+  'paymentsucces':'Payment Succesuful',
+  'paymentok':'Your payment was successful.',
+  'paymentfail':'Payment failed. Please try again.'
 
 
 
