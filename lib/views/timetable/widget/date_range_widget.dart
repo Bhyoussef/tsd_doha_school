@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class DateRange extends StatelessWidget {
-   const DateRange({Key? key}) : super(key: key);
-
+  const DateRange({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +15,17 @@ class DateRange extends StatelessWidget {
           height: 150,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage('https://unsplash.it/1080/720?image=1044'),
+              alignment: Alignment.center,
+              matchTextDirection: true,
               fit: BoxFit.cover,
+              image: AssetImage("assets/imgs/bgTime.png"),
             ),
           ),
         ),
         Container(
           height: 150,
           decoration: BoxDecoration(
-            color: Colors.purple.withOpacity(0.5),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.purpleAccent.withOpacity(0.01),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
+            color: const Color.fromARGB(255, 190, 17, 74).withOpacity(0.5),
           ),
           child: Center(
             child: Column(
