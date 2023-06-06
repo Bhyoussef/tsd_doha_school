@@ -6,8 +6,10 @@ import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/child_model.dart';
 import '../../../model/payment_details_model.dart';
+import '../../../routes/routes.dart';
 import '../../../theme/app_colors.dart';
 import '../../../utils/shared_preferences.dart';
+import '../../home/home_screen.dart';
 import '../../mypayments/payment_screen.dart';
 import '../../mypayments/widget/child_payment_card_widget.dart';
 import '../../mypayments/widget/payment_list_widget.dart';
@@ -30,7 +32,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       paymentController.fetchingTotalPaymentsStudents(widget.studentId!);
     });
   }
@@ -53,6 +55,21 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
           'mypayments'.tr,
           style: const TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -63,15 +80,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
                 color: primarycolor,
               ),
             );
-          } else if (paymentController.paymentsTotalstudents.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/imgs/notfound.png'),
-                Text('nopayments'.tr),
-              ],
-            );
-          }else {
+          } else {
             return ListView(
               children: [
                 ChildCardPayment(

@@ -28,15 +28,6 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
 
   int uid = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchUid();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      controller.getsentmessagedetails(uid, widget.message.id!);
-    });
-  }
-
   Future<void> _fetchUid() async {
     final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
@@ -46,8 +37,21 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
       }
     });
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUid();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      controller.getsentmessagedetails(uid, widget.message.id!);
+    });
+  }
+
+
   void _refreshMessageDetails() {
-    print(widget.message.id);
+    if (kDebugMode) {
+      print(widget.message.id);
+    }
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       controller.getsentmessagedetails(uid, widget.message.id!);
     });
@@ -142,8 +146,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-         Get.to(()=> AddResponse(message:widget.message,
-                refreshCallback: _refreshMessageDetails),
+         Get.to(()=> AddResponse(message:widget.message,),
           );
         },
         style: ElevatedButton.styleFrom(

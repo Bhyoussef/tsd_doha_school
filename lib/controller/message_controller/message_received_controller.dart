@@ -8,31 +8,28 @@ import '../../model/comments_model.dart';
 import '../../model/message_model.dart';
 import '../../services/message.dart';
 import '../../services/personal.dart';
-import '../../utils/shared_preferences.dart';
 
 class MessageReceivedController extends GetxController {
   final receivedMessage = <Message>[].obs;
   final childDetail = <Mychildreen>[].obs;
   final comments = <Comment>[].obs;
-  final isLoading = true.obs;
+  final isLoading = false.obs;
   final isLoadingAttachments = false.obs;
   final attachmentController = TextEditingController().obs;
   int? parentId;
 
-  @override
-  void onInit() {
-    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-      await fetchReceivedMessage(uid);
-    });
-    super.onInit();
-  }
+
+
+
 
   Future<void> fetchReceivedMessage(uid) async {
     try {
       isLoading(true);
-      final messageList = await ApiServiceMessage.getMessagesrecieved(uid!);
+      final messageList = await ApiServiceMessage.getMessagesrecieved(uid);
       receivedMessage.assignAll(messageList);
       update();
+    } catch (error) {
+      // Handle error
     } finally {
       isLoading(false);
     }
@@ -54,15 +51,15 @@ class MessageReceivedController extends GetxController {
     try {
       isLoading(true);
       final commentsList =
-          await ApiServiceMessage.getListComments(uid, messageId);
+      await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
       for (var comment in commentsList) {
         if (comment.attachmentIds!.isNotEmpty) {
-          isLoading(true);
+          isLoadingAttachments(true);
           final attachments =
-              await ApiServiceMessage.getAllattachements(comment.attachmentIds);
+          await ApiServiceMessage.getAllattachements(comment.attachmentIds);
           comment.attachments = attachments;
-          isLoading(false);
+          isLoadingAttachments(false);
         }
       }
       update();

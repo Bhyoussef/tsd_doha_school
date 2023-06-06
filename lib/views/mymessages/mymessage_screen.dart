@@ -22,44 +22,57 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen>
-    with SingleTickerProviderStateMixin {
+class _MessagesScreenState extends State<MessagesScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late FileDownloadController downloadController;
+  final controller = Get.find<MessageReceivedController>();
+  final controllersentmessage = Get.find<MesaageSentController>();
 
-  int uid=0;
+  int uid = 0;
+  @override
+
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    downloadController = Get.put(FileDownloadController());
-    _fetchUid();
+     downloadController = Get.put(FileDownloadController());
+     _fetchUid();
+
   }
-  Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+
+
+  Future<void>  _fetchUid() async {
+    final fetchedUid =
+    await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
-      uid = fetchedUid;
-      print(uid);
+      uid=fetchedUid;
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        controller.fetchReceivedMessage(uid);
+        print('here'+uid.toString());
+      });
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        controllersentmessage.fetchingSentMessage(uid);
+        print('here'+uid.toString());
+      });
     });
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       bottomNavigationBar: Material(
         color: primarycolor,
         child: SafeArea(
           child: TabBar(
             labelColor: Colors.white,
-            labelStyle: const TextStyle(color: CupertinoColors.white,fontWeight: FontWeight.bold),
-            indicator:const  BoxDecoration(
+            labelStyle:
+            const TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
+            indicator: const BoxDecoration(
               border: Border(
                 top: BorderSide(
                   color: CupertinoColors.white,
@@ -67,7 +80,6 @@ class _MessagesScreenState extends State<MessagesScreen>
                 ),
               ),
             ),
-
             controller: _tabController,
             tabs: [
               Tab(
@@ -78,7 +90,6 @@ class _MessagesScreenState extends State<MessagesScreen>
               ),
             ],
           ),
-
         ),
       ),
       body: TabBarView(
@@ -102,8 +113,6 @@ class _MessagesScreenState extends State<MessagesScreen>
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Obx(() {
-        final controller = Get.find<MessageReceivedController>();
-
         if (controller.isLoading.value) {
           return Center(
             child: CircularProgressBar(color: primarycolor),
@@ -124,8 +133,7 @@ class _MessagesScreenState extends State<MessagesScreen>
               return GestureDetector(
                 onTap: () {
                   if (message.state != 'read') {
-                    // Update the message state to 'read'
-                    controller.updateMessageState(uid,message.iD!);
+                    controller.updateMessageState(uid, message.iD!);
                   }
                   Get.to(() => DetailsMessageReceived(
                     message: message,
@@ -162,13 +170,11 @@ class _MessagesScreenState extends State<MessagesScreen>
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Obx(() {
-        final controller = Get.find<MesaageSentController>();
-
-        if (controller.isLoading.value) {
+        if (controllersentmessage.isLoading.value) {
           return Center(
             child: CircularProgressBar(color: primarycolor),
           );
-        } else if (controller.sentedmessage.isEmpty) {
+        } else if (controllersentmessage.sentedmessage.isEmpty) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -178,9 +184,9 @@ class _MessagesScreenState extends State<MessagesScreen>
           );
         } else {
           return ListView.builder(
-            itemCount: controller.sentedmessage.length,
+            itemCount: controllersentmessage.sentedmessage.length,
             itemBuilder: (context, index) {
-              MessageSent message = controller.sentedmessage[index];
+              MessageSent message = controllersentmessage.sentedmessage[index];
               return GestureDetector(
                 onTap: () {
                   Get.to(() => MessageSentDetails(message: message));
@@ -192,7 +198,7 @@ class _MessagesScreenState extends State<MessagesScreen>
                     receiver: message.receiver ?? '',
                     message: message.message ?? '',
                     date: message.date ?? '',
-                    uploadedfile:message.uploadFile??''
+                    uploadedfile: message.uploadFile ?? '',
                   ),
                 ),
               );
@@ -218,15 +224,15 @@ class MessageCardReceived extends StatelessWidget {
 
   const MessageCardReceived({
     Key? key,
-     this.title,
-     this.image,
-     this.sender,
-     this.message,
-     this.details,
-     this.isRead,
-     this.isAttached,
-     this.attachments,
-     this.downloadController,
+    this.title,
+    this.image,
+    this.sender,
+    this.message,
+    this.details,
+    this.isRead,
+    this.isAttached,
+    this.attachments,
+    this.downloadController,
   }) : super(key: key);
 
   @override
@@ -234,7 +240,6 @@ class MessageCardReceived extends StatelessWidget {
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
     bool isMessageRead = isRead == 'read';
-
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -308,7 +313,8 @@ class MessageCardReceived extends StatelessWidget {
               ),
             ],
           ),
-          isArabic ==true?Positioned(
+          isArabic == true
+              ? Positioned(
             top: 8.0,
             left: 8.0,
             child: Container(
@@ -319,7 +325,8 @@ class MessageCardReceived extends StatelessWidget {
                 color: isMessageRead ? Colors.green : Colors.red,
               ),
             ),
-          ): Positioned(
+          )
+              : Positioned(
             top: 8.0,
             right: 8.0,
             child: Container(
@@ -333,15 +340,17 @@ class MessageCardReceived extends StatelessWidget {
           ),
           isAttached!
               ? Container()
-              : isArabic==true ?const Positioned(
+              : isArabic == true
+              ? const Positioned(
             top: 8.0,
             left: 25.0,
             child: Icon(Icons.attach_file),
-          ):const Positioned(
-                  top: 8.0,
-                  right: 25.0,
-                  child: Icon(Icons.attach_file),
-                ),
+          )
+              : const Positioned(
+            top: 8.0,
+            right: 25.0,
+            child: Icon(Icons.attach_file),
+          ),
         ],
       ),
     );
@@ -355,11 +364,13 @@ class MessageCardSent extends StatelessWidget {
   final String? date;
   final String? uploadedfile;
 
-  const MessageCardSent({super.key,
-     this.title,
-     this.receiver,
-     this.message,
-     this.date, this.uploadedfile,
+  const MessageCardSent({
+    Key? key,
+    this.title,
+    this.receiver,
+    this.message,
+    this.date,
+    this.uploadedfile,
   });
 
   @override
@@ -392,13 +403,15 @@ class MessageCardSent extends StatelessWidget {
           const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: receiver =='T'?Text(
+            child: receiver == 'T'
+                ? Text(
               "${'to'.tr} : ${'teacher'.tr}",
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
-            ):Text(
+            )
+                : Text(
               "${'to'.tr} : ${'admin'.tr}",
               style: const TextStyle(
                 fontSize: 16.0,
@@ -423,6 +436,21 @@ class MessageCardSent extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 5.0),
+          uploadedfile!.isNotEmpty
+              ? Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'Download File',
+                  style: TextStyle(fontSize: 14.0),
+                ),
+              ),
+            ],
+          )
+              : Container(),
         ],
       ),
     );

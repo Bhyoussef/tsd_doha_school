@@ -7,6 +7,11 @@ import 'widget/password_field_widget.dart';
 import '../../controller/auth_controller/updatepassword_controller.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
+  const UpdatePasswordScreen({super.key});
+
+
+
+
   @override
   State<UpdatePasswordScreen> createState() => _UpdatePasswordScreenState();
 }
@@ -21,6 +26,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final _newpassword = TextEditingController();
   final _confirmpassword = TextEditingController();
 
+
   int uid = 0;
 
   @override
@@ -28,6 +34,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     super.initState();
     _fetchUid();
   }
+
 
   Future<void> _fetchUid() async {
     final fetchedUid =

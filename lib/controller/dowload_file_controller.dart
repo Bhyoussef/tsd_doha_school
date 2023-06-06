@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:open_filex/open_filex.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../constant/constant.dart';
@@ -62,7 +62,7 @@ class FileDownloadController extends GetxController {
                     TextButton(
                       onPressed: () {
                         Get.back();
-                        OpenFilex.open(savePath);
+                        OpenFile.open(savePath);
                       },
                       child: Text(
                         'open'.tr,
@@ -158,7 +158,14 @@ class FileDownloadController extends GetxController {
         Permission.storage,
       ].request();
 
-      var dir = await DownloadsPathProvider.downloadsDirectory;
+      var dir;
+
+
+      if (Platform.isIOS) {
+        dir = await getApplicationDocumentsDirectory();
+      } else {
+        dir = await DownloadsPathProvider.downloadsDirectory;
+      }
       if (dir != null) {
         String savePath = await getUniqueFilePath(dir.path, attachmentName);
         if (kDebugMode) {
@@ -175,14 +182,14 @@ class FileDownloadController extends GetxController {
               builder: (context) {
                 return AlertDialog(
                   title: Text('downloadcompleted'.tr),
-                  content: Text('${'filesavedat'.tr} $savePath'),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Get.back();
+                        OpenFile.open(savePath);
                       },
                       child: Text(
-                        'ok',
+                        'open'.tr,
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,

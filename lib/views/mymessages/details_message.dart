@@ -30,20 +30,19 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   @override
   void initState() {
     super.initState();
+    final MessageReceivedController controller = Get.find<MessageReceivedController>();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       controller.getChildDetail(uid, widget.message.studentId!);
       controller.getComments(uid, widget.message.iD!);
-      if (kDebugMode) {
-        print(uid.toString());
-      }
-      if (kDebugMode) {
-        print(widget.message.studentId.toString());
-      }
-      if (kDebugMode) {
-        print(widget.message.iD.toString());
-      }
+
     });
   }
+  @override
+  void dispose() {
+    Get.find<MessageReceivedController>().dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,28 +79,11 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
           ),
         ],
       ),
-      body: Obx(
-            () {
-          if (controller.isLoading.value) {
-            return  Center(
-              child: CircularProgressBar(color: primarycolor,),
-            );
-          } else if (controller.comments.isEmpty) {
-            return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/imgs/notfound.png'),
-                     Text('nomessagefound'.tr)
-                  ],
-                )
-            );
-          } else {
-            return ListView(
+      body:  ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 messageContent(),
-                Row(
+          Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:  [
                     Padding(
@@ -115,17 +97,16 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
                         ),
                       ),
                     ),
+
                   ],
-                ),
-                comments(),
+          ),
+
+      comments(),
               ],
-            );
-          }
-        },
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-           Get.to(()=> AddCommentPage(message:widget.message));
+          Get.to(()=> AddCommentPage(message:widget.message));
 
         },
         style: ElevatedButton.styleFrom(
@@ -147,14 +128,14 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: MessageCardReceived(
-        title: widget.message.titleOfMessage ?? '',
-        image: widget.message.teacherImage ?? '',
-        sender: widget.message.teacher ?? '',
-        message: widget.message.message ?? '',
-        details: '${widget.message.student ?? ''} • ${widget.message.date ?? ''}',
-        isRead: widget.message.state!,
-        isAttached: widget.message.attachments!.isEmpty,
-        attachments: widget.message.attachments!,
+          title: widget.message.titleOfMessage ?? '',
+          image: widget.message.teacherImage ?? '',
+          sender: widget.message.teacher ?? '',
+          message: widget.message.message ?? '',
+          details: '${widget.message.student ?? ''} • ${widget.message.date ?? ''}',
+          isRead: widget.message.state!,
+          isAttached: widget.message.attachments!.isEmpty,
+          attachments: widget.message.attachments!,
           downloadController:widget.downloadController
 
       ),
@@ -175,46 +156,28 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   }
 
   Widget comments() {
-    if (controller.isLoading.value) {
-      return Center(
-        child: CircularProgressIndicator(color: primarycolor,),
-      );
-    } else if (controller.comments.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/imgs/notfound.png'),
-            const Text('No Comments Found')
-          ],
-        ),
-      );
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.comments.length,
-        itemBuilder: (context, index) {
-          final comment = controller.comments[index];
-          return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CommentCard(comment: comment),
-          );
-        },
-      );
-    }
+    return Obx(() {
+      if (controller.isLoadingAttachments.value) {
+        return Center(
+          child: CircularProgressBar(color: primarycolor,),
+        );
+      } else {
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.comments.length,
+          itemBuilder: (context, index) {
+            final comment = controller.comments[index];
+            return Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: CommentCard(comment: comment),
+            );
+          },
+        );
+      }
+    });
   }
-
-
-
 }
-
-
-
-
-
-
-
 class ChildCard extends StatelessWidget {
   final Mychildreen child;
 
@@ -349,7 +312,7 @@ class MessageCardReceived extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
+                        Text(
                           'attachemnts'.tr,
                           style: const TextStyle(
                             fontSize: 16.0,
@@ -374,7 +337,7 @@ class MessageCardReceived extends StatelessWidget {
                                   onPressed: () {
 
                                     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                                        downloadController.downloadFile(
+                                      downloadController.downloadFile(
                                         uid,
                                         attachment.id.toString(),
                                         attachment.fileName ?? '',

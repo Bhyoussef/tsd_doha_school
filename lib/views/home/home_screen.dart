@@ -16,52 +16,82 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({Key? key}) : super(key: key);
 
+  Future<bool> _onWillPop(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Exit Confirmation',style:TextStyle(color: primarycolor)),
+          content: Text('Are you sure you want to exit the application?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No',style: TextStyle(color: primarycolor),),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Yes',style: TextStyle(color: primarycolor),),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.transparent,
-        backgroundColor: primarycolor,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Obx(() => Text(
-          controller.pageTitle.value,
-          style: const TextStyle(
-            color: CupertinoColors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        )),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.transparent,
+          backgroundColor: primarycolor,
+          elevation: 0,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: Obx(() => Text(
+            controller.pageTitle.value,
+            style: const TextStyle(
+              color: CupertinoColors.white,
+              fontWeight: FontWeight.bold,
             ),
-          ),
-        ],
+          )),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                 Get.to(()=>HomeScreen());
+                },
+                child: Image.asset(
+                  'assets/imgs/tsdIcon.png',
+                  width: 40,
+                  height: 40,
+                ),
+              ),
+            ),
+          ],
+        ),
+        drawer: MainScreen(),
+        body: Obx(() {
+          switch (controller.selectedOption.value) {
+            case DrawerOption.MyChildren:
+              return MyChildrenScreen();
+            case DrawerOption.MyMessages:
+              return const MessagesScreen();
+            case DrawerOption.MyPayments:
+              return MyPaymentsScreen();
+            case DrawerOption.About:
+              return const AboutScreen();
+            case DrawerOption.UpdatePassword:
+              return UpdatePasswordScreen();
+            case DrawerOption.Configuration:
+              return const SettingsScreen();
+            default:
+              return MyChildrenScreen();
+          }
+        }),
       ),
-      drawer: MainScreen(),
-      body: Obx(() {
-        switch (controller.selectedOption.value) {
-          case DrawerOption.MyChildren:
-            return MyChildrenScreen();
-          case DrawerOption.MyMessages:
-            return const MessagesScreen();
-          case DrawerOption.MyPayments:
-            return MyPaymentsScreen();
-          case DrawerOption.About:
-            return const AboutScreen();
-          case DrawerOption.UpdatePassword:
-            return UpdatePasswordScreen();
-          case DrawerOption.Configuration:
-            return const SettingsScreen();
-          default:
-            return MyChildrenScreen();
-        }
-      }),
     );
   }
 }

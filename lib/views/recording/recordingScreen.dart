@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 
 
@@ -27,10 +28,15 @@ class RecordingScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],

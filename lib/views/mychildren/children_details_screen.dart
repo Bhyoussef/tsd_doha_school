@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
 import '../../model/child_model.dart';
 import '../../theme/app_colors.dart';
 import '../dicipline/dicipline_screen.dart';
@@ -34,10 +35,15 @@ class DetailScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.to(()=>HomeScreen());
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],

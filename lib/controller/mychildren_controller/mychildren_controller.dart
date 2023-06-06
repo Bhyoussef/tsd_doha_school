@@ -13,15 +13,17 @@ class ChildrenController extends GetxController {
   final exersice = <Exersice>[].obs;
   final timetable = <TimeTable>[].obs;
   RxBool isLoading = false.obs;
-  ChildrenController get timetableController => this;
 
   @override
   void onInit() {
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       fetchChildren(uid);
+
     });
     super.onInit();
   }
+
+
 
   Future<void> fetchChildren(uid) async {
     try {

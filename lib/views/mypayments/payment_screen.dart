@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/views/mypayments/succes_payment.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../constant/constant.dart';
 import '../../model/child_model.dart';
 import '../../theme/app_colors.dart';
-import '../mychildren/payments/total_impaid_child.dart';
+import '../home/home_screen.dart';
+import 'failed_payment.dart';
 
 class PaymentScreen extends StatelessWidget {
   final Mychildreen? student;
@@ -49,6 +51,21 @@ class PaymentScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: (){
+                Get.to(()=>HomeScreen());
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -194,8 +211,8 @@ class PaymentScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => WebViewScreen(
           url: encodedUrl,
-          successCallback: () => showPaymentResultDialog(context, true),
-          errorCallback: () => showPaymentResultDialog(context, false),
+          successCallback: () => SuccsesPayament(amount :amount),
+          errorCallback: () => const FailedPayment(),
         ),
       ),
     );
@@ -217,36 +234,14 @@ class PaymentScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => WebViewScreen(
           url: encodedUrl,
-          successCallback: () => showPaymentResultDialog(context, true),
-          errorCallback: () => showPaymentResultDialog(context, false),
+          successCallback: () => const SuccsesPayament(),
+          errorCallback: () => const  FailedPayment(),
         ),
       ),
     );
   }
 
-  void showPaymentResultDialog(BuildContext context, bool isSuccess) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(isSuccess ? 'paymentsucces'.tr : 'paymentfailed'.tr),
-          content: Text(isSuccess
-              ? 'paymentok'.tr
-              : 'Payment failed. Please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.to(() => TotalImpaidChild(
-                      student: student!,
-                    ));
-              },
-              child:  Text('ok'.tr),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 }
 
 class WebViewScreen extends StatefulWidget {
@@ -291,6 +286,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [  Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: (){
+              Get.to(()=>HomeScreen());
+            },
+            child: Image.asset(
+              'assets/imgs/tsdIcon.png',
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ),],
       ),
       body: Stack(
         children: [

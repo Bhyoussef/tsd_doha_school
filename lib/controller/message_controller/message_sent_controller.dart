@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tsdoha/model/send_message_model.dart';
 import '../../model/message_sent_model.dart';
 import '../../services/message.dart';
-import '../../utils/shared_preferences.dart';
+
 
 class MesaageSentController extends GetxController {
   final sentedmessage = <MessageSent>[].obs;
@@ -16,23 +16,28 @@ class MesaageSentController extends GetxController {
 
   @override
   void onInit() {
-    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-      fetchingSentMessage(uid);
-    });
     super.onInit();
+  }
+  @override
+  void onClose() {
+    super.onClose();
   }
 
   Future<void> fetchingSentMessage(uid) async {
     try {
       isLoading(true);
       final messageList =
-          await ApiServiceMessage.getMessagesSented(uid);
+      await ApiServiceMessage.getMessagesSented(uid);
       sentedmessage.assignAll(messageList.reversed.toList());
       update();
+    } catch (error) {
+      // Handle error
     } finally {
       isLoading(false);
     }
   }
+
+
   Future<void> getsentmessagedetails(uid,int messageId) async {
     try {
       isLoading(true);

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../model/child_model.dart';
+import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import 'widget/date_range_widget.dart';
 import 'widget/timetable_entry_widget.dart';
@@ -59,10 +60,15 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],

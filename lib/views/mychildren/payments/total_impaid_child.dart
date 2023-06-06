@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/routes.dart';
 import '../../mypayments/payment_screen.dart';
 import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
@@ -42,7 +43,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color:CupertinoColors.white),
+          icon: const Icon(Icons.arrow_back_ios, color: CupertinoColors.white),
           onPressed: () {
             Get.back();
           },
@@ -50,28 +51,52 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: primarycolor,
-        title:  Text(
+        title: Text(
           'totalunpaid'.tr,
           style: const TextStyle(
             color: CupertinoColors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(
-              () {
+          () {
             if (controller.isLoading.value) {
-              return  Center(
-                child: CircularProgressBar(color: primarycolor,),
+              return Center(
+                child: CircularProgressBar(
+                  color: primarycolor,
+                ),
+              );
+            } else if (controller.totalinpaiddetailsstudents.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/imgs/notfound.png'),
+                  Text('notimetablefound'.tr),
+                ],
               );
             } else {
               return ListView.builder(
                 itemCount: controller.totalinpaiddetailsstudents.length,
                 itemBuilder: (context, index) {
                   final paidDetail =
-                  controller.totalinpaiddetailsstudents[index];
-
+                      controller.totalinpaiddetailsstudents[index];
                   return Container(
                     padding: const EdgeInsets.all(14),
                     decoration: const BoxDecoration(
@@ -95,7 +120,8 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('${paidDetail.priceUnit} ${paidDetail.currency}'),
+                          Text(
+                              '${paidDetail.priceUnit} ${paidDetail.currency}'),
                           Text('${paidDetail.year}'),
                         ],
                       ),
@@ -135,7 +161,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
           }
         },
         child: Text(
-          totalAmount == 0.0 ? 'select'.tr : '${ 'pay'.tr} $totalAmount QAR',
+          totalAmount == 0.0 ? 'select'.tr : '${'pay'.tr} $totalAmount QAR',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -154,7 +180,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
   void navigateToPaymentPage(
       BuildContext context, List<PaymentDetails> selectedDetails) {
     List<int> lineIDs =
-    selectedDetails.map((detail) => detail.idLine!).toList();
+        selectedDetails.map((detail) => detail.idLine!).toList();
 
     Navigator.push(
       context,

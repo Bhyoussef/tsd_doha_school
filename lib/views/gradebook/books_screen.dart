@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../constant/constant.dart';
 import '../../controller/dowload_file_controller.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
+import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import 'widget/book_card.dart';
 
@@ -48,10 +49,15 @@ class _BookListScreenState extends State<BookListScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
+import '../../../routes/routes.dart';
 import '../../../theme/app_colors.dart';
 
 class DetailPaymentsPaidParents extends StatefulWidget {
@@ -39,10 +40,15 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                'assets/imgs/tsdIcon.png',
-                width: 40,
-                height: 40,
+              child: GestureDetector(
+                onTap: (){
+                  Get.toNamed(Routes.home);
+                },
+                child: Image.asset(
+                  'assets/imgs/tsdIcon.png',
+                  width: 40,
+                  height: 40,
+                ),
               ),
             ),
           ],
@@ -51,8 +57,18 @@ class _DetailPaymentsPaidParentsState extends State<DetailPaymentsPaidParents> {
           child: Obx(
             () {
               if (controller.isLoading.value) {
-                return  Center(child: CircularProgressBar(color: primarycolor,));
-              } else {
+                return  Center(
+                    child: CircularProgressBar(color: primarycolor,));
+              } else if(controller.totalpaiddetailsparents.isEmpty){
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/imgs/notfound.png'),
+                    Text('nopayments'.tr),
+                  ],
+                );
+
+              }else {
                 return ListView.builder(
                   itemCount: controller.totalpaiddetailsparents.length,
                   itemBuilder: (context, index) {

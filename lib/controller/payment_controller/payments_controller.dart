@@ -7,6 +7,8 @@ import '../../utils/shared_preferences.dart';
 
 class PaymentsController extends GetxController {
   final paymentsTotalparents = <Payment>[].obs;
+
+  RxBool isLoading = false.obs;
   final paymentsTotalstudents = <Payment>[].obs;
 
   final totalpaiddetailsparents = <PaymentDetails>[].obs;
@@ -16,7 +18,7 @@ class PaymentsController extends GetxController {
   final totalinpaiddetailsstudents = <PaymentDetails>[].obs;
 
 
-  final isLoading = true.obs;
+
 
   late int patrentId;
 
@@ -34,12 +36,12 @@ class PaymentsController extends GetxController {
 
   Future<void> fetchingTotalPaymentsStudents(int studentId) async {
     try {
-      isLoading(true);
+      isLoading (true);
       final paymentList = await ApiServicePayment.getPaymentsStudentTotal(studentId);
       paymentsTotalstudents.assignAll(paymentList);
       update();
     } finally {
-      isLoading(false);
+      isLoading (false);
     }
 
   }

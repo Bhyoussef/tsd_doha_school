@@ -9,8 +9,6 @@ import '../../../model/comments_model.dart';
 import '../../../utils/shared_preferences.dart';
 import 'attachement_widget.dart';
 
-
-
 class CommentCard extends StatefulWidget {
   final Comment? comment;
 
@@ -24,26 +22,27 @@ class CommentCard extends StatefulWidget {
 }
 
 class _CommentCardState extends State<CommentCard> {
-  final MessageReceivedController controller = Get.find<MessageReceivedController>();
-  int uid =0;
+  final MessageReceivedController controller =
+      Get.find<MessageReceivedController>();
+  int uid = 0;
   bool isVoted = false;
 
   @override
   void initState() {
     super.initState();
+
     _fetchUid();
-
-
   }
 
   Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final fetchedUid =
+        await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
       isVoted = widget.comment!.voteUserIds!.contains(uid);
-      print(uid);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,7 +81,8 @@ class _CommentCardState extends State<CommentCard> {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: _buildCircleAvatar(widget.comment!.authorId!.image!),
+                  backgroundImage:
+                      _buildCircleAvatar(widget.comment!.authorId!.image!),
                   radius: 30.0,
                 ),
                 const SizedBox(width: 8.0),
@@ -97,10 +97,13 @@ class _CommentCardState extends State<CommentCard> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text( _removeAllHtmlTags(widget.comment!.body!),
-              maxLines: 5, ),
+            child: Text(
+              _removeAllHtmlTags(widget.comment!.body!),
+              maxLines: 5,
+            ),
           ),
-          if (widget.comment!.attachments != null && widget.comment!.attachments!.isNotEmpty)
+          if (widget.comment!.attachments != null &&
+              widget.comment!.attachments!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -108,21 +111,24 @@ class _CommentCardState extends State<CommentCard> {
                 children: [
                   Text(
                     'attachemnts'.tr,
-                    style:const  TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16.0,
                     ),
                   ),
                   const SizedBox(height: 8.0),
                   Obx(() {
-                    if (controller.isLoading.value) {
+                    if (controller.isLoadingAttachments.value) {
                       return CircularProgressBar(color: primarycolor);
                     } else {
                       return Wrap(
                         spacing: 8.0,
                         runSpacing: 8.0,
                         children: widget.comment!.attachments!
-                            .map((attachment) => AttachmentWidget(attachment: attachment, comment: widget.comment!,))
+                            .map((attachment) => AttachmentWidget(
+                                  attachment: attachment,
+                                  comment: widget.comment!,
+                                ))
                             .toList(),
                       );
                     }
@@ -146,8 +152,6 @@ class _CommentCardState extends State<CommentCard> {
         ],
       ),
     );
-
-
   }
 
   Widget buildVoteButton() {
@@ -160,7 +164,9 @@ class _CommentCardState extends State<CommentCard> {
       },
       icon: Icon(
         isVoted ? Icons.favorite : Icons.favorite_border,
-        color: isVoted ? Colors.red : Colors.red, // Use different colors for voted and not voted states
+        color: isVoted
+            ? Colors.red
+            : Colors.red, // Use different colors for voted and not voted states
       ),
     );
   }
