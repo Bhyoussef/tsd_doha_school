@@ -222,7 +222,7 @@ class DetailScreen extends StatelessWidget {
   }
 
   void navigateToDisciplinePage() {
-    Get.to(() => const DiciplineScreen());
+    Get.to(() =>  DiciplineScreen(studentId: student!.studentId!));
   }
 
   void navigateToPaymentPage() {

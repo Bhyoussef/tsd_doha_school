@@ -88,7 +88,7 @@ class Routes {
     ),
     GetPage(
       name: deciplineScreen,
-      page: () => const DiciplineScreen(),
+      page: () =>  DiciplineScreen(),
       binding: ControllersBinding(),
     ),
     GetPage(

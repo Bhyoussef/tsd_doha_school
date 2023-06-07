@@ -3,6 +3,7 @@ import '../constant/constant.dart';
 import 'package:http/http.dart' as http;
 import '../model/book_model.dart';
 import '../model/child_model.dart';
+import '../model/dicipline_model.dart';
 import '../model/exersice_model.dart';
 import '../model/time_table_model.dart';
 
@@ -128,6 +129,36 @@ class ApiServiceMyChildren {
           .map<TimeTable>((data) => TimeTable.fromJson(data))
           .toList();
       return timetableList;
+    } else {
+      throw Exception('Failed to fetch books');
+    }
+  }
+
+  static Future<List<Dicipline>> fetchDicipline(int studentId) async {
+    final response = await http.post(
+      Uri.parse('${Res.host}/proschool/sanction/student'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "uid": "",
+          "params": {
+            "child_id": studentId,
+            "id":540
+          }
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+
+      final data = jsonData['result'][0]["sanction_student"];
+      List<Dicipline> list = data
+          .map<Dicipline>((data) => Dicipline.fromJson(data))
+          .toList();
+      return list;
     } else {
       throw Exception('Failed to fetch books');
     }

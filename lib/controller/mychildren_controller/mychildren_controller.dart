@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/model/dicipline_model.dart';
 import 'package:tsdoha/model/exersice_model.dart';
 import 'package:tsdoha/model/time_table_model.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
@@ -12,6 +13,7 @@ class ChildrenController extends GetxController {
   final books = <Book>[].obs;
   final exersice = <Exersice>[].obs;
   final timetable = <TimeTable>[].obs;
+  final dicipline = <Dicipline>[].obs;
   final RxBool isLoading = false.obs;
 
   @override
@@ -28,8 +30,8 @@ class ChildrenController extends GetxController {
   Future<void> fetchChildren(int uid) async {
     try {
       isLoading.value = true;
-      final childrenList = await ApiServiceMyChildren.getChildren(uid);
-      children.assignAll(childrenList);
+      final list = await ApiServiceMyChildren.getChildren(uid);
+      children.assignAll(list);
     } finally {
       isLoading.value = false;
     }
@@ -38,8 +40,8 @@ class ChildrenController extends GetxController {
   Future<void> fetchBooksStudents(int studentId) async {
     try {
       isLoading.value = true;
-      final fetchedBooks = await ApiServiceMyChildren.fetchBooks(studentId);
-      books.assignAll(fetchedBooks);
+      final list = await ApiServiceMyChildren.fetchBooks(studentId);
+      books.assignAll(list);
     } finally {
       isLoading.value = false;
     }
@@ -48,9 +50,9 @@ class ChildrenController extends GetxController {
   Future<void> fetchExerciseStudent(int studentId) async {
     try {
       isLoading.value = true;
-      final fetchedExercise =
+      final list =
       await ApiServiceMyChildren.fetchExercise(studentId);
-      exersice.assignAll(fetchedExercise);
+      exersice.assignAll(list);
     } finally {
       isLoading.value = false;
     }
@@ -59,12 +61,19 @@ class ChildrenController extends GetxController {
   Future<void> fetchTiemTableStudent(int studentId, String ClassId) async {
     try {
       isLoading.value = true;
-      final fetchedtimetable =
+      final list =
       await ApiServiceMyChildren.fetchTimeTable(studentId, ClassId);
-      timetable.assignAll(fetchedtimetable);
-      if (kDebugMode) {
-        print('here$fetchedtimetable');
-      }
+      timetable.assignAll(list);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  Future<void> fetchdiciplineStudent(int studentId) async {
+    try {
+      isLoading.value = true;
+      final list =
+      await ApiServiceMyChildren.fetchDicipline(studentId);
+      dicipline.assignAll(list);
     } finally {
       isLoading.value = false;
     }
