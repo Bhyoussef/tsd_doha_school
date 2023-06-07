@@ -13,6 +13,7 @@ import '../../model/send_message_model.dart';
 import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
+import '../home/home_screen.dart';
 import 'add_response.dart';
 
 class MessageSentDetails extends StatefulWidget {
@@ -86,7 +87,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: (){
-                Get.toNamed(Routes.home);
+                Get.to(()=>HomeScreen());
               },
               child: Image.asset(
                 'assets/imgs/tsdIcon.png',

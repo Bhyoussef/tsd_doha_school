@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/controller/home_controller.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_received_controller.dart';
 import '../../controller/dowload_file_controller.dart';
@@ -25,6 +27,7 @@ class DetailsMessageReceived extends StatefulWidget {
 
 class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   final MessageReceivedController controller = Get.find<MessageReceivedController>();
+  final HomeController controllerhome = Get.find<HomeController>();
   final TextEditingController commentController = TextEditingController();
 
   @override
@@ -42,6 +45,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   void dispose() {
     controller.comments.clear();
     controller.childDetail.clear();
+    controller.isLoading.value = false;
     controller.isLoadingAttachments.value = false;
     controller.dispose();
     super.dispose();
@@ -76,10 +80,15 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.to(()=>HomeScreen());
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],
