@@ -24,7 +24,7 @@ class MessageSentDetails extends StatefulWidget {
 }
 
 class _MessageSentDetailsState extends State<MessageSentDetails> {
-  final MesaageSentController controller = Get.find<MesaageSentController>();
+  final MessageSentController controller = Get.find<MessageSentController>();
 
   int uid = 0;
 
@@ -48,15 +48,15 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
   }
 
 
-  void _refreshMessageDetails() {
-    if (kDebugMode) {
-      print(widget.message.id);
-    }
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      controller.getsentmessagedetails(uid, widget.message.id!);
-    });
-
+  @override
+  void dispose() {
+    //controller.isLoading.value = false;
+    //controller.detailssentmessage.clear();
+    super.dispose();
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
             color: CupertinoColors.white,
           ),
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
         ),
         centerTitle: true,
@@ -119,21 +119,9 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
               return ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
-                 // MessageContentSent(message: widget.message),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:  [
-                   /*   Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Response'.tr,
-                          style: TextStyle(
-                            color: primarycolor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
-                        ),
-                      ),*/
                     ],
                   ),
                   response()
@@ -337,135 +325,4 @@ class _MessageCardSentState extends State<MessageCardSent> {
 }
 
 
-class MessageContentSent extends StatefulWidget {
-  final MessageSent? message;
 
-  const MessageContentSent({Key? key,  this.message}) : super(key: key);
-
-  @override
-  State<MessageContentSent> createState() => _MessageContentSentState();
-}
-
-class _MessageContentSentState extends State<MessageContentSent> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.message!.name!,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "${'to'.tr} : ${widget.message!.receiver!}",
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        /*  CircleAvatar(
-            backgroundImage: MemoryImage(base64Decode(widget.message.uploadFile!)),
-            radius: 40.0,
-          ),*/
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              _removeAllHtmlTags(widget.message!.message!),
-              style: const TextStyle(fontSize: 16.0),
-            ),
-          ),
-         widget.message!.fileName! == "false"?Container(): Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.message!.fileName!,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.download,
-                    color: primarycolor,
-                  ),
-                  onPressed: () {
-                    _downloadFile(widget.message!.fileName!, widget.message!.uploadFile!);
-                  },
-                ),
-
-              ],
-            ),
-          ),
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  widget.message!.date!,
-                  style: const TextStyle(fontSize: 14.0),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _removeAllHtmlTags(String htmlText) {
-    if (htmlText == null) return 'N/A';
-    RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
-
-    return htmlText.replaceAll(exp, '');
-  }
-
-  Future<void> _downloadFile(String fileName, String base64File) async {
-    try {
-      final bytes = base64Decode(base64File);
-      final dir = await getExternalStorageDirectory();
-      final filePath = '${dir!.path}/$fileName';
-      File file = File(filePath);
-      await file.writeAsBytes(bytes);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('File downloaded successfully'),
-          duration: Duration(seconds: 5),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to download the file'),
-          duration: Duration(seconds: 5),
-        ),
-      );
-    }
-  }
-}

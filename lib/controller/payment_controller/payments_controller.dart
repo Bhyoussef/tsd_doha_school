@@ -39,7 +39,7 @@ class PaymentsController extends GetxController {
       isLoading (true);
       final paymentList = await ApiServicePayment.getPaymentsStudentTotal(studentId);
       paymentsTotalstudents.assignAll(paymentList);
-      update();
+
     } finally {
       isLoading (false);
     }
@@ -50,7 +50,7 @@ class PaymentsController extends GetxController {
       isLoading(true);
       final paymentList = await ApiServicePayment.getPaidDetailsStudents(studentId);
       totalpaiddetailsstudents.assignAll(paymentList);
-      update();
+
     } finally {
       isLoading(false);
     }

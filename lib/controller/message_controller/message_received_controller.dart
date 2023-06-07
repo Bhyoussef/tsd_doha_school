@@ -18,16 +18,23 @@ class MessageReceivedController extends GetxController {
   final attachmentController = TextEditingController().obs;
   int? parentId;
 
+  @override
+  void onInit() {
+    super.onInit();
+  }
 
-
-
+  @override
+  void onClose() {
+    isLoading.value = false;
+    isLoadingAttachments.value = false;
+    super.onClose();
+  }
 
   Future<void> fetchReceivedMessage(uid) async {
     try {
       isLoading(true);
       final messageList = await ApiServiceMessage.getMessagesrecieved(uid);
       receivedMessage.assignAll(messageList);
-      update();
     } catch (error) {
       // Handle error
     } finally {
@@ -41,7 +48,6 @@ class MessageReceivedController extends GetxController {
       final childDetail =
           await ApiServicePersonal.getSingleChild(uid, studentId);
       this.childDetail.assignAll(childDetail);
-      update();
     } finally {
       isLoading(false);
     }
@@ -51,18 +57,17 @@ class MessageReceivedController extends GetxController {
     try {
       isLoading(true);
       final commentsList =
-      await ApiServiceMessage.getListComments(uid, messageId);
+          await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
       for (var comment in commentsList) {
         if (comment.attachmentIds!.isNotEmpty) {
           isLoadingAttachments(true);
           final attachments =
-          await ApiServiceMessage.getAllattachements(comment.attachmentIds);
+              await ApiServiceMessage.getAllattachements(comment.attachmentIds);
           comment.attachments = attachments;
           isLoadingAttachments(false);
         }
       }
-      update();
     } finally {
       isLoading(false);
     }
@@ -74,15 +79,14 @@ class MessageReceivedController extends GetxController {
         uid,
         messageId,
       );
-    } finally {
-    }
+    } finally {}
     return null;
   }
 
-  Future<String?> updateMessageState(int  uid,int messageId) async {
+  Future<String?> updateMessageState(int uid, int messageId) async {
     try {
       isLoading(true);
-      await ApiServiceMessage.updatemessagestate(uid,messageId);
+      await ApiServiceMessage.updatemessagestate(uid, messageId);
     } finally {
       isLoading(false);
     }
@@ -129,10 +133,9 @@ class MessageReceivedController extends GetxController {
         attachmentPath,
       );
       if (result != null) {
-        //Get.back();
-        // Refresh comments
+        // Handle success
       } else {
-        // Failed to add comment
+        // Handle failure
       }
     } catch (error) {
       // Handle error

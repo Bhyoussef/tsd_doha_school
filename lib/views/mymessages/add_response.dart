@@ -20,7 +20,7 @@ class AddResponse extends StatefulWidget {
 
 class _AddResponseState extends State<AddResponse> {
   final TextEditingController responsecontroller = TextEditingController();
-  final MesaageSentController controller = Get.put(MesaageSentController());
+  final MessageSentController controller = Get.put(MessageSentController());
   final RxString attachmentPath = RxString('');
 
 

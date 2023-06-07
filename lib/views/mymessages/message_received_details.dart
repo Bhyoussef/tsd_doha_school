@@ -37,11 +37,16 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
 
     });
   }
+
   @override
   void dispose() {
-    Get.find<MessageReceivedController>().dispose();
+    controller.comments.clear();
+    controller.childDetail.clear();
+    controller.isLoadingAttachments.value = false;
+    controller.dispose();
     super.dispose();
   }
+
 
 
   @override
@@ -58,7 +63,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
             color: CupertinoColors.white,
           ),
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
         ),
         title:  Text(

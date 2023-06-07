@@ -25,7 +25,7 @@ class ControllersBinding extends Bindings {
     Get.lazyPut(() => MessageReceivedController(), fenix: true);
     Get.lazyPut(() => PaymentsController(), fenix: true);
     Get.lazyPut(() => SendMessageController(), fenix: true);
-    Get.lazyPut(() => MesaageSentController(), fenix: true);
+    Get.lazyPut(() => MessageSentController(), fenix: true);
     Get.lazyPut(() => FileDownloadController(), fenix: true);
   }
 }

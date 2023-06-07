@@ -12,64 +12,61 @@ class ChildrenController extends GetxController {
   final books = <Book>[].obs;
   final exersice = <Exersice>[].obs;
   final timetable = <TimeTable>[].obs;
-  RxBool isLoading = false.obs;
+  final RxBool isLoading = false.obs;
 
   @override
   void onInit() {
-    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-      fetchChildren(uid);
-
-    });
     super.onInit();
+    _fetchChildren();
   }
 
+  Future<void> _fetchChildren() async {
+    final uid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    await fetchChildren(uid);
+  }
 
-
-  Future<void> fetchChildren(uid) async {
+  Future<void> fetchChildren(int uid) async {
     try {
-      isLoading(true);
+      isLoading.value = true;
       final childrenList = await ApiServiceMyChildren.getChildren(uid);
       children.assignAll(childrenList);
-      update();
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
   Future<void> fetchBooksStudents(int studentId) async {
     try {
-      isLoading(true);
+      isLoading.value = true;
       final fetchedBooks = await ApiServiceMyChildren.fetchBooks(studentId);
       books.assignAll(fetchedBooks);
-      update();
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
   Future<void> fetchExerciseStudent(int studentId) async {
     try {
-      isLoading(true);
-      final fetchedExercise = await ApiServiceMyChildren.fetchExercise(
-        studentId);
+      isLoading.value = true;
+      final fetchedExercise =
+      await ApiServiceMyChildren.fetchExercise(studentId);
       exersice.assignAll(fetchedExercise);
-      update();
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
-  Future<void> fetchTiemTableStudent(int studentId,String ClassId) async {
+  Future<void> fetchTiemTableStudent(int studentId, String ClassId) async {
     try {
-      isLoading(true);
-      final fetchedtimetable = await ApiServiceMyChildren.fetchTimeTable(studentId,ClassId);
+      isLoading.value = true;
+      final fetchedtimetable =
+      await ApiServiceMyChildren.fetchTimeTable(studentId, ClassId);
       timetable.assignAll(fetchedtimetable);
       if (kDebugMode) {
         print('here$fetchedtimetable');
       }
-      update();
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 }

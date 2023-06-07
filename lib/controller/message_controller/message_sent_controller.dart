@@ -1,35 +1,36 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tsdoha/model/send_message_model.dart';
-import '../../model/message_sent_model.dart';
-import '../../services/message.dart';
+import 'package:tsdoha/model/message_sent_model.dart';
+import 'package:tsdoha/services/message.dart';
 
-
-class MesaageSentController extends GetxController {
+class MessageSentController extends GetxController {
   final sentedmessage = <MessageSent>[].obs;
   final detailssentmessage = <SendMessage>[].obs;
   final attachmentController = TextEditingController().obs;
-  final isLoading = true.obs;
+  final isLoading = false.obs;
+
 
   @override
   void onInit() {
     super.onInit();
   }
+
   @override
   void onClose() {
+    attachmentController.value.dispose();
     super.onClose();
   }
 
-  Future<void> fetchingSentMessage(uid) async {
+  Future<void> fetchingSentMessage(int uid) async {
     try {
       isLoading(true);
-      final messageList =
-      await ApiServiceMessage.getMessagesSented(uid);
-      sentedmessage.assignAll(messageList.reversed.toList());
-      update();
+      final messageList = await ApiServiceMessage.getMessagesSented(uid);
+      sentedmessage.assignAll(messageList.reversed);
     } catch (error) {
       // Handle error
     } finally {
@@ -37,14 +38,12 @@ class MesaageSentController extends GetxController {
     }
   }
 
-
-  Future<void> getsentmessagedetails(uid,int messageId) async {
+  Future<void> getsentmessagedetails(int uid, int messageId) async {
     try {
       isLoading(true);
       final messageList =
-      await ApiServiceMessage.getMessagesSentedDeatails(uid,messageId);
+      await ApiServiceMessage.getMessagesSentedDeatails(uid, messageId);
       detailssentmessage.assignAll(messageList);
-      update();
     } finally {
       isLoading(false);
     }
@@ -70,7 +69,7 @@ class MesaageSentController extends GetxController {
     }
   }
 
-  void convertToBase64(String path) async {
+  Future<void> convertToBase64(String path) async {
     final file = File(path);
     final bytes = await file.readAsBytes();
     final base64Image = base64Encode(bytes);
@@ -78,12 +77,9 @@ class MesaageSentController extends GetxController {
     final selectedImgName = imagePath.split('/').last;
     attachmentController.value.text = selectedImgName;
   }
+
   Future<void> addCommentWithAttachment(
-      String body,
-      int messageId,
-      String attachmentPath,
-      int uid
-      ) async {
+      String body, int messageId, String attachmentPath, int uid) async {
     try {
       isLoading.value = true;
       final String? result = await ApiServiceMessage.addResponse(
@@ -93,10 +89,7 @@ class MesaageSentController extends GetxController {
         attachmentPath,
       );
       if (result != null) {
-
         await getsentmessagedetails(uid, messageId);
-
-
       } else {
         // Failed to add comment
       }

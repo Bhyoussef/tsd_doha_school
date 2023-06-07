@@ -12,8 +12,12 @@ import '../constant/constant.dart';
 import '../theme/app_colors.dart';
 
 class FileDownloadController extends GetxController {
+  bool isDownloading = false;
+
   Future<void> downloadFile(int uid, String fileId, String fileName) async {
     try {
+      isDownloading = true;
+      showDownloadProgressToast();
       final response = await http.post(
         Uri.parse('${Res.host}/proschool/giveme_base64'),
         headers: {"Content-Type": "application/json"},
@@ -42,6 +46,7 @@ class FileDownloadController extends GetxController {
       } else {
         dir = await DownloadsPathProvider.downloadsDirectory;
       }
+
       if (dir != null) {
         String savePath = await getUniqueFilePath(dir.path, fileName);
         if (kDebugMode) {
@@ -50,6 +55,7 @@ class FileDownloadController extends GetxController {
 
         try {
           await File(savePath).writeAsBytes(fileBytes, flush: true);
+          showDownloadCompleteDialog();
 
           final file = File(savePath);
           if (await file.exists()) {
@@ -57,15 +63,15 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('downloadcompleted'.tr),
+                  title: Text('Download Completed'),
                   actions: [
                     TextButton(
                       onPressed: () {
+                        openDownloadedFile(savePath);
                         Get.back();
-                        OpenFile.open(savePath);
                       },
                       child: Text(
-                        'open'.tr,
+                        'Open',
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,
@@ -81,15 +87,15 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('error'.tr),
-                  content: Text('failedtodownloadfile'.tr),
+                  title: Text('Error'),
+                  content: Text('Failed to download file.'),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Get.back();
                       },
                       child: Text(
-                        'ok'.tr,
+                        'OK',
                         style: TextStyle(color: primarycolor),
                       ),
                     ),
@@ -103,15 +109,15 @@ class FileDownloadController extends GetxController {
             context: Get.overlayContext!,
             builder: (context) {
               return AlertDialog(
-                title: Text('error'.tr),
-                content: Text('failedtodownloadfile'.tr),
+                title: Text('Error'),
+                content: Text('Failed to download file.'),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Get.back();
                     },
                     child: Text(
-                      'ok'.tr,
+                      'OK',
                       style: TextStyle(color: primarycolor),
                     ),
                   ),
@@ -129,15 +135,15 @@ class FileDownloadController extends GetxController {
         context: Get.overlayContext!,
         builder: (context) {
           return AlertDialog(
-            title: Text('error'.tr),
-            content: Text('failedtodownloadfile'.tr),
+            title: Text('Error'),
+            content: Text('Failed to download file.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Get.back();
                 },
                 child: Text(
-                  'ok'.tr,
+                  'OK',
                   style: TextStyle(color: primarycolor),
                 ),
               ),
@@ -153,6 +159,8 @@ class FileDownloadController extends GetxController {
 
   Future<void> download(String attachment, String attachmentName) async {
     try {
+      isDownloading = true;
+      showDownloadProgressToast();
       final fileBytes = base64Decode(attachment);
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
@@ -160,12 +168,12 @@ class FileDownloadController extends GetxController {
 
       var dir;
 
-
       if (Platform.isIOS) {
         dir = await getApplicationDocumentsDirectory();
       } else {
         dir = await DownloadsPathProvider.downloadsDirectory;
       }
+
       if (dir != null) {
         String savePath = await getUniqueFilePath(dir.path, attachmentName);
         if (kDebugMode) {
@@ -174,6 +182,7 @@ class FileDownloadController extends GetxController {
 
         try {
           await File(savePath).writeAsBytes(fileBytes, flush: true);
+          showDownloadCompleteDialog();
 
           final file = File(savePath);
           if (await file.exists()) {
@@ -181,15 +190,15 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('downloadcompleted'.tr),
+                  title: Text('Download Completed'),
                   actions: [
                     TextButton(
                       onPressed: () {
+                        openDownloadedFile(savePath);
                         Get.back();
-                        OpenFile.open(savePath);
                       },
                       child: Text(
-                        'open'.tr,
+                        'Open',
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,
@@ -205,17 +214,19 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('error'.tr),
-                  content: Text('failedtodownloadfile'.tr),
+                  title: Text('Error'),
+                  content: Text('Failed to download file.'),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Get.back();
                       },
                       child: Text(
-                        'ok'.tr,
+                        'OK',
                         style: TextStyle(
-                            color: primarycolor, fontWeight: FontWeight.bold),
+                          color: primarycolor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -228,15 +239,15 @@ class FileDownloadController extends GetxController {
             context: Get.overlayContext!,
             builder: (context) {
               return AlertDialog(
-                title: Text('error'.tr),
-                content: Text('failedtodownloadfile'.tr),
+                title: Text('Error'),
+                content: Text('Failed to download file.'),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Get.back();
                     },
                     child: Text(
-                      'ok'.tr,
+                      'OK',
                       style: TextStyle(color: primarycolor),
                     ),
                   ),
@@ -254,15 +265,15 @@ class FileDownloadController extends GetxController {
         context: Get.overlayContext!,
         builder: (context) {
           return AlertDialog(
-            title: Text('error'.tr),
-            content: Text('failedtodownloadfile'.tr),
+            title: Text('Error'),
+            content: Text('Failed to download file.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Get.back();
                 },
                 child: Text(
-                  'ok'.tr,
+                  'OK',
                   style: TextStyle(color: primarycolor),
                 ),
               ),
@@ -281,7 +292,6 @@ class FileDownloadController extends GetxController {
     File file = File(filePath);
     int fileNumber = 1;
 
-    // Check if the file already exists
     while (await file.exists()) {
       String newFileName =
           '${getFileNameWithoutExtension(fileName)}_$fileNumber.${getFileExtension(fileName)}';
@@ -307,5 +317,35 @@ class FileDownloadController extends GetxController {
       return fileName.substring(extensionIndex + 1);
     }
     return '';
+  }
+
+  void showDownloadProgressToast() {
+    Get.snackbar(
+      'Downloading',
+      'File is being downloaded...',
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.grey[800],
+      colorText: Colors.white,
+      overlayColor: Colors.black54,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.all(20),
+    );
+  }
+
+  void showDownloadCompleteDialog() {
+    Get.snackbar(
+      'Downloading Completed',
+      'File downloaded successfully',
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      overlayColor: Colors.black54,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.all(20),
+    );
+  }
+
+  Future<void> openDownloadedFile(String filePath) async {
+    await OpenFile.open(filePath);
   }
 }
