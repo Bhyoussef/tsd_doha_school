@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/constant/constant.dart';
 import '../../model/auth_model.dart';
 import '../../routes/routes.dart';
 import '../../services/auth.dart';
@@ -16,12 +17,10 @@ class AuthController extends GetxController {
     try {
       isLoading(true);
       final result = await ApiServiceAuth.authenticate(login, password);
-
       if (result is Authentificate) {
         if (kDebugMode) {
           print(jsonEncode(result.result));
         }
-
         SharedData.saveToStorage('parent', jsonEncode(result.result), 'string');
         Get.snackbar(
           'connexion_success_title'.tr,
@@ -31,7 +30,7 @@ class AuthController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
-        Get.off(() => HomeScreen());
+        Get.off(() => HomeScreen(),transition: Transition.circularReveal,duration: Duration(seconds: 2));
       }
     } catch (e) {
       Get.snackbar(

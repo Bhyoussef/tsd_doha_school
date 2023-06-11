@@ -43,7 +43,7 @@ const Map<String, String> ar = {
   'timetable':'جداول الوقت',
   'recording':'تسجيل',
   'gradebook':'دفتر التقديرات',
-  'to':'الي',
+  'to':' الي :',
   'writeyourcomment':'اكتب تعليقك ...',
   'admin':'إدارة',
   'receiver':'المتلقي',
@@ -94,7 +94,9 @@ const Map<String, String> ar = {
   'paymentfailed':'فشل الدفع',
   'paymentsucces':'الدفع ناجح',
   'paymentok':'تم الدفع الخاص بك بنجاح.',
-  'paymentfail':'عملية الدفع فشلت. حاول مرة اخرى.'
+  'paymentfail':'عملية الدفع فشلت. حاول مرة اخرى.',
+  'nosanction':'لا عقوبة',
+  'exercisedetail':'تفاصيل التمرين'
 
 
 

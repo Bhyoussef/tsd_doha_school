@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/child_model.dart';
-import '../../../routes/routes.dart';
 import '../../../theme/app_colors.dart';
+import '../../home/home_screen.dart';
 
 class TotalPaymentsChildren extends StatefulWidget {
   final Mychildreen? student;
-    const TotalPaymentsChildren({Key? key,  this.student}) : super(key: key);
+  const TotalPaymentsChildren({Key? key, this.student}) : super(key: key);
 
   @override
   State<TotalPaymentsChildren> createState() => _TotalPaymentsChildrenState();
@@ -22,8 +22,8 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      paymentController.fetchingTotalPaymentsStudentsDetail(
-          widget.student!.studentId!);
+      paymentController
+          .fetchingTotalPaymentsStudentsDetail(widget.student!.studentId!);
     });
   }
 
@@ -31,99 +31,100 @@ class _TotalPaymentsChildrenState extends State<TotalPaymentsChildren> {
   Widget build(BuildContext context) {
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
-    return  Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: primarycolor,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: CupertinoColors.white,),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title:  Text('totalpaid'.tr,style:const TextStyle(
-            color: CupertinoColors.white,fontWeight: FontWeight.bold
-        ),),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: (){
-                Get.toNamed(Routes.home);
-              },
-              child: Image.asset(
-                'assets/imgs/tsdIcon.png',
-                width: 40,
-                height: 40,
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: primarycolor,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: CupertinoColors.white,
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Text(
+            'totalpaid'.tr,
+            style: const TextStyle(
+                color: CupertinoColors.white, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  Get.offAll(HomeScreen());
+                },
+                child: Image.asset(
+                  'assets/imgs/tsdIcon.png',
+                  width: 40,
+                  height: 40,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Obx(
-            () {
-          if (paymentController.isLoading.value) {
-            return Center(
-              child: CircularProgressBar(color: primarycolor,),
-            );
-          } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-            return  Center(
-              child: Text('nopaymentshistoryfound'.tr),
-            );
-          }
-
-          return  ListView.builder(
-            itemCount: paymentController.totalpaiddetailsstudents.length,
-            itemBuilder: (context, index) {
-              final payment = paymentController.totalpaiddetailsstudents[index];
-              return Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(0.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
+          ],
+        ),
+        body: Obx(() => paymentController.isloading.isTrue
+            ? Center(
+                child: CircularProgressBar(
+                  color: primarycolor,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      payment.period.toString(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      ' ${payment.priceUnit} ${payment.currency}',
-                    ),
-                   isArabic? Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        ' ${payment.year}',
-                      ),
-                    ):Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        ' ${payment.year}',
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-
-        },
-      )
-    );
+              )
+            : paymentController.totalpaiddetailsstudents.isNotEmpty
+                ? ListView.builder(
+                    itemCount:
+                        paymentController.totalpaiddetailsstudents.length,
+                    itemBuilder: (context, index) {
+                      final payment =
+                          paymentController.totalpaiddetailsstudents[index];
+                      return Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(0.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              payment.period.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              ' ${payment.priceUnit!.toStringAsFixed(0)} ${payment.currency}',
+                            ),
+                            isArabic
+                                ? Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      ' ${payment.year}',
+                                    ),
+                                  )
+                                : Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      ' ${payment.year}',
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                : Center(
+                    child: Text('nopaymentshistoryfound'.tr),
+                  )));
   }
-
-
 }

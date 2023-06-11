@@ -8,7 +8,7 @@ import '../../utils/shared_preferences.dart';
 class PaymentsController extends GetxController {
   final paymentsTotalparents = <Payment>[].obs;
 
-  RxBool isLoading = false.obs;
+  final isloading = false.obs;
   final paymentsTotalstudents = <Payment>[].obs;
 
   final totalpaiddetailsparents = <PaymentDetails>[].obs;
@@ -36,68 +36,68 @@ class PaymentsController extends GetxController {
 
   Future<void> fetchingTotalPaymentsStudents(int studentId) async {
     try {
-      isLoading (true);
+      isloading.value = true;
       final paymentList = await ApiServicePayment.getPaymentsStudentTotal(studentId);
       paymentsTotalstudents.assignAll(paymentList);
 
     } finally {
-      isLoading (false);
+      isloading.value = false;
     }
 
   }
   Future<void> fetchingTotalPaymentsStudentsDetail(int studentId) async {
     try {
-      isLoading(true);
+      isloading.value = true;
       final paymentList = await ApiServicePayment.getPaidDetailsStudents(studentId);
       totalpaiddetailsstudents.assignAll(paymentList);
 
     } finally {
-      isLoading(false);
+      isloading.value = false;
     }
 
   }
   Future<void> fetchingTotalPaymentsParents(uid) async {
     try {
-      isLoading(true);
+      isloading.value = true;
       final paymentList = await ApiServicePayment.getPaymentsParentTotal(uid);
       paymentsTotalparents.assignAll(paymentList);
       update();
     } finally {
-      isLoading(false);
+      isloading.value = false;
     }
   }
 
   Future<void> fetchingtotalpaiddetailsparents(uid) async {
     try {
-      isLoading(true);
+      isloading.value = true;
       final paidList = await ApiServicePayment.getPaidDetailsParents(uid);
       totalpaiddetailsparents.assignAll(paidList);
       update();
     } finally {
-      isLoading(false);
+      isloading.value = false;
     }
   }
 
   Future<void> fetchingtotalinpaiddetailsparents(uid) async {
     try {
-      isLoading(true);
+      isloading.value = true;
       final paidList = await ApiServicePayment.getInPaidDetailsParents(
          uid);
       totalinpaiddetailsparents.assignAll(paidList);
       update();
     } finally {
-      isLoading(false);
+      isloading.value = false;
     }
   }
   Future<void> fetchingTotalInPaidDetailsStudent(int studentId) async {
     try {
-      isLoading(true);
+      isloading.value = true;
       final paidList = await ApiServicePayment.getInPaidDetailsStudents(
           studentId);
       totalinpaiddetailsstudents.assignAll(paidList);
       update();
     } finally {
-      isLoading(false);
+      isloading.value = false;
     }
   }
 

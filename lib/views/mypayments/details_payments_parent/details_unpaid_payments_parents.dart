@@ -57,7 +57,7 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
         body: SafeArea(
           child: Obx(
                 () {
-              if (controller.isLoading.value) {
+              if (controller.isloading.value) {
                 return  Center(child: CircularProgressBar(
                   color: primarycolor,
                 ));

@@ -117,20 +117,24 @@ class ChildCardPayment extends StatelessWidget {
 }
 
 Widget _buildCircleAvatar(dynamic image) {
-  if (image != null) {
-    try {
-      final decodedImage = base64Decode(image.toString());
-      final imageBytes = Uint8List.fromList(decodedImage);
-      return CircleAvatar(
-        backgroundImage: MemoryImage(imageBytes),
-        radius: 30.0,
-      );
-    } catch (e) {
-      print('Invalid image data: $e');
-    }
+  if (image is String && image.isNotEmpty) {
+    return Image.memory(
+      base64Decode(image),
+      width: 60,
+      height: 60,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) {
+        print('Error loading user avatar');
+        return CircleAvatar(
+          backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+          radius: 30.0,
+        );
+      },
+    );
   }
-  return const CircleAvatar(
-    backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
+
+  return CircleAvatar(
+    backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
     radius: 30.0,
   );
 }

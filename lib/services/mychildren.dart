@@ -72,7 +72,7 @@ class ApiServiceMyChildren {
   }
 
   static Future<List<Exersice>> fetchExercise(
-    int studentId,
+    int studentId,int uid
   ) async {
     final response = await http.post(
       Uri.parse('${Res.host}/proschool/homework/student'),
@@ -80,7 +80,7 @@ class ApiServiceMyChildren {
       body: jsonEncode(
         {
           "jsonrpc": "2.0",
-          "uid": false,
+          "uid": 6523,
           "method": "call",
           "params": {
             "child_id": studentId,
@@ -94,10 +94,11 @@ class ApiServiceMyChildren {
       final jsonData = jsonDecode(response.body);
 
       final bookData = jsonData['result'][0]["homework_student"];
-      /* List<Exersice> exerciseList = bookData
+       List<Exersice> list = bookData
           .map<Exersice>((data) => Exersice.fromJson(data))
-          .toList();*/
-      return [];
+          .toList();
+       print(list.length);
+      return list;
     } else {
       throw Exception('Failed to fetch books');
     }
@@ -145,7 +146,7 @@ class ApiServiceMyChildren {
           "uid": "",
           "params": {
             "child_id": studentId,
-            "id":540
+            "id":false
           }
         },
       ),

@@ -4,6 +4,7 @@ import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/shared_preferences.dart';
+import '../login/login_screen.dart';
 import 'widget/topandbuttomwrapper.dart';
 
 class LanguageScreen extends StatelessWidget {
@@ -55,7 +56,8 @@ class LanguageScreen extends StatelessWidget {
                     onPressed: () async {
                       SharedData.saveToStorage('language', 'en', 'string');
                       Get.updateLocale(const Locale('en'));
-                      Get.toNamed(Routes.getloginscreen());
+                      Get.to(()=>LoginScreen(),transition: Transition.zoom);
+                      //Get.toNamed(Routes.getloginscreen());
                     },
                     style: PadiwanButtonTheme.whiteButtonTheme.style,
                     child: Row(

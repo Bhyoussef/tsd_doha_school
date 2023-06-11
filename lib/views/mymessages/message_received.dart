@@ -26,21 +26,11 @@ class ReceivedMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(
-            child: CircularProgressBar(color: primarycolor),
-          );
-        } else if (controller.receivedMessage.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/imgs/notfound.png'),
-              const Text('No message received found'),
-            ],
-          );
-        } else {
-          return ListView.builder(
+      child: Obx(() =>controller.isLoading.isTrue
+          ?Center(
+            child: CircularProgressBar(color: primarycolor))
+          :controller.receivedMessage.isNotEmpty
+        ? ListView.builder(
             itemCount: controller.receivedMessage.length,
             itemBuilder: (context, index) {
               Message message = controller.receivedMessage[index];
@@ -72,9 +62,15 @@ class ReceivedMessages extends StatelessWidget {
                 ),
               );
             },
-          );
-        }
-      }),
+          ):Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/imgs/notfound.png'),
+        const Text('No message received found'),
+      ],
+    )
+
+      ),
     );
   }
 }

@@ -229,7 +229,7 @@ class PaymentScreen extends StatelessWidget {
       print(url);
     }
     String encodedUrl = Uri.encodeFull(url);
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => WebViewScreen(

@@ -53,7 +53,7 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
         ),
         body: Obx(
               () {
-            if (paymentController.isLoading.value) {
+            if (paymentController.isloading.value) {
               return  Center(
                 child: CircularProgressBar(color: primarycolor,),
               );

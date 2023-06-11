@@ -47,11 +47,11 @@ class ChildrenController extends GetxController {
     }
   }
 
-  Future<void> fetchExerciseStudent(int studentId) async {
+  Future<void> fetchExerciseStudent(int studentId,int uid) async {
     try {
       isLoading.value = true;
       final list =
-      await ApiServiceMyChildren.fetchExercise(studentId);
+      await ApiServiceMyChildren.fetchExercise(studentId,uid);
       exersice.assignAll(list);
     } finally {
       isLoading.value = false;

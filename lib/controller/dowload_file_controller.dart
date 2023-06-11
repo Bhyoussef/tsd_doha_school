@@ -5,14 +5,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../constant/constant.dart';
 import '../theme/app_colors.dart';
+import '../utils/pdf_viewer.dart';
 
 class FileDownloadController extends GetxController {
   bool isDownloading = false;
+  bool isAlertDialogVisible = false;
+  BuildContext? alertDialogContext;
 
   Future<void> downloadFile(int uid, String fileId, String fileName) async {
     try {
@@ -55,10 +59,11 @@ class FileDownloadController extends GetxController {
 
         try {
           await File(savePath).writeAsBytes(fileBytes, flush: true);
-          showDownloadCompleteDialog();
 
           final file = File(savePath);
           if (await file.exists()) {
+            Get.back();
+            isAlertDialogVisible = true;
             showDialog(
               context: Get.overlayContext!,
               builder: (context) {
@@ -68,7 +73,11 @@ class FileDownloadController extends GetxController {
                     TextButton(
                       onPressed: () {
                         openDownloadedFile(savePath);
-                        Get.back();
+                        if (isAlertDialogVisible && alertDialogContext != null) {
+                          Navigator.of(alertDialogContext!).pop();
+                          isAlertDialogVisible = false;
+                        }
+
                       },
                       child: Text(
                         'Open',
@@ -154,6 +163,8 @@ class FileDownloadController extends GetxController {
       if (kDebugMode) {
         print(error);
       }
+    } finally {
+      isDownloading = false;
     }
   }
 
@@ -182,10 +193,11 @@ class FileDownloadController extends GetxController {
 
         try {
           await File(savePath).writeAsBytes(fileBytes, flush: true);
-          showDownloadCompleteDialog();
 
           final file = File(savePath);
           if (await file.exists()) {
+            Get.back();
+
             showDialog(
               context: Get.overlayContext!,
               builder: (context) {
@@ -284,6 +296,8 @@ class FileDownloadController extends GetxController {
       if (kDebugMode) {
         print(error);
       }
+    } finally {
+      isDownloading = false;
     }
   }
 
@@ -323,29 +337,33 @@ class FileDownloadController extends GetxController {
     Get.snackbar(
       'Downloading',
       'File is being downloaded...',
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
       backgroundColor: Colors.grey[800],
       colorText: Colors.white,
       overlayColor: Colors.black54,
       snackPosition: SnackPosition.BOTTOM,
-      margin: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(20),
     );
   }
 
-  void showDownloadCompleteDialog() {
-    Get.snackbar(
-      'Downloading Completed',
-      'File downloaded successfully',
-      duration: const Duration(seconds: 3),
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-      overlayColor: Colors.black54,
-      snackPosition: SnackPosition.BOTTOM,
-      margin: const EdgeInsets.all(20),
-    );
-  }
 
   Future<void> openDownloadedFile(String filePath) async {
-    await OpenFile.open(filePath);
+    if (Platform.isIOS) {
+      await OpenFile.open(filePath);
+    } else if (Platform.isAndroid) {
+      String fileExtension = path.extension(filePath).toLowerCase();
+      if (fileExtension == '.pdf') {
+       await  Get.to(() => PDFViwer(path: filePath));
+       if (isAlertDialogVisible && alertDialogContext != null) {
+         Navigator.of(alertDialogContext!).pop();
+         isAlertDialogVisible = false;
+       }
+      } else {
+        await OpenFile.open(filePath);
+      }
+    }
   }
+
+
+
 }

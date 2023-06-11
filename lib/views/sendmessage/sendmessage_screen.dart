@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tsdoha/routes/routes.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/send_message_controller.dart';
 import '../../model/personal_model.dart';
@@ -59,10 +60,15 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/imgs/tsdIcon.png',
-              width: 40,
-              height: 40,
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(Routes.home);
+              },
+              child: Image.asset(
+                'assets/imgs/tsdIcon.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],

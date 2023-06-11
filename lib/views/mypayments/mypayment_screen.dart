@@ -37,7 +37,7 @@ class MyPaymentsScreen extends StatelessWidget {
                     onTap: () {
                       Get.to(() => TotalPaymentsChildren(
                         student: controllerchildren.children[index],
-                      ));
+                      ),transition: Transition.cupertino,duration: Duration(seconds: 1));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 2, top: 20),

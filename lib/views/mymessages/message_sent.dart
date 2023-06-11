@@ -18,46 +18,41 @@ class SentMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(
-            child: CircularProgressBar(color: primarycolor),
-          );
-        } else if (controller.sentedmessage.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/imgs/notfound.png'),
-              const Text('No sent messages Found'),
-            ],
-          );
-        } else {
-          return ListView.builder(
-            itemCount: controller.sentedmessage.length,
-            itemBuilder: (context, index) {
-              MessageSent message = controller.sentedmessage[index];
-              return GestureDetector(
-                onTap: () {
-                  Get.to(() => MessageSentDetails(message: message));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: MessageCardSent(
-                    title: message.name ?? '',
-                    receiver: message.receiver ?? '',
-                    message: message.message ?? '',
-                    date: message.date ?? '',
-                    uploadedfile: message.uploadFile ?? '',
-                  ),
-                ),
-              );
-            },
-          );
-        }
-      }),
+      child: Obx(() => controller.isLoading.isTrue
+          ? Center(child: CircularProgressBar(color: primarycolor))
+          : controller.sentedmessage.isNotEmpty
+              ? ListView.builder(
+                  itemCount: controller.sentedmessage.length,
+                  itemBuilder: (context, index) {
+                    MessageSent message = controller.sentedmessage[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => MessageSentDetails(message: message));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: MessageCardSent(
+                          title: message.name ?? '',
+                          receiver: message.receiver ?? '',
+                          message: message.message ?? '',
+                          date: message.date ?? '',
+                          uploadedfile: message.uploadFile ?? '',
+                        ),
+                      ),
+                    );
+                  },
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/imgs/notfound.png'),
+                    const Text('No sent messages Found'),
+                  ],
+                )),
     );
   }
 }
+
 class MessageCardSent extends StatelessWidget {
   final String? title;
   final String? receiver;
@@ -107,17 +102,19 @@ class MessageCardSent extends StatelessWidget {
               children: [
                 const Icon(Icons.person),
                 const SizedBox(width: 8.0),
-                receiver=='T'? Expanded(
-                  child:Text(
-                    'teacher'.tr,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
-                ): Expanded(
-                  child: Text(
-                    'admin'.tr,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
-                ),
+                receiver == 'T'
+                    ? Expanded(
+                        child: Text(
+                          'teacher'.tr,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
+                      )
+                    : Expanded(
+                        child: Text(
+                          'admin'.tr,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
+                      ),
               ],
             ),
           ),

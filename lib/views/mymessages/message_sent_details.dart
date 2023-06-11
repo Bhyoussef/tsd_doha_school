@@ -30,7 +30,8 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
   int uid = 0;
 
   Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final fetchedUid =
+        await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
       if (kDebugMode) {
@@ -48,16 +49,12 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
     });
   }
 
-
   @override
   void dispose() {
-    //controller.isLoading.value = false;
-    //controller.detailssentmessage.clear();
+    controller.isloading.value = false;
+    controller.detailssentmessage.clear();
     super.dispose();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +83,8 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap: (){
-                Get.to(()=>HomeScreen());
+              onTap: () {
+                Get.offAll(HomeScreen());
               },
               child: Image.asset(
                 'assets/imgs/tsdIcon.png',
@@ -99,43 +96,38 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Obx(
-              () {
-            if (controller.isLoading.value) {
-              return  Center(
-                child: CircularProgressBar(color: primarycolor,),
-              );
-            } else if (controller.detailssentmessage.isEmpty) {
-              return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/imgs/notfound.png'),
-                        Text('noconversationfound'.tr)
-                    ],
-                  )
-              );
-            } else {
-              return ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:  [
-                    ],
+          padding: const EdgeInsets.all(8.0),
+          child: Obx(() => controller.isloading.isTrue
+              ? Center(
+                  child: CircularProgressBar(
+                    color: primarycolor,
                   ),
-                  response()
-
-                ],
-              );
-            }
-          },
-        ),
-      ),
+                )
+              : controller.detailssentmessage.isNotEmpty
+                  ? ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [],
+                        ),
+                        response()
+                      ],
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/imgs/notfound.png'),
+                        Text('noconversationfound'.tr)
+                      ],
+                    )))),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-         Get.to(()=> AddResponse(message:widget.message,),
+          Get.to(
+            () => AddResponse(
+              message: widget.message,
+            ),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -145,35 +137,30 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
           ),
           primary: primarycolor,
         ),
-        child:  Text(
+        child: Text(
           'addResponse'.tr,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
-
-
-
   }
 
-  Widget response(){
-    return  Obx(
-          () {
-        if (controller.isLoading.value) {
+  Widget response() {
+    return Obx(
+      () {
+        if (controller.isLoading.isTrue) {
           return Center(
             child: CircularProgressBar(
               color: primarycolor,
             ),
           );
         } else if (controller.detailssentmessage.isEmpty) {
-          return  Padding(
+          return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('noconversationfound'.tr)
-                ],
+                children: [Text('noconversationfound'.tr)],
               ),
             ),
           );
@@ -181,7 +168,7 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
           return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.detailssentmessage.length -1,
+            itemCount: controller.detailssentmessage.length - 1,
             itemBuilder: (context, index) {
               final messagelist = controller.detailssentmessage[index];
               return Padding(
@@ -196,11 +183,10 @@ class _MessageSentDetailsState extends State<MessageSentDetails> {
   }
 }
 
-
 class MessageCardSent extends StatefulWidget {
   final SendMessage message;
 
-  const MessageCardSent(this.message, { Key? key});
+  const MessageCardSent(this.message, {Key? key});
 
   @override
   State<MessageCardSent> createState() => _MessageCardSentState();
@@ -246,7 +232,6 @@ class _MessageCardSentState extends State<MessageCardSent> {
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(2.0),
             child: Text(
@@ -254,51 +239,53 @@ class _MessageCardSentState extends State<MessageCardSent> {
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
-
-          widget.message.attachmentName!.isEmpty?Container():Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: widget.message.attachmentName!.length,
-                  itemBuilder: (context, index) {
-                    final attachmentName = widget.message.attachmentName![index];
-                    final attachmentId = widget.message.attachmentIds![index];
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            attachmentName,
-                            style: const TextStyle(
-                              fontSize: 16.0,
-
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.download,
-                            color: primarycolor,
-                          ),
-                          onPressed: () {
-                            final cleanedBase64Image = attachmentId.replaceAll('\n', '');
-                            controller.download(
-                                cleanedBase64Image,attachmentName);
-                            },
-                        ),
-                      ],
-                    );
-                  },
+          widget.message.attachmentName!.isEmpty
+              ? Container()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: widget.message.attachmentName!.length,
+                        itemBuilder: (context, index) {
+                          final attachmentName =
+                              widget.message.attachmentName![index];
+                          final attachmentId =
+                              widget.message.attachmentIds![index];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  attachmentName,
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.download,
+                                  color: primarycolor,
+                                ),
+                                onPressed: () {
+                                  final cleanedBase64Image =
+                                      attachmentId.replaceAll('\n', '');
+                                  controller.download(
+                                      cleanedBase64Image, attachmentName);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-
-            ],
-          ),
           const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -324,6 +311,3 @@ class _MessageCardSentState extends State<MessageCardSent> {
     return htmlText.replaceAll(exp, '');
   }
 }
-
-
-

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'controller/exercise/exercise_controller.dart';
 import 'controller/message_controller/message_sent_controller.dart';
 import 'controller/message_controller/send_message_controller.dart';
 import 'controller/drawer_controller.dart';
@@ -27,5 +28,6 @@ class ControllersBinding extends Bindings {
     Get.lazyPut(() => SendMessageController(), fenix: true);
     Get.lazyPut(() => MessageSentController(), fenix: true);
     Get.lazyPut(() => FileDownloadController(), fenix: true);
+    Get.lazyPut(() => ExerciseController(), fenix: true);
   }
 }

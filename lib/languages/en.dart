@@ -54,7 +54,7 @@ const Map<String, String> en = {
   'timetable':'Time table',
   'gradebook':'GradeBook',
   'recording':'Recording',
-  'to':'To',
+  'to':'To :',
   'areyousureyouwanttologout':'Are you sure you want to log out?',
   'totalpaid':'Total amount paid',
   'totalunpaid':'Total amount unpaid',
@@ -94,7 +94,9 @@ const Map<String, String> en = {
   'paymentfailed':'Payment failed',
   'paymentsucces':'Payment Succesuful',
   'paymentok':'Your payment was successful.',
-  'paymentfail':'Payment failed. Please try again.'
+  'paymentfail':'Payment failed. Please try again.',
+  'nosanction':'No sanction',
+  'exercisedetail':'Exercise details'
 
 
 

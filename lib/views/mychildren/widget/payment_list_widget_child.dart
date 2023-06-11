@@ -34,13 +34,13 @@ class PaymentChildListItem extends StatelessWidget {
                   'totalpaid'.tr,
                   style:const  TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('${paymentTotal!.totPaid!.toString()??''} ${paymentTotal!.currency!}'),
+                subtitle: Text('${double.parse(paymentTotal!.totPaid!).toStringAsFixed(0)} ${paymentTotal!.currency!}'),
                 trailing: const Icon(
                   Icons.payment,
                   color: Colors.green,
                 ),
                 onTap: () {
-                  Get.to(() => const DetailPaymentsPaidParents());
+                  Get.to(() =>  DetailPaymentsPaidParents(),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
                 },
               ),
               const Divider(),
@@ -49,13 +49,13 @@ class PaymentChildListItem extends StatelessWidget {
                   'totalunpaid'.tr,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('${paymentTotal!.totUnpaid!.toString()} ${paymentTotal!.currency!}'),
+                subtitle: Text('${double.parse(paymentTotal!.totUnpaid!).toStringAsFixed(0)} ${paymentTotal!.currency!}'),
                 trailing: const Icon(
                   Icons.payment,
                   color: Colors.red,
                 ),
                 onTap: () {
-                  Get.to(() =>  TotalImpaidChild(student: student,));
+                  Get.to(() =>  TotalImpaidChild(student: student,),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
                 },
               ),
             ],

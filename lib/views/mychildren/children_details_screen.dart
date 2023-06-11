@@ -210,31 +210,33 @@ class DetailScreen extends StatelessWidget {
 
 
   void navigateToRecordingPage() {
-    Get.to(() => const RecordingScreen());
+    Get.to(() =>  RecordingScreen(),transition: Transition.circularReveal);
   }
 
   void navigateToExercisePage() {
-    Get.to(() => ExerciseScreen(studentId: student!.studentId!));
+    Get.to(() => ExerciseScreen(studentId: student!.studentId!),transition: Transition.circularReveal,duration: Duration(seconds: 1));
   }
 
   void navigateToBookPage() {
-    Get.to(() => BookListScreen(studentId: student!.studentId!));
+    Get.to(() => BookListScreen(studentId: student!.studentId!),transition: Transition.circularReveal,duration: Duration(seconds: 1));
   }
 
   void navigateToDisciplinePage() {
-    Get.to(() =>  DiciplineScreen(studentId: student!.studentId!));
+    Get.to(() =>  DiciplineScreen(studentId: student!.studentId!),transition: Transition.circularReveal,duration: Duration(seconds: 1));
   }
 
   void navigateToPaymentPage() {
     Get.to(() => DetailsPaymentChild(
           studentId: student!.studentId!,
           student: student!,
-        ));
+        ),transition: Transition.circularReveal,duration: Duration(seconds: 1));
   }
 
   void navigateToTimeTablePage() {
     Get.to(
-        () => TimeTableScreen(studentId: student!.studentId!, student: student!));
+        () => TimeTableScreen(studentId: student!.studentId!,
+            student: student!),
+        transition: Transition.circularReveal,duration: Duration(seconds: 1));
   }
 }
 

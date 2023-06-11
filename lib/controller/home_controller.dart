@@ -21,9 +21,10 @@ class HomeController extends GetxController {
   var pageTitle = "mychildren".tr.obs;
 
   late Result parent;
+
   void goToMyChildrenScreen() {
     selectedOption.value = DrawerOption.MyChildren;
-    pageTitle.value = 'My Children'; // Update the page title if necessary
+    pageTitle.value = 'My Children';
   }
 
   @override

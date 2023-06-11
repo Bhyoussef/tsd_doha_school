@@ -50,7 +50,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
             Get.back();
           },
         ),
-        title:  Text(
+        title: Text(
           'timetable'.tr,
           style: const TextStyle(
             color: CupertinoColors.white,
@@ -61,7 +61,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.toNamed(Routes.home);
               },
               child: Image.asset(
@@ -73,38 +73,34 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
           ),
         ],
       ),
-      body: Obx(
-        () {
-          if (controller.isLoading.value) {
-            return  Center(
-              child: CircularProgressBar(color: primarycolor,),
-            );
-          } else if (controller.timetable.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/imgs/notfound.png'),
-                  Text('notimetablefound'.tr),
-              ],
-            );
-          } else {
-            return Column(
-              children: [
-                DateRange(),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: controller.timetable.length,
-                    itemBuilder: (context, index) {
-                      final timetableEntry = controller.timetable[index];
-                      return TimeTableEntry(timetableEntry);
-                    },
-                  ),
-                ),
-              ],
-            );
-          }
-        },
-      ),
+      body: Obx(() => controller.isLoading.isTrue
+          ? Center(
+              child: CircularProgressBar(
+                color: primarycolor,
+              ),
+            )
+          : controller.timetable.isNotEmpty
+              ? Column(
+                  children: [
+                    DateRange(),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: controller.timetable.length,
+                        itemBuilder: (context, index) {
+                          final timetableEntry = controller.timetable[index];
+                          return TimeTableEntry(timetableEntry);
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/imgs/notfound.png'),
+                    Text('notimetablefound'.tr),
+                  ],
+                )),
     );
   }
 }

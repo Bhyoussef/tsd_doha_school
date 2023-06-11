@@ -77,7 +77,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       body: SafeArea(
         child: Obx(
           () {
-            if (controller.isLoading.value) {
+            if (controller.isloading.value) {
               return Center(
                 child: CircularProgressBar(
                   color: primarycolor,
@@ -182,18 +182,15 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
     List<int> lineIDs =
         selectedDetails.map((detail) => detail.idLine!).toList();
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PaymentScreen(
-          schoolCode: widget.student!.schoolCode!,
-          parentID: parentId,
-          childID: widget.student!.studentId!,
-          amount: totalAmount,
-          lineIDs: lineIDs,
-          student: widget.student,
-        ),
-      ),
-    );
+
+    Get.to(()=>PaymentScreen(
+      schoolCode: widget.student!.schoolCode!,
+      parentID: parentId,
+      childID: widget.student!.studentId!,
+      amount: totalAmount,
+      lineIDs: lineIDs,
+      student: widget.student,
+    ),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
+
   }
 }

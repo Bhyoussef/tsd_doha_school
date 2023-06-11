@@ -5,11 +5,9 @@ import '../../controller/message_controller/message_received_controller.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../controller/dowload_file_controller.dart';
 import '../../theme/app_colors.dart';
-import '../../utils/shared_preferences.dart';
 import '../sendmessage/sendmessage_screen.dart';
 import 'message_received.dart';
 import 'message_sent.dart';
-
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({Key? key}) : super(key: key);
@@ -24,7 +22,6 @@ class _MessagesScreenState extends State<MessagesScreen>
   late FileDownloadController downloadController;
   final controllerreceivedmessage = Get.find<MessageReceivedController>();
   final controllersentmessage = Get.find<MessageSentController>();
-
   int uid = 0;
 
   @override
@@ -32,36 +29,14 @@ class _MessagesScreenState extends State<MessagesScreen>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     downloadController = Get.put(FileDownloadController());
-    _fetchUid();
   }
 
-  Future<void> _fetchUid() async {
-    final fetchedUid=
-    await SharedData.getFromStorage('parent', 'object', 'uid');
-    setState(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        uid  =fetchedUid;
-        controllerreceivedmessage.fetchReceivedMessage(uid);
-
-      });
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        controllersentmessage.fetchingSentMessage(uid);
-        uid  =fetchedUid;
-
-      });
-    });
-  }
   @override
   void dispose() {
-    controllerreceivedmessage.isLoading.value = false;
     controllersentmessage.isLoading.value = false;
-    controllerreceivedmessage.receivedMessage.clear();
-    controllersentmessage.sentedmessage.clear();
     _tabController.dispose();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +71,10 @@ class _MessagesScreenState extends State<MessagesScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          ReceivedMessages(controller: controllerreceivedmessage, downloadController: downloadController,uid:uid),
+          ReceivedMessages(
+              controller: controllerreceivedmessage,
+              downloadController: downloadController,
+              uid: uid),
           SentMessages(controller: controllersentmessage),
         ],
       ),
@@ -110,7 +88,3 @@ class _MessagesScreenState extends State<MessagesScreen>
     );
   }
 }
-
-
-
-

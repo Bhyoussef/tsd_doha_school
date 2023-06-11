@@ -1,26 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import 'dart:io';
 import 'dart:convert';
+import '../../model/attachement_model.dart';
 import '../../model/child_model.dart';
 import '../../model/comments_model.dart';
 import '../../model/message_model.dart';
 import '../../services/message.dart';
-import '../../services/personal.dart';
 
 class MessageReceivedController extends GetxController {
-  final receivedMessage = <Message>[].obs;
   final childDetail = <Mychildreen>[].obs;
+  RxList<Message> receivedMessage = RxList();
   final comments = <Comment>[].obs;
+
   final isLoading = false.obs;
+  final isloading = false.obs;
+  final attachments = <Attachment>[].obs;
   final isLoadingAttachments = false.obs;
   final attachmentController = TextEditingController().obs;
   int? parentId;
 
+  RxList<Attachment> attachment = <Attachment>[].obs;
+
+  void updateAttachments(List<Attachment> newAttachments) {
+    attachments.clear();
+    attachments.addAll(newAttachments);
+  }
+
   @override
   void onInit() {
     super.onInit();
+    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
+      fetchReceivedMessage(uid);
+    });
+
   }
 
   @override
@@ -30,48 +45,47 @@ class MessageReceivedController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchReceivedMessage(uid) async {
-    try {
+  Future<void>fetchReceivedMessage(uid) async {
       isLoading(true);
-      final messageList = await ApiServiceMessage.getMessagesrecieved(uid);
-      receivedMessage.assignAll(messageList);
-    } catch (error) {
-      // Handle error
-    } finally {
+      final list = await ApiServiceMessage.getMessagesReceived(uid);
+      receivedMessage.assignAll(list);
       isLoading(false);
-    }
   }
 
-  Future<void> getChildDetail(uid, int studentId) async {
+  Future<void> getComments(int uid, int messageId) async {
+    isloading.value = true;
     try {
-      isLoading(true);
-      final childDetail =
-          await ApiServicePersonal.getSingleChild(uid, studentId);
-      this.childDetail.assignAll(childDetail);
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  Future<void> getComments(uid, int messageId) async {
-    try {
-      isLoading(true);
-      final commentsList =
-          await ApiServiceMessage.getListComments(uid, messageId);
+      final commentsList = await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
+
       for (var comment in commentsList) {
-        if (comment.attachmentIds!.isNotEmpty) {
-          isLoadingAttachments(true);
-          final attachments =
-              await ApiServiceMessage.getAllattachements(comment.attachmentIds);
-          comment.attachments = attachments;
-          isLoadingAttachments(false);
-        }
+        getAttachments(comment.attachmentIds, comment.id);
       }
+    } catch (e) {
+      print('Failed to fetch comments: $e');
     } finally {
-      isLoading(false);
+      isloading.value = false;
     }
   }
+
+  Future<String?> getAttachments(attachments, messageId) async {
+    for (var att in attachments) {
+      isloading.value = true;
+      if (att != null) {
+        final attachments = await ApiServiceMessage.getAllAttachments(att);
+        var comment = comments.firstWhere((c) => c.id == messageId);
+        comment.attachments = attachments;
+        print('Comment ===== $comment');
+        refresh();
+        isloading.value = false;
+      }
+    }
+    return null;
+  }
+
+
+
+
 
   Future<String?> voteComment(int uid, int messageId) async {
     try {

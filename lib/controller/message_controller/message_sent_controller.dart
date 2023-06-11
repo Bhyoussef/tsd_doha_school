@@ -8,16 +8,22 @@ import 'package:tsdoha/model/send_message_model.dart';
 import 'package:tsdoha/model/message_sent_model.dart';
 import 'package:tsdoha/services/message.dart';
 
+import '../../utils/shared_preferences.dart';
+
 class MessageSentController extends GetxController {
   final sentedmessage = <MessageSent>[].obs;
   final detailssentmessage = <SendMessage>[].obs;
   final attachmentController = TextEditingController().obs;
   final isLoading = false.obs;
+  final isloading = false.obs;
 
 
   @override
   void onInit() {
     super.onInit();
+    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
+      fetchingSentMessage(uid);
+    });
   }
 
   @override
@@ -26,27 +32,19 @@ class MessageSentController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchingSentMessage(int uid) async {
-    try {
+  Future<void> fetchingSentMessage(uid) async {
       isLoading(true);
-      final messageList = await ApiServiceMessage.getMessagesSented(uid);
+      final messageList = await ApiServiceMessage.getMessagesSent(uid);
       sentedmessage.assignAll(messageList.reversed);
-    } catch (error) {
-      // Handle error
-    } finally {
       isLoading(false);
-    }
   }
 
   Future<void> getsentmessagedetails(int uid, int messageId) async {
-    try {
-      isLoading(true);
+    isloading(true);
       final messageList =
-      await ApiServiceMessage.getMessagesSentedDeatails(uid, messageId);
+      await ApiServiceMessage.getMessagesSentDetails(uid, messageId);
       detailssentmessage.assignAll(messageList);
-    } finally {
-      isLoading(false);
-    }
+    isloading(false);
   }
 
   void addAttachment() {
