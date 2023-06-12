@@ -121,7 +121,7 @@ class _ExerciseDetailState extends State<ExerciseDetail> {
 
   Widget comments() {
     return Obx(() {
-      if (controller.isLoading.isTrue || controller.isLoadingAttachments.isTrue) {
+      if (controller.isloading.isTrue) {
         return Center(
           child: CircularProgressBar(
             color: primarycolor,
@@ -134,10 +134,7 @@ class _ExerciseDetailState extends State<ExerciseDetail> {
           itemCount: controller.comments.length,
           itemBuilder: (context, index) {
             final comment = controller.comments[index];
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CommentCard(comment: comment),
-            );
+            return CommentCard(comment: comment);
           },
         );
       } else {

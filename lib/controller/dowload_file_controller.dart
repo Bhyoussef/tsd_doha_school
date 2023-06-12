@@ -98,15 +98,15 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Error'),
-                  content: Text('Failed to download file.'),
+                  title: Text('error'.tr),
+                  content: Text('failedtodownloadfile'.tr),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Get.back();
                       },
                       child: Text(
-                        'OK',
+                        'ok'.tr,
                         style: TextStyle(color: primarycolor),
                       ),
                     ),
@@ -120,15 +120,15 @@ class FileDownloadController extends GetxController {
             context: Get.overlayContext!,
             builder: (context) {
               return AlertDialog(
-                title: Text('Error'),
-                content: Text('Failed to download file.'),
+                title: Text('error'.tr),
+                content: Text('failedtodownloadfile'.tr),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Get.back();
                     },
                     child: Text(
-                      'OK',
+                      'ok'.tr,
                       style: TextStyle(color: primarycolor),
                     ),
                   ),
@@ -146,15 +146,15 @@ class FileDownloadController extends GetxController {
         context: Get.overlayContext!,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to download file.'),
+            title: Text('error'.tr),
+            content: Text('failedtodownloadfile'.tr),
             actions: [
               TextButton(
                 onPressed: () {
                   Get.back();
                 },
                 child: Text(
-                  'OK',
+                  'ok'.tr,
                   style: TextStyle(color: primarycolor),
                 ),
               ),
@@ -228,15 +228,15 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Error'),
-                  content: Text('Failed to download file.'),
+                  title: Text('error'.tr),
+                  content: Text('failedtodownloadfile'.tr),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Get.back();
                       },
                       child: Text(
-                        'OK',
+                        'ok'.tr,
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,
@@ -254,14 +254,14 @@ class FileDownloadController extends GetxController {
             builder: (context) {
               return AlertDialog(
                 title: Text('Error'),
-                content: Text('Failed to download file.'),
+                content: Text('failedtodownloadfile'.tr),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Get.back();
                     },
                     child: Text(
-                      'OK',
+                      'ok'.tr,
                       style: TextStyle(color: primarycolor),
                     ),
                   ),
@@ -280,14 +280,14 @@ class FileDownloadController extends GetxController {
         builder: (context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text('Failed to download file.'),
+            content: Text('failedtodownloadfile'.tr),
             actions: [
               TextButton(
                 onPressed: () {
                   Get.back();
                 },
                 child: Text(
-                  'OK',
+                  'ok'.tr,
                   style: TextStyle(color: primarycolor),
                 ),
               ),

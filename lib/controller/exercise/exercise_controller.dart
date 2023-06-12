@@ -31,33 +31,36 @@ class ExerciseController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getComments(int uid, int exerciseId) async {
-    isLoading.value = true;
+  Future<void> getComments(int uid, int messageId) async {
+    isloading.value = true;
     try {
-      final commentsList = await ExerciseApi.getListCommentsExercise(uid, exerciseId);
+      final commentsList = await ExerciseApi.getListCommentsExercise(uid, messageId);
       comments.assignAll(commentsList);
+
       for (var comment in commentsList) {
-        await getAttachments(comment.attachmentIds!, comment.id!);
+        getAttachements(comment.attachmentIds, comment.id);
       }
     } catch (e) {
       print('Failed to fetch comments: $e');
     } finally {
-      isLoading.value = false;
+      isloading.value = false;
     }
   }
 
-  Future<void> getAttachments(List<int> attachmentIds, int messageId) async {
-    for (var att in attachmentIds) {
-      isloading.value = true;
+  Future<String?> getAttachements(attachements, msgId) async {
+
+    for (var att in attachements ) {
+
       if (att != null) {
         final attachments = await ExerciseApi.getAllAttachments(att);
-        var comment = comments.firstWhere((c) => c.id == messageId);
-        comment.attachments = attachments;
-        print('Comment ===== $comment');
-        refresh();
-        isloading.value = false;
+        var comment = comments.where((c) => c.id == msgId);
+        comment.first.attachments = attachments;
+        print('Comment ===== ${comment.first}');
+        comments.refresh();
+
       }
     }
+    return null;
   }
 
 

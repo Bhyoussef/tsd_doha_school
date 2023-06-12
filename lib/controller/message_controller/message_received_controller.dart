@@ -71,7 +71,7 @@ class MessageReceivedController extends GetxController {
         var comment = comments.where((c) => c.id == msgId);
         comment.first.attachments = attachments;
         print('Comment ===== ${comment.first}');
-        update();
+        comments.refresh();
 
       }
     }

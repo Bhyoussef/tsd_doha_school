@@ -32,7 +32,6 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   final HomeController controllerhome = Get.find<HomeController>();
   final TextEditingController commentController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -110,8 +109,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
               ),
             ],
           ),
-       comments(),
-
+          comments(),
         ],
       ),
       floatingActionButton: ElevatedButton(
@@ -135,7 +133,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
 
   Widget messageContent() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0.0),
       child: MessageCardReceived(
           title: widget.message.titleOfMessage ?? '',
           image: widget.message.teacherImage ?? '',
@@ -273,55 +271,60 @@ class MessageCardReceived extends StatelessWidget {
                     ),
                   ),
                 ),
-        if (attachments.isNotEmpty)
-          Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Existing code...
-          Text(
-            'attachemnts'.tr,
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          ListView.builder(
-            key: UniqueKey(),
-            shrinkWrap: true,
-            itemCount: attachments.length,
-            itemBuilder: (context, index) {
-              final attachment = attachments[index];
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    attachment.fileName ?? '',
-                    style: const TextStyle(fontSize: 14.0),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.download,
-                      color: primarycolor,
+                if (attachments.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Existing code...
+                        Text(
+                          'attachemnts'.tr,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ListView.builder(
+                          key: UniqueKey(),
+                          shrinkWrap: true,
+                          itemCount: attachments.length,
+                          itemBuilder: (context, index) {
+                            final attachment = attachments[index];
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  attachment.fileName ?? '',
+                                  style: const TextStyle(fontSize: 14.0),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.download,
+                                    color: primarycolor,
+                                  ),
+                                  onPressed: () {
+                                    SharedData.getFromStorage(
+                                            'parent', 'object', 'uid')
+                                        .then((uid) {
+                                      downloadController.downloadFile(
+                                        uid,
+                                        attachment.id.toString(),
+                                        attachment.fileName ?? '',
+                                      );
+                                    });
+                                    if (kDebugMode) {
+                                      print('here${attachment.id}');
+                                    }
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    onPressed: () {
-                      SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
-                        downloadController.downloadFile(
-                          uid,
-                          attachment.id.toString(),
-                          attachment.fileName ?? '',
-                        );
-                      });
-                      if (kDebugMode) {
-                        print('here${attachment.id}');
-                      }
-                    },
                   ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
                 const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -498,12 +501,10 @@ class _CommentCardState extends State<CommentCard> {
                     spacing: 8.0,
                     runSpacing: 8.0,
                     children: widget.comment!.attachments!
-                        .map((attachment) =>  AttachmentWidget(
-                      attachment: attachment,
-                      comment: widget.comment!,
-                    )
-
-                    )
+                        .map((attachment) => AttachmentWidget(
+                              attachment: attachment,
+                              comment: widget.comment!,
+                            ))
                         .toList(),
                   )
                 ],
@@ -570,7 +571,6 @@ class AttachmentWidget extends StatefulWidget {
   final Attachment attachment;
   final Comment comment;
 
-
   AttachmentWidget({
     Key? key,
     required this.attachment,
@@ -584,9 +584,6 @@ class AttachmentWidget extends StatefulWidget {
 class _AttachmentWidgetState extends State<AttachmentWidget> {
   final FileDownloadController downloadcontroller =
       Get.find<FileDownloadController>();
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -609,7 +606,8 @@ class _AttachmentWidgetState extends State<AttachmentWidget> {
           onPressed: () {
             String attachementid = widget.comment.attachmentIds!
                 .toString()
-                .substring(1, widget.comment.attachmentIds!.toString().length - 1);
+                .substring(
+                    1, widget.comment.attachmentIds!.toString().length - 1);
             SharedData.getFromStorage('parent', 'object', 'uid').then((uid) {
               downloadcontroller.downloadFile(
                 uid,

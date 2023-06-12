@@ -57,21 +57,21 @@ class _CommentCardState extends State<CommentCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
                   widget.comment!.recordName!,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
                   ),
                 ),
-                buildVoteButton()
-              ],
-            ),
+              ),
+              buildVoteButton()
+            ],
           ),
           const Divider(),
           Padding(

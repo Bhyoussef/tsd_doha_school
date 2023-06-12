@@ -106,7 +106,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset('assets/imgs/notfound.png'),
-                      Text('noconversationfound'.tr)
+                      Text('nopaymentshistoryfound'.tr)
                     ],
                   ))),
       ),

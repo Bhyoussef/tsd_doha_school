@@ -71,7 +71,7 @@ class PaymentScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
                 onTap: () {
@@ -100,7 +100,7 @@ class PaymentScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
                              Row(
@@ -108,20 +108,25 @@ class PaymentScreen extends StatelessWidget {
                               children:  [
                                 Text(
                                   'paywithcredit'.tr,
-                                  style:const TextStyle(fontWeight: FontWeight.bold),
+                                  style:const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                                 ),
                                 const Icon(
                                   Icons.credit_card,
-                                  size: 40,
+                                  size: 30,
                                   color: Colors.deepPurpleAccent,
                                 ),
                               ],
                             ),
                             const SizedBox(height: 16),
-                            Image.asset(
-                              'assets/imgs/master-visa.png',
-                              width: 100,
-                              height: 100,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  'assets/imgs/master-visa.png',
+                                  width: 80,
+                                  height: 80,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -160,7 +165,7 @@ class PaymentScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
                              Row(
@@ -168,20 +173,25 @@ class PaymentScreen extends StatelessWidget {
                               children:  [
                                 Text(
                                   'paywithdebit'.tr,
-                                  style:const TextStyle(fontWeight: FontWeight.bold),
+                                  style:const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                                 ),
                                const  Icon(
                                   Icons.credit_card,
-                                  size: 40,
+                                  size: 30,
                                   color: Colors.deepPurpleAccent,
                                 ),
                               ],
                             ),
                             const SizedBox(height: 16),
-                            Image.asset(
-                              'assets/imgs/naps.png',
-                              width: 100,
-                              height: 100,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  'assets/imgs/naps.png',
+                                  width: 70,
+                                  height: 70,
+                                ),
+                              ],
                             ),
                           ],
                         ),
