@@ -8,6 +8,7 @@ import '../../controller/message_controller/message_received_controller.dart';
 import '../../model/message_model.dart';
 import '../../theme/app_colors.dart';
 import 'message_received_details.dart';
+import 'message_received_details_all.dart';
 
 class ReceivedMessages extends StatelessWidget {
 
@@ -40,7 +41,7 @@ class ReceivedMessages extends StatelessWidget {
                     controller.updateMessageState(uid!, message.iD!);
                     print('youssef'+uid.toString());
                   }
-                  Get.to(() => DetailsMessageReceived(
+                  Get.to(() => DetailsMessageReceivedAll(
                     message: message,
                     downloadController: downloadController,
                   ));

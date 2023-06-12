@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'attachement_model.dart';
 
 class Comment {
@@ -13,6 +15,7 @@ class Comment {
   AuthorId? authorId;
   int? resId;
   List<Attachment>? attachments;
+  RxBool hasAttachments = false.obs;
 
   Comment({
     this.body,

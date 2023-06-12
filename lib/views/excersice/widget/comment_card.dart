@@ -100,6 +100,7 @@ class _CommentCardState extends State<CommentCard> {
               maxLines: 5,
             ),
           ),
+
           if (widget.comment!.attachments != null &&
               widget.comment!.attachments!.isNotEmpty)
             Padding(
@@ -116,15 +117,15 @@ class _CommentCardState extends State<CommentCard> {
                   ),
                   const SizedBox(height: 8.0),
                   Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        children: widget.comment!.attachments!
-                            .map((attachment) => AttachmentWidget(
-                          attachment: attachment,
-                          comment: widget.comment!,
-                        ))
-                            .toList(),
-                      ),
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: widget.comment!.attachments!
+                        .map((attachment) => AttachmentWidget(
+                      attachment: attachment,
+                      comment: widget.comment!,
+                    ))
+                        .toList(),
+                  ),
                 ],
               ),
             ),
@@ -150,7 +151,7 @@ class _CommentCardState extends State<CommentCard> {
     return IconButton(
       onPressed: () {
         setState(() {
-          isVoted = !isVoted; // Toggle the vote state
+          isVoted = !isVoted;
         });
         controller.voteComment(uid, widget.comment!.id!);
       },
@@ -158,7 +159,7 @@ class _CommentCardState extends State<CommentCard> {
         isVoted ? Icons.favorite : Icons.favorite_border,
         color: isVoted
             ? Colors.red
-            : Colors.red, // Use different colors for voted and not voted states
+            : Colors.red,
       ),
     );
   }

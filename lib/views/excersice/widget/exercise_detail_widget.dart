@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -117,7 +116,7 @@ class DetailExersiceCard extends StatelessWidget {
                       onPressed: () {
                         _launchURL(exercise!.video!);
                       },
-                      child: Text("Watch Video"),
+                      child: Text('watchvideo'.tr),
                     ),
                   ],
                 ),
@@ -175,5 +174,6 @@ class DetailExersiceCard extends StatelessWidget {
       throw 'Could not launch $url';
     }
   }
+
   
 }

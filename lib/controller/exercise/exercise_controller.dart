@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../model/attachement_model.dart';
 import '../../model/comments_model.dart';
 import '../../services/exercise.dart';
 import '../../utils/shared_preferences.dart';
 
 class ExerciseController extends GetxController {
   final comments = <Comment>[].obs;
+  final attachments = <Attachment>[].obs;
   final isLoading = false.obs;
-  bool isloading = true;
+  final isloading = false.obs;
+  RxBool hasAttachments = false.obs;
   final attachmentController = TextEditingController().obs;
 
   final isLoadingAttachments = false.obs;
@@ -31,18 +34,10 @@ class ExerciseController extends GetxController {
   Future<void> getComments(int uid, int exerciseId) async {
     isLoading.value = true;
     try {
-      final commentsList =
-          await ExerciseApi.getListCommentsExercise(uid, exerciseId);
+      final commentsList = await ExerciseApi.getListCommentsExercise(uid, exerciseId);
       comments.assignAll(commentsList);
       for (var comment in commentsList) {
-        if (comment.attachmentIds!.isNotEmpty) {
-          isLoadingAttachments(true);
-          final attachments =
-          await ExerciseApi.getAllAttachments(comment.attachmentIds);
-          comment.attachments = attachments;
-          isLoadingAttachments(false);
-          print(attachments);
-        }
+        await getAttachments(comment.attachmentIds!, comment.id!);
       }
     } catch (e) {
       print('Failed to fetch comments: $e');
@@ -50,6 +45,21 @@ class ExerciseController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> getAttachments(List<int> attachmentIds, int messageId) async {
+    for (var att in attachmentIds) {
+      isloading.value = true;
+      if (att != null) {
+        final attachments = await ExerciseApi.getAllAttachments(att);
+        var comment = comments.firstWhere((c) => c.id == messageId);
+        comment.attachments = attachments;
+        print('Comment ===== $comment');
+        refresh();
+        isloading.value = false;
+      }
+    }
+  }
+
 
   Future<String?> voteComment(int uid, int messageId) async {
     try {

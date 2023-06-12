@@ -96,7 +96,12 @@ const Map<String, String> ar = {
   'paymentok':'تم الدفع الخاص بك بنجاح.',
   'paymentfail':'عملية الدفع فشلت. حاول مرة اخرى.',
   'nosanction':'لا عقوبة',
-  'exercisedetail':'تفاصيل التمرين'
+  'exercisedetail':'تفاصيل التمرين',
+  'downloading':'جارى التحميل...',
+  'filedownloaded':'جاري تنزيل الملف ...',
+  'open':'افتح',
+  'watchvideo':'شاهد الفيديو'
+
 
 
 

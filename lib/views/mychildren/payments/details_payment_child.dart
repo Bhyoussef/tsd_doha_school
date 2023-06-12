@@ -78,7 +78,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
                   color: primarycolor,
                 ),
               )
-            : paymentController.paymentsTotalstudents.isNotEmpty
+                : paymentController.paymentsTotalstudents.isNotEmpty
                 ? ListView(
                     children: [
                       ChildCardPayment(

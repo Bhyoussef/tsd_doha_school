@@ -68,7 +68,7 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Download Completed'),
+                  title: Text('downloadcompleted'.tr),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -77,10 +77,12 @@ class FileDownloadController extends GetxController {
                           Navigator.of(alertDialogContext!).pop();
                           isAlertDialogVisible = false;
                         }
+                        Get.back();
+
 
                       },
                       child: Text(
-                        'Open',
+                        'open'.tr,
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,
@@ -202,7 +204,7 @@ class FileDownloadController extends GetxController {
               context: Get.overlayContext!,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Download Completed'),
+                  title: Text('downloadcompleted'.tr),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -210,7 +212,7 @@ class FileDownloadController extends GetxController {
                         Get.back();
                       },
                       child: Text(
-                        'Open',
+                        'open'.tr,
                         style: TextStyle(
                           color: primarycolor,
                           fontWeight: FontWeight.bold,
@@ -335,8 +337,8 @@ class FileDownloadController extends GetxController {
 
   void showDownloadProgressToast() {
     Get.snackbar(
-      'Downloading',
-      'File is being downloaded...',
+      'downloading'.tr,
+      'filedownloaded'.tr,
       duration: Duration(seconds: 3),
       backgroundColor: Colors.grey[800],
       colorText: Colors.white,

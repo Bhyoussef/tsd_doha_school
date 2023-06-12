@@ -96,7 +96,11 @@ const Map<String, String> en = {
   'paymentok':'Your payment was successful.',
   'paymentfail':'Payment failed. Please try again.',
   'nosanction':'No sanction',
-  'exercisedetail':'Exercise details'
+  'exercisedetail':'Exercise details',
+  'downloading':'Downloading...',
+  'filedownloaded':'File is being downloaded...',
+  'open':'Open',
+  'watchvideo':'Watch video'
 
 
 

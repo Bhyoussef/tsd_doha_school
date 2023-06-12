@@ -151,32 +151,36 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   }
 
   Widget comments() {
-    return Obx(() => controller.isloading.isTrue
-        ? Center(
-            child: CircularProgressBar(
+    return Obx(() {
+      if (controller.isloading.isTrue) {
+        return Center(
+          child: CircularProgressBar(
             color: primarycolor,
-          ))
-        : controller.comments.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.comments.length,
-                itemBuilder: (context, index) {
-                  final comment = controller.comments[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: CommentCard(comment: comment),
-                  );
-                },
-              )
-            : Center(
-                child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/imgs/notfound.png'),
-                  Text('noconversationfound'.tr)
-                ],
-              )));
+          ),
+        );
+      } else if (controller.comments.isNotEmpty) {
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.comments.length,
+          itemBuilder: (context, index) {
+            final comment = controller.comments[index];
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: CommentCard(comment: comment),
+            );
+          },
+        );
+      } else {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/imgs/notfound.png'),
+            Text('noexercise'.tr),
+          ],
+        );
+      }
+    });
   }
 }
 
@@ -494,13 +498,10 @@ class _CommentCardState extends State<CommentCard> {
                     spacing: 8.0,
                     runSpacing: 8.0,
                     children: widget.comment!.attachments!
-                        .map((attachment) => Obx(()=>controller.isloading.isTrue
-                      ?Center(child: CircularProgressBar(color: primarycolor,),):
-
-                        AttachmentWidget(
-                          attachment: attachment,
-                              comment: widget.comment!,
-                            ))
+                        .map((attachment) =>  AttachmentWidget(
+                      attachment: attachment,
+                      comment: widget.comment!,
+                    )
 
                     )
                         .toList(),

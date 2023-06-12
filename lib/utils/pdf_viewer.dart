@@ -27,7 +27,7 @@ class _PDFViwerState extends State<PDFViwer> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,color:CupertinoColors.white),
           onPressed: () {
-            Get.to(()=>HomeScreen());
+            Get.back();
           },
         ),
 

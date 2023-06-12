@@ -59,7 +59,7 @@ class ExerciseApi {
         data: {
           "jsonrpc": "2.0",
           "method": "call",
-          "params": {"id": attachmentIds}
+          "params": {"id": [attachmentIds]}
         },
       );
 

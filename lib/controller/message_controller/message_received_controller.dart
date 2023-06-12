@@ -22,12 +22,6 @@ class MessageReceivedController extends GetxController {
   final attachmentController = TextEditingController().obs;
   int? parentId;
 
-  RxList<Attachment> attachment = <Attachment>[].obs;
-
-  void updateAttachments(List<Attachment> newAttachments) {
-    attachments.clear();
-    attachments.addAll(newAttachments);
-  }
 
   @override
   void onInit() {
@@ -59,7 +53,7 @@ class MessageReceivedController extends GetxController {
       comments.assignAll(commentsList);
 
       for (var comment in commentsList) {
-        getAttachments(comment.attachmentIds, comment.id);
+        getAttachements(comment.attachmentIds, comment.id);
       }
     } catch (e) {
       print('Failed to fetch comments: $e');
@@ -68,22 +62,21 @@ class MessageReceivedController extends GetxController {
     }
   }
 
-  Future<String?> getAttachments(attachments, messageId) async {
-    for (var att in attachments) {
-      isloading.value = true;
+  Future<String?> getAttachements(attachements, msgId) async {
+
+    for (var att in attachements ) {
+
       if (att != null) {
         final attachments = await ApiServiceMessage.getAllAttachments(att);
-        var comment = comments.firstWhere((c) => c.id == messageId);
-        comment.attachments = attachments;
-        print('Comment ===== $comment');
-        refresh();
-        isloading.value = false;
+        var comment = comments.where((c) => c.id == msgId);
+        comment.first.attachments = attachments;
+        print('Comment ===== ${comment.first}');
+        update();
+
       }
     }
     return null;
   }
-
-
 
 
 
