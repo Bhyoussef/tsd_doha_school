@@ -9,6 +9,7 @@ import '../../controller/message_controller/send_message_controller.dart';
 import '../../model/personal_model.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
+import '../home/home_screen.dart';
 
 class SendMessageScreen extends StatefulWidget {
   SendMessageScreen({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: (){
-                Get.toNamed(Routes.home);
+                Get.offAll(HomeScreen());
               },
               child: Image.asset(
                 'assets/imgs/tsdIcon.png',

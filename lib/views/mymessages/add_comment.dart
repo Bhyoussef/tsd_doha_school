@@ -11,7 +11,7 @@ import '../../utils/shared_preferences.dart';
 
 class AddCommentPage extends StatefulWidget {
   final Message? message;
-  const AddCommentPage({Key? key,  this.message}) : super(key: key);
+  const AddCommentPage({Key? key, this.message}) : super(key: key);
 
   @override
   _AddCommentPageState createState() => _AddCommentPageState();
@@ -19,21 +19,21 @@ class AddCommentPage extends StatefulWidget {
 
 class _AddCommentPageState extends State<AddCommentPage> {
   final TextEditingController commentController = TextEditingController();
-  final MessageReceivedController controller = Get.put(MessageReceivedController());
+  final MessageReceivedController controller =
+      Get.put(MessageReceivedController());
   final RxString attachmentPath = RxString('');
 
-
-  int uid =0;
+  int uid = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchUid();
-
   }
 
   Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final fetchedUid =
+        await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
       print(uid);
@@ -41,6 +41,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
       print(commentController.text);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +49,10 @@ class _AddCommentPageState extends State<AddCommentPage> {
         centerTitle: true,
         backgroundColor: primarycolor,
         automaticallyImplyLeading: false,
-        title:  Text(
+        title: Text(
           'addcomment'.tr,
-          style: const TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -69,7 +71,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
             TextField(
               controller: commentController,
               maxLines: 5,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'writeyourcomment'.tr,
               ),
             ),
@@ -84,31 +86,26 @@ class _AddCommentPageState extends State<AddCommentPage> {
               color: primarycolor,
               textColor: Colors.white,
               onPressed: () {
-               controller.addCommentWithAttachment(
-                   commentController.text,
-                   widget.message!.iD!,
-                   attachmentPath.value.toString(), uid,);
-               if (kDebugMode) {
-                 print(uid);
-               }
-               if (kDebugMode) {
-                 print(widget.message!.iD.toString());
-               }
-               if (kDebugMode) {
-                 print(commentController.text);
-               }
-               if (kDebugMode) {
-                 print(attachmentPath.value.toString());
-               }
+                controller.addCommentWithAttachment(
+                  commentController.text,
+                  widget.message!.iD!,
+                  attachmentPath.value.toString(),
+                  uid,
+                );
               },
-              child:  Text(
+              child: Text(
                 'send'.tr,
-                style:const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Obx(() => controller.isLoading.value
-                ?  Center(child: CircularProgressBar(color: primarycolor,))
+                ? Center(
+                    child: CircularProgressBar(
+                    color: primarycolor,
+                  ))
                 : Container()),
           ],
         ),
@@ -118,12 +115,12 @@ class _AddCommentPageState extends State<AddCommentPage> {
 
   Widget _buildAttachmentList() {
     return Obx(
-          () => Column(
+      () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
+          Text(
             'attachemnts'.tr,
-            style:const  TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           if (attachmentPath.value.isNotEmpty)
@@ -159,9 +156,9 @@ class _AddCommentPageState extends State<AddCommentPage> {
       onPressed: () {
         showAttachmentSelectionDialog();
       },
-      child:  Text(
+      child: Text(
         'addattachment'.tr,
-        style:const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

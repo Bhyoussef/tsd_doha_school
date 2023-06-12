@@ -15,7 +15,6 @@ class ExerciseController extends GetxController {
   final isloading = false.obs;
   RxBool hasAttachments = false.obs;
   final attachmentController = TextEditingController().obs;
-
   final isLoadingAttachments = false.obs;
 
   int? parentId;

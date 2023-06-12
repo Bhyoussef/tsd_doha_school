@@ -73,11 +73,7 @@ class FileDownloadController extends GetxController {
                     TextButton(
                       onPressed: () {
                         openDownloadedFile(savePath);
-                        if (isAlertDialogVisible && alertDialogContext != null) {
-                          Navigator.of(alertDialogContext!).pop();
-                          isAlertDialogVisible = false;
-                        }
-                        Get.back();
+                        //Get.back();
 
 
                       },
@@ -209,7 +205,7 @@ class FileDownloadController extends GetxController {
                     TextButton(
                       onPressed: () {
                         openDownloadedFile(savePath);
-                        Get.back();
+                        //Get.back();
                       },
                       child: Text(
                         'open'.tr,
@@ -351,16 +347,16 @@ class FileDownloadController extends GetxController {
 
   Future<void> openDownloadedFile(String filePath) async {
     if (Platform.isIOS) {
+      Get.back();
       await OpenFile.open(filePath);
     } else if (Platform.isAndroid) {
       String fileExtension = path.extension(filePath).toLowerCase();
       if (fileExtension == '.pdf') {
-       await  Get.to(() => PDFViwer(path: filePath));
-       if (isAlertDialogVisible && alertDialogContext != null) {
-         Navigator.of(alertDialogContext!).pop();
-         isAlertDialogVisible = false;
-       }
+        Get.back();
+        await  Get.to(() => PDFViwer(path: filePath));
+
       } else {
+        Get.back();
         await OpenFile.open(filePath);
       }
     }

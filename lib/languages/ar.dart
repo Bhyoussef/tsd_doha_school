@@ -95,7 +95,7 @@ const Map<String, String> ar = {
   'paymentsucces':'الدفع ناجح',
   'paymentok':'تم الدفع الخاص بك بنجاح.',
   'paymentfail':'عملية الدفع فشلت. حاول مرة اخرى.',
-  'nosanction':'لا عقوبة',
+  'nosanction':'لم يتم فرض أي عقوبات',
   'exercisedetail':'تفاصيل التمرين',
   'downloading':'جارى التحميل...',
   'filedownloaded':'جاري تنزيل الملف ...',
