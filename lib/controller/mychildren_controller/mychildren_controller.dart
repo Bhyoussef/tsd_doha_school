@@ -28,54 +28,46 @@ class ChildrenController extends GetxController {
   }
 
   Future<void> fetchChildren(int uid) async {
-    try {
       isLoading.value = true;
       final list = await ApiServiceMyChildren.getChildren(uid);
       children.assignAll(list);
-    } finally {
       isLoading.value = false;
-    }
+
   }
 
   Future<void> fetchBooksStudents(int studentId) async {
-    try {
       isLoading.value = true;
       final list = await ApiServiceMyChildren.fetchBooks(studentId);
       books.assignAll(list);
-    } finally {
       isLoading.value = false;
-    }
+
   }
 
   Future<void> fetchExerciseStudent(int studentId,int uid) async {
-    try {
       isLoading.value = true;
       final list =
       await ApiServiceMyChildren.fetchExercise(studentId,uid);
       exersice.assignAll(list);
-    } finally {
       isLoading.value = false;
-    }
+
   }
 
   Future<void> fetchTiemTableStudent(int studentId, String ClassId) async {
-    try {
+
       isLoading.value = true;
       final list =
       await ApiServiceMyChildren.fetchTimeTable(studentId, ClassId);
       timetable.assignAll(list);
-    } finally {
       isLoading.value = false;
-    }
+
   }
   Future<void> fetchdiciplineStudent(int studentId) async {
-    try {
+
       isLoading.value = true;
       final list =
       await ApiServiceMyChildren.fetchDicipline(studentId);
       dicipline.assignAll(list);
-    } finally {
       isLoading.value = false;
-    }
+
   }
 }

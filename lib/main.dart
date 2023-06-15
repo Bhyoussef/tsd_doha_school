@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'languages/translation.dart';
 import 'routes/routes.dart';
 import 'theme/app_theme.dart';
@@ -8,7 +9,13 @@ import 'utils/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  OneSignal.shared.setAppId("f76c3f17-8382-4ff3-b23c-d691d384ca1d");
+  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    print("Accepted permission: $accepted");
+  });
   app();
+
 }
 
 void app() async {

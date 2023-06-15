@@ -100,7 +100,11 @@ const Map<String, String> ar = {
   'downloading':'جارى التحميل...',
   'filedownloaded':'جاري تنزيل الملف ...',
   'open':'افتح',
-  'watchvideo':'شاهد الفيديو'
+  'watchvideo':'شاهد الفيديو',
+  'exitconfirmation':'تأكيد الخروج',
+  'doyouwanttoexit':'هل أنت متأكد أنك تريد الخروج من التطبيق؟',
+  'yes':'نعم',
+  'no':'لا',
 
 
 

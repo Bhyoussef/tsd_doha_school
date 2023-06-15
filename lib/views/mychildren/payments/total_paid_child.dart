@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/child_model.dart';

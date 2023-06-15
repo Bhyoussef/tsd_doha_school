@@ -14,7 +14,7 @@ class BottomTextureOnly extends StatelessWidget {
           bottom: 0,
           left: 0,
           right: 0,
-          child: Image.asset('assets/imgs/splashBackgroundTextureBottom.png'),
+          child: Image.asset('assets/imgs/splashBackgroundTextureBottom.png',),
         ),
         child!,
       ],

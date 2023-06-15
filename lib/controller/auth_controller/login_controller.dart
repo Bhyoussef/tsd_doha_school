@@ -2,16 +2,18 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tsdoha/constant/constant.dart';
-import '../../model/auth_model.dart';
-import '../../routes/routes.dart';
-import '../../services/auth.dart';
-import '../../utils/shared_preferences.dart';
-import '../../views/home/home_screen.dart';
+import 'package:tsdoha/model/auth_model.dart';
+import 'package:tsdoha/routes/routes.dart';
+import 'package:tsdoha/services/auth.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
 
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
+  final loginFormKey = GlobalKey<FormState>();
+  final loginController = TextEditingController().obs;
+  final passwordController = TextEditingController().obs;
 
   void authenticateUser(String login, String password) async {
     try {
@@ -30,7 +32,9 @@ class AuthController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
-        Get.off(() => HomeScreen(),transition: Transition.circularReveal,duration: Duration(seconds: 2));
+        Get.off(() => HomeScreen(),
+            transition: Transition.circularReveal,
+            duration: const Duration(seconds: 2));
       }
     } catch (e) {
       Get.snackbar(
@@ -47,8 +51,8 @@ class AuthController extends GetxController {
   }
 
   void logout() async {
-     SharedData.logout();
-     SharedData.clearStorage();
-     Get.offAllNamed(Routes.getSpalsh());
+    SharedData.logout();
+    SharedData.clearStorage();
+    Get.offAllNamed(Routes.getSpalsh());
   }
 }

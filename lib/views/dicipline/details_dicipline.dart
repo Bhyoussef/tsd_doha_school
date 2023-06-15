@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:tsdoha/model/dicipline_model.dart';
-
 import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 

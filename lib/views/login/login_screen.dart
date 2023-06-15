@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../constant/constant.dart';
-import '../../controller/auth_controller/login_controller.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/auth_controller/login_controller.dart';
+import 'package:tsdoha/views/login/password_reset.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/keyboard.dart';
-import 'password_reset.dart';
 import 'widget/BottomTextureOnly.dart';
 import 'widget/login_text_field_widget.dart';
 import 'widget/top_red_section_widget.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.put(AuthController());
     final size = MediaQuery.of(context).size;
-    final formKey = GlobalKey<FormState>();
-    final loginController = TextEditingController(text: '27178800234');
-    final passwordController = TextEditingController(text: '1234');
 
     return Scaffold(
       body: GestureDetector(
@@ -26,7 +23,7 @@ class LoginScreen extends StatelessWidget {
         child: Container(
           color: Colors.white,
           child: Form(
-            key: formKey,
+            key: authController.loginFormKey,
             child: Column(
               children: [
                 Expanded(
@@ -48,7 +45,8 @@ class LoginScreen extends StatelessWidget {
                                   children: [
                                     const SizedBox(height: 50),
                                     LoginTextField(
-                                      controller: loginController,
+                                      controller:
+                                          authController.loginController.value,
                                       labelText: 'parent_id'.tr,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
@@ -59,7 +57,8 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 18),
                                     LoginTextField(
-                                      controller: passwordController,
+                                      controller: authController
+                                          .passwordController.value,
                                       labelText: 'password'.tr,
                                       obscureText: true,
                                       validator: (value) {
@@ -77,10 +76,14 @@ class LoginScreen extends StatelessWidget {
                                       color: primarycolor,
                                       textColor: Colors.white,
                                       onPressed: () {
-                                        if (formKey.currentState!.validate()) {
+                                        if (authController
+                                            .loginFormKey.currentState!
+                                            .validate()) {
                                           authController.authenticateUser(
-                                            loginController.text,
-                                            passwordController.text,
+                                            authController
+                                                .loginController.value.text,
+                                            authController
+                                                .passwordController.value.text,
                                           );
                                         }
                                       },
@@ -88,17 +91,25 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 18),
                                     TextButton(
-                                      onPressed: () =>
-                                          Get.to(PasswordRest(),transition: Transition.fade,duration: Duration(seconds: 1)),
+                                      onPressed: () => Get.to(
+                                        PasswordRest(),
+                                        transition: Transition.fade,
+                                        duration: const Duration(seconds: 1),
+                                      ),
                                       child: Text(
                                         'reset_password'.tr,
-                                        style: TextStyle(color: primarycolor),
+                                        style: TextStyle(
+                                          color: primarycolor,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(height: 20),
                                     Obx(() => authController.isLoading.value
-                                        ?  CircularProgressBar(color: primarycolor,)
-                                        : Container()),
+                                        ? Center(
+                                            child: CircularProgressBar(
+                                            color: primarycolor,
+                                          ))
+                                        : Container())
                                   ],
                                 ),
                               ),
@@ -117,5 +128,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
-

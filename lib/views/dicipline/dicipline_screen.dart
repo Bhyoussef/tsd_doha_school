@@ -8,8 +8,6 @@ import '../../constant/constant.dart';
 import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
-import 'package:tsdoha/model/dicipline_model.dart';
-
 import 'details_dicipline.dart';
 
 class DiciplineScreen extends StatefulWidget {

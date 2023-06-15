@@ -9,9 +9,12 @@ import 'package:path/path.dart' as path;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../constant/constant.dart';
-import '../theme/app_colors.dart';
-import '../utils/pdf_viewer.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/image_redear.dart';
+import 'package:tsdoha/utils/pdf_viewer.dart';
+
+
 
 class FileDownloadController extends GetxController {
   bool isDownloading = false;
@@ -72,7 +75,7 @@ class FileDownloadController extends GetxController {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        openDownloadedFile(savePath);
+                        openDownloadedFile(savePath,context);
                         //Get.back();
 
 
@@ -204,7 +207,7 @@ class FileDownloadController extends GetxController {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        openDownloadedFile(savePath);
+                        openDownloadedFile(savePath,context);
                         //Get.back();
                       },
                       child: Text(
@@ -332,29 +335,42 @@ class FileDownloadController extends GetxController {
   }
 
   void showDownloadProgressToast() {
-    Get.snackbar(
-      'downloading'.tr,
-      'filedownloaded'.tr,
-      duration: Duration(seconds: 3),
-      backgroundColor: Colors.grey[800],
-      colorText: Colors.white,
-      overlayColor: Colors.black54,
-      snackPosition: SnackPosition.BOTTOM,
-      margin: EdgeInsets.all(20),
+    showDialog(
+      context: Get.overlayContext!,
+      builder: (context) {
+        return AlertDialog(
+          title:  Center(
+              child: Column(
+                children: [
+                  CircularProgressBar(color: primarycolor,),
+                  Text('downloading'.tr,)
+                ],
+              ))
+
+        );
+      },
     );
   }
 
 
-  Future<void> openDownloadedFile(String filePath) async {
+  Future<void> openDownloadedFile(String filePath,BuildContext context) async {
     if (Platform.isIOS) {
       Get.back();
       await OpenFile.open(filePath);
     } else if (Platform.isAndroid) {
       String fileExtension = path.extension(filePath).toLowerCase();
       if (fileExtension == '.pdf') {
+        Navigator.pop(context);
+        await Get.to(() => PDFViwer(
+          path: filePath
+        ));
+      } else if (fileExtension == '.jpg' ||
+          fileExtension == '.jpeg' ||
+          fileExtension == '.png') {
         Get.back();
-        await  Get.to(() => PDFViwer(path: filePath));
-
+        final File file = File(filePath);
+        final image = file.readAsBytesSync();
+        Get.to(()=>ImageReaderPage(  imageBytes: image,));
       } else {
         Get.back();
         await OpenFile.open(filePath);

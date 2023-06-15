@@ -32,7 +32,7 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      paymentController.fetchingTotalPaymentsStudents(widget.studentId!);
+      paymentController.fetchingTotalPaymentsStudents(widget.student!.studentId!);
     });
   }
 

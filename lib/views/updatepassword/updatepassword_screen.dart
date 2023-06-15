@@ -9,9 +9,6 @@ import '../../controller/auth_controller/updatepassword_controller.dart';
 class UpdatePasswordScreen extends StatefulWidget {
   const UpdatePasswordScreen({super.key});
 
-
-
-
   @override
   State<UpdatePasswordScreen> createState() => _UpdatePasswordScreenState();
 }
@@ -21,14 +18,10 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
   final PasswordChangeController _passwordChangeController =
       Get.put(PasswordChangeController());
-
   final _oldpassword = TextEditingController();
   final _newpassword = TextEditingController();
   final _confirmpassword = TextEditingController();
-
-
   int uid = 0;
-
   @override
   void initState() {
     super.initState();
@@ -57,6 +50,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PasswordFormField(
+                  keyboardtype: TextInputType.text,
                   controller: _oldpassword,
                   labelText: 'oldpassword'.tr,
                   validator: (value) {
@@ -68,6 +62,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 PasswordFormField(
+                  keyboardtype: TextInputType.text,
                   controller: _newpassword,
                   labelText: 'newpassword'.tr,
                   validator: (value) {
@@ -79,6 +74,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 PasswordFormField(
+                  keyboardtype: TextInputType.text,
                   controller: _confirmpassword,
                   labelText: 'confirmpassword'.tr,
                   validator: (value) {

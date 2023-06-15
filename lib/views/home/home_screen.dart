@@ -1,41 +1,72 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../main_screen.dart';
-import '../../controller/home_controller.dart';
-import '../../theme/app_colors.dart';
-import '../about/about_screen.dart';
-import '../configuration/configuration_screen.dart';
-import '../mychildren/mychildren_screen.dart';
-import '../mymessages/mymessage_screen.dart';
-import '../mypayments/mypayment_screen.dart';
-import '../updatepassword/updatepassword_screen.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:tsdoha/controller/home_controller.dart';
+import 'package:tsdoha/main_screen.dart';
+import 'package:tsdoha/services/auth.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+import 'package:tsdoha/views/about/about_screen.dart';
+import 'package:tsdoha/views/configuration/configuration_screen.dart';
+import 'package:tsdoha/views/mychildren/mychildren_screen.dart';
+import 'package:tsdoha/views/mymessages/mymessage_screen.dart';
+import 'package:tsdoha/views/mypayments/mypayment_screen.dart';
+import 'package:tsdoha/views/updatepassword/updatepassword_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
+
+class HomeScreen extends StatefulWidget {
 
   HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final HomeController controller = Get.put(HomeController());
+
+
+
 
   Future<bool> _onWillPop(BuildContext context) async {
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Exit Confirmation',style:TextStyle(color: primarycolor)),
-          content: Text('Are you sure you want to exit the application?'),
+          title: Text('exitconfirmation'.tr,style:TextStyle(color: primarycolor)),
+          content: Text('doyouwanttoexit'.tr),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('No',style: TextStyle(color: primarycolor),),
+              child: Text('no'.tr,style: TextStyle(color: primarycolor),),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Yes',style: TextStyle(color: primarycolor),),
+              child: Text('yes'.tr,style: TextStyle(color: primarycolor),),
             ),
           ],
         );
       },
     ) ?? false;
+  }
+
+  @override
+  void initState()  {
+    pushId();
+    super.initState();
+  }
+
+  void pushId()async {
+    final status = await OneSignal.shared.getDeviceState();
+    final String? osUserID = status?.userId;
+    final uid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final push = await ApiServiceAuth.pushData(osUserID!, uid);
+    print(osUserID);
+    print(push.toString());
+    OneSignal.shared.setNotificationOpenedHandler((openedResult) {
+      print('Payload : ${openedResult.notification}');
+    });
   }
 
   @override

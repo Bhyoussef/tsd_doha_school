@@ -17,7 +17,6 @@ class MessageSentController extends GetxController {
   final isLoading = false.obs;
   final isloading = false.obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -33,17 +32,17 @@ class MessageSentController extends GetxController {
   }
 
   Future<void> fetchingSentMessage(uid) async {
-      isLoading(true);
-      final messageList = await ApiServiceMessage.getMessagesSent(uid);
-      sentedmessage.assignAll(messageList.reversed);
-      isLoading(false);
+    isLoading(true);
+    final messageList = await ApiServiceMessage.getMessagesSent(uid);
+    sentedmessage.assignAll(messageList.reversed);
+    isLoading(false);
   }
 
   Future<void> getsentmessagedetails(int uid, int messageId) async {
     isloading(true);
-      final messageList =
-      await ApiServiceMessage.getMessagesSentDetails(uid, messageId);
-      detailssentmessage.assignAll(messageList);
+    final messageList =
+        await ApiServiceMessage.getMessagesSentDetails(uid, messageId);
+    detailssentmessage.assignAll(messageList);
     isloading(false);
   }
 
@@ -78,23 +77,18 @@ class MessageSentController extends GetxController {
 
   Future<void> addCommentWithAttachment(
       String body, int messageId, String attachmentPath, int uid) async {
-    try {
-      isLoading.value = true;
-      final String? result = await ApiServiceMessage.addResponse(
-        uid,
-        body,
-        messageId,
-        attachmentPath,
-      );
-      if (result != null) {
-        await getsentmessagedetails(uid, messageId);
-      } else {
-        // Failed to add comment
-      }
-    } catch (error) {
-      // Handle error
-    } finally {
-      isLoading.value = false;
+    isLoading.value = true;
+    final String? result = await ApiServiceMessage.addResponse(
+      uid,
+      body,
+      messageId,
+      attachmentPath,
+    );
+    if (result != null) {
+      await getsentmessagedetails(uid, messageId);
+    } else {
+      // Failed to add comment
     }
+    isLoading.value = false;
   }
 }

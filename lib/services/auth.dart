@@ -96,4 +96,28 @@ class ApiServiceAuth {
     }
     return null;
   }
+
+
+  static Future<Object> pushData(String pushId,int uid) async {
+    final url = Uri.parse('${Res.host}/pushid/set');
+    final body = jsonEncode({
+      "jsonrpc": "2.0",
+      "method": "call",
+      "uid": uid,
+      "params": { "pushID": pushId }
+    });
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse['result']);
+
+      return [];
+    } else {
+      return [];
+    }
+  }
 }

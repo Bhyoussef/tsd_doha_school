@@ -100,7 +100,11 @@ const Map<String, String> en = {
   'downloading':'Downloading...',
   'filedownloaded':'File is being downloaded...',
   'open':'Open',
-  'watchvideo':'Watch video'
+  'watchvideo':'Watch video',
+  'exitconfirmation':'Exit Confirmation',
+  'doyouwanttoexit':'Are you sure you want to exit the application?',
+  'yes':'Yes',
+  'no':'No',
 
 
 

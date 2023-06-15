@@ -20,13 +20,10 @@ class MyChildrenScreen extends StatelessWidget {
           child: Obx(
             () {
               if (controller.isLoading.value) {
-                return  Center(
+                return Center(
                   child: CircularProgressBar(
-
                     color: primarycolor,
-
-                  )
-                  ,
+                  ),
                 );
               } else {
                 return ListView.builder(
@@ -39,7 +36,7 @@ class MyChildrenScreen extends StatelessWidget {
                             transition: Transition.downToUp);
                       },
                       child: Padding(
-                        padding: const  EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.only(bottom: 10),
                         child: ChildCardWidget(student: student),
                       ),
                     );

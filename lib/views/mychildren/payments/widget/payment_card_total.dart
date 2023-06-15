@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../model/child_model.dart';
 import '../../../../model/payment_model.dart';
-import '../details_payment_child.dart';
 import '../total_impaid_child.dart';
 import '../total_paid_child.dart';
 

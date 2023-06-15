@@ -63,7 +63,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
             color: CupertinoColors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
         ),
         title: Text(

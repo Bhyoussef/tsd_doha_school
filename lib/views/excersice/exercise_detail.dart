@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tsdoha/model/exersice_model.dart';
-import 'package:tsdoha/views/excersice/widget/comment_card.dart';
 import '../../constant/constant.dart';
 import '../../controller/exercise/exercise_controller.dart';
+import '../../model/exersice_model.dart';
 import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
+import '../mymessages/message_received_details.dart';
 import 'exercise_add_comment.dart';
 import 'widget/exercise_detail_widget.dart';
 import 'widget/teacher_cart.dart';
@@ -31,6 +31,15 @@ class _ExerciseDetailState extends State<ExerciseDetail> {
       controller.getComments(uid, widget.exercise!.iD!);
     });
   }
+
+  @override
+  void dispose() {
+    controller.isloading.value = false;
+    controller.comments.clear();
+    controller.attachments.clear();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {

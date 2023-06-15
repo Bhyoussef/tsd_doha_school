@@ -14,7 +14,6 @@ class MessageReceivedController extends GetxController {
   final childDetail = <Mychildreen>[].obs;
   RxList<Message> receivedMessage = RxList();
   final comments = <Comment>[].obs;
-
   final isLoading = false.obs;
   final isloading = false.obs;
   final attachments = <Attachment>[].obs;
@@ -34,8 +33,6 @@ class MessageReceivedController extends GetxController {
 
   @override
   void onClose() {
-    isLoading.value = false;
-    isLoadingAttachments.value = false;
     super.onClose();
   }
 
@@ -51,7 +48,6 @@ class MessageReceivedController extends GetxController {
     try {
       final commentsList = await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
-
       for (var comment in commentsList) {
         getAttachements(comment.attachmentIds, comment.id);
       }
@@ -63,16 +59,13 @@ class MessageReceivedController extends GetxController {
   }
 
   Future<String?> getAttachements(attachements, msgId) async {
-
     for (var att in attachements ) {
-
       if (att != null) {
         final attachments = await ApiServiceMessage.getAllAttachments(att);
         var comment = comments.where((c) => c.id == msgId);
         comment.first.attachments = attachments;
         print('Comment ===== ${comment.first}');
         comments.refresh();
-
       }
     }
     return null;

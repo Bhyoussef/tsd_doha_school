@@ -21,6 +21,7 @@ class DetailExersiceCard extends StatelessWidget {
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
     bool isMessageRead = exercise!.state! == 'read';
+    bool isAttached=exercise!.attachmentId!.isEmpty;
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -162,6 +163,25 @@ class DetailExersiceCard extends StatelessWidget {
               ),
             ),
           ),
+
+          isAttached
+              ? Container()
+              : isArabic == true
+              ? const Positioned(
+            top: 8.0,
+            left: 25.0,
+            child: Icon(
+              Icons.attach_file,
+            ),
+          )
+              : const Positioned(
+            top: 8.0,
+            right: 25.0,
+            child: Icon(
+              Icons.attach_file,
+            ),
+          ),
+
         ],
       ),
     );
