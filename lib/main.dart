@@ -10,7 +10,7 @@ import 'utils/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("f76c3f17-8382-4ff3-b23c-d691d384ca1d");
+  OneSignal.shared.setAppId("af23d587-573e-4f0c-837a-e8c0c19ec76e");
   OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
     print("Accepted permission: $accepted");
   });

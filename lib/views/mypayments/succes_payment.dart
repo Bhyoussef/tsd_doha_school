@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
+import 'package:tsdoha/model/child_model.dart';
 import '../home/home_screen.dart';
 
-class SuccsesPayament extends StatelessWidget {
+class SuccsesPayament extends StatefulWidget {
   final double? amount;
+  final Mychildreen? student;
 
-  const SuccsesPayament({Key? key, this.amount}) : super(key: key);
+  const SuccsesPayament({Key? key, this.amount, this.student}) : super(key: key);
 
   @override
+  State<SuccsesPayament> createState() => _SuccsesPayamentState();
+}
+
+class _SuccsesPayamentState extends State<SuccsesPayament> {
+  @override
   Widget build(BuildContext context) {
+    String  payment1='payment1'.tr;
+    String  payment2='payment2'.tr;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -25,8 +33,8 @@ class SuccsesPayament extends StatelessWidget {
                   child: Image.asset('assets/imgs/success.png', fit: BoxFit.cover),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Payment Successful',
+                 Text(
+                  'paymentsucces'.tr,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -36,7 +44,7 @@ class SuccsesPayament extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'The Payment of ${amount!.toStringAsFixed(2)} QAR has been successfully sent to Tsdoha from your wallet.',
+                    'paymentok'.tr,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -49,9 +57,9 @@ class SuccsesPayament extends StatelessWidget {
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () {
-                      Get.to(()=>HomeScreen());
+                      Get.offAll(()=>HomeScreen());
                     },
-                    child: const Text('Complete'),
+                    child:  Text('continue'.tr),
                   ),
                 ),
               ],

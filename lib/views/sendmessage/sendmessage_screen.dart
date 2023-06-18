@@ -240,6 +240,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
                       .toList(),
                   decoration: InputDecoration(
                     labelText: 'receiver'.tr,
+                    labelStyle: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),
                   ),
                   key: ValueKey(controller.selectedTo.value),
                 ),
@@ -251,18 +252,21 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
 
   Widget _buildSubjectField() {
     return TextField(
+      cursorColor: primarycolor,
       controller: subjectController,
       onChanged: (value) {
         controller.subject.value = value;
       },
       decoration: InputDecoration(
         labelText: 'subject'.tr,
+        labelStyle: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),
       ),
     );
   }
 
   Widget _buildMessageField() {
     return TextField(
+      cursorColor: primarycolor,
       controller: messageController,
       onChanged: (value) {
         controller.message.value = value;
@@ -271,6 +275,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
       keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
         labelText: 'message'.tr,
+        labelStyle: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),
       ),
     );
   }

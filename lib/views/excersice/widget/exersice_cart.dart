@@ -18,8 +18,8 @@ class ExerciseCard extends StatelessWidget {
     bool isMessageRead = exercise!.state! == 'read';
     bool isAttached =exercise!.attachmentId!.isEmpty;
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration:  BoxDecoration(
+        color: isMessageRead ? Colors.white : Color(0xffececec),
         boxShadow: [
           BoxShadow(
             color: Colors.black12,

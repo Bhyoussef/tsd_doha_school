@@ -29,6 +29,9 @@ class _ExerciseDetailState extends State<ExerciseDetail> {
     final ExerciseController controller = Get.find<ExerciseController>();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       controller.getComments(uid, widget.exercise!.iD!);
+      if (widget.exercise!.state != 'read') {
+        controller.markAsRead(uid, widget.exercise!.iD!);
+      } else {}
     });
   }
 
@@ -39,7 +42,6 @@ class _ExerciseDetailState extends State<ExerciseDetail> {
     controller.attachments.clear();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -157,5 +159,4 @@ class _ExerciseDetailState extends State<ExerciseDetail> {
       }
     });
   }
-
 }

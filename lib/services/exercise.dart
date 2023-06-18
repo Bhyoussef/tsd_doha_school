@@ -186,6 +186,46 @@ class ExerciseApi {
     return null;
   }
 
+  static Future<String?> markAsRead(int uid, int messageId) async {
+    final url = Uri.parse('${Res.host}/message/mark_as_read');
+    final body = jsonEncode(
+      {
+        "jsonrpc": "2.0",
+        "method": "call",
+        "uid": uid,
+        "params": {
+          "ID": messageId
+        }
+      },
+    );
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['result'] != null) {
+        return jsonResponse["result"].toString(); // Convert the result to a String
+      } else if (jsonResponse['result'] == null) {
+        return null;
+      }
+    } else {
+      Get.snackbar(
+        'error'.tr,
+        'Failed To Vote',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(20),
+      );
+    }
+
+    return null;
+  }
+
   static Future<String?> updatemessagestate(int messageId, int uid) async {
     final url = Uri.parse('${Res.host}/message/mark_as_read');
     final body = jsonEncode(

@@ -40,7 +40,9 @@ class PaymentChildListItem extends StatelessWidget {
                   color: Colors.green,
                 ),
                 onTap: () {
-                  Get.to(() =>  DetailPaymentsPaidParents(),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
+                  Get.to(() =>  DetailPaymentsPaidParents(
+
+                  ),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
                 },
               ),
               const Divider(),

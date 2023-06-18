@@ -82,6 +82,15 @@ class MessageReceivedController extends GetxController {
     } finally {}
     return null;
   }
+  Future<String?> markAsRead(int uid, int messageId) async {
+    try {
+      await ApiServiceMessage.markAsRead(
+        uid,
+        messageId,
+      );
+    } finally {}
+    return null;
+  }
 
   Future<String?> updateMessageState(int uid, int messageId) async {
     try {
@@ -123,14 +132,14 @@ class MessageReceivedController extends GetxController {
   }
 
   Future<void> addCommentWithAttachment(
-      String body, int messageId, String attachmentPath, int uid) async {
+      String? body, int messageId, String? attachmentPath, int uid) async {
     try {
       isLoading.value = true;
       final String? result = await ApiServiceMessage.addComments(
         uid,
-        body,
+        body!,
         messageId,
-        attachmentPath,
+        attachmentPath!,
       );
       if (result != null) {
         // Handle success

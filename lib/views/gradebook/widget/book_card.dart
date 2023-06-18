@@ -38,7 +38,8 @@ class BookCard extends StatelessWidget {
               children: [
 
                 const SizedBox(height: 10,),
-                Text(book!.period!.toString() ?? '',style: const TextStyle(fontWeight: FontWeight.bold),),
+                Text(book!.period!.toString() ?? '',style:
+                const TextStyle(fontWeight: FontWeight.bold),),
                 const SizedBox(height: 10,),
                 Text('${'moyenne'.tr}${book?.average ?? ''}'),
 

@@ -77,8 +77,6 @@ class FileDownloadController extends GetxController {
                       onPressed: () {
                         openDownloadedFile(savePath,context);
                         //Get.back();
-
-
                       },
                       child: Text(
                         'open'.tr,

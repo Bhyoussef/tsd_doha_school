@@ -57,7 +57,7 @@ const Map<String, String> ar = {
   'website':'موقع إلكتروني',
   'areyousureyouwanttologout':'هل أنت متأكد أنك تريد تسجيل الخروج؟',
   'totalpaid':'اجمالي المبالغ المدفوعة',
-  'totalunpaid':'اجمالي المبالغ غير المسددة',
+  'totalunpaid':'اجمالي المبالغ غير مدفوعة',
   'select':'اختر',
   'credit':'بطاقة إئتمان',
   'debit':'بطاقة الخصم',
@@ -105,6 +105,10 @@ const Map<String, String> ar = {
   'doyouwanttoexit':'هل أنت متأكد أنك تريد الخروج من التطبيق؟',
   'yes':'نعم',
   'no':'لا',
+  'payment2':'ريال قطري تم بنجاح من محفظتك.',
+  'payment1':'دفع',
+  'continue':'استمر',
+  'return':'عودة'
 
 
 

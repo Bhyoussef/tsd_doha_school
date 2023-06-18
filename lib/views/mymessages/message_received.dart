@@ -104,8 +104,8 @@ class MessageCardReceived extends StatelessWidget {
     final isArabic = locale?.languageCode == 'ar';
     bool isMessageRead = isRead == 'read';
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration:  BoxDecoration(
+        color: isMessageRead ? Colors.white : Color(0xffececec),
         boxShadow: [
           BoxShadow(
             color: Colors.black12,

@@ -6,7 +6,7 @@ import '../../utils/shared_preferences.dart';
 
 class PaymentsController extends GetxController {
   final paymentsTotalparents = <Payment>[].obs;
-  final isloading = false.obs;
+  final isloading = true.obs;
   final paymentsTotalstudents = <Payment>[].obs;
   final totalpaiddetailsparents = <PaymentDetails>[].obs;
   final totalinpaiddetailsparents = <PaymentDetails>[].obs;

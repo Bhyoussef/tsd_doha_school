@@ -21,7 +21,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
   final TextEditingController commentController = TextEditingController();
   final MessageReceivedController controller =
       Get.put(MessageReceivedController());
-  final RxString attachmentPath = RxString('');
+  final RxString? attachmentPath = RxString('');
 
   int uid = 0;
 
@@ -68,7 +68,8 @@ class _AddCommentPageState extends State<AddCommentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
+            TextFormField(
+              cursorColor: primarycolor,
               controller: commentController,
               maxLines: 5,
               decoration: InputDecoration(
@@ -89,7 +90,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
                 controller.addCommentWithAttachment(
                   commentController.text,
                   widget.message!.iD!,
-                  attachmentPath.value.toString(),
+                  attachmentPath!.value.toString(),
                   uid,
                 );
               },
@@ -123,12 +124,12 @@ class _AddCommentPageState extends State<AddCommentPage> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          if (attachmentPath.value.isNotEmpty)
+          if (attachmentPath!.value.isNotEmpty)
             Row(
               children: [
                 Expanded(
                   child: Text(
-                    attachmentPath.value.split('/').last,
+                    attachmentPath!.value.split('/').last,
                     style: const TextStyle(
                       fontSize: 16,
                     ),
@@ -137,7 +138,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () {
-                    attachmentPath.value = '';
+                    attachmentPath!.value = '';
                   },
                 ),
               ],
@@ -167,7 +168,7 @@ class _AddCommentPageState extends State<AddCommentPage> {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      attachmentPath.value = pickedFile.path;
+      attachmentPath!.value = pickedFile.path;
     }
   }
 }

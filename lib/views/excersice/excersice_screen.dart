@@ -6,7 +6,6 @@ import '../../controller/mychildren_controller/mychildren_controller.dart';
 import '../../routes/routes.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/shared_preferences.dart';
-import '../home/home_screen.dart';
 import 'exercise_detail.dart';
 import 'widget/exersice_cart.dart';
 
@@ -85,7 +84,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                             padding: const EdgeInsets.all(2.0),
                             child: ExerciseCard(
                                 exerciseController.exersice[index]),
-                          ));
+                          )
+                      );
                     },
                   )
                 : Column(

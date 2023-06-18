@@ -69,6 +69,7 @@ class _AddResponseState extends State<AddResponse> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextField(
+                cursorColor: primarycolor,
                 controller: responsecontroller,
                 maxLines: 5,
                 decoration:  InputDecoration(

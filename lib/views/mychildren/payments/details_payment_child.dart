@@ -1,18 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constant/constant.dart';
 import '../../../controller/payment_controller/payments_controller.dart';
 import '../../../model/child_model.dart';
-import '../../../model/payment_details_model.dart';
 import '../../../routes/routes.dart';
 import '../../../theme/app_colors.dart';
-import '../../../utils/shared_preferences.dart';
-import '../../home/home_screen.dart';
-import '../../mypayments/payment_screen.dart';
 import '../../mypayments/widget/child_payment_card_widget.dart';
-import '../../mypayments/widget/payment_list_widget.dart';
 import '../widget/payment_list_widget_child.dart';
 
 class DetailsPaymentChild extends StatefulWidget {

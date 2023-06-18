@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -62,11 +64,29 @@ class _HomeScreenState extends State<HomeScreen> {
     final String? osUserID = status?.userId;
     final uid = await SharedData.getFromStorage('parent', 'object', 'uid');
     final push = await ApiServiceAuth.pushData(osUserID!, uid);
-    print(osUserID);
-    print(push.toString());
-    OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-      print('Payload : ${openedResult.notification}');
+
+
+
+    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      print('hereeeeeeeee'+result.notification.additionalData?['alert']);
+      print('hereeeeeeeee'+result.notification.additionalData?['title']);
     });
+
+
+
+
+ /*   OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      final notificationData = result.notification.jsonRepresentation();
+      print('noitication opened${notificationData}');
+      this.setState(() {
+      final parsedData = jsonDecode(notificationData) as Map<String, dynamic>;
+      print('data parsed hhhhhhhhhhhhhhhhhh${parsedData}');
+      final notificationTitle = parsedData['alert'];
+      final notificationBody = parsedData['title'];
+      print('Alert: $notificationTitle');
+      print('Title: $notificationBody');
+      });
+    });*/
   }
 
   @override

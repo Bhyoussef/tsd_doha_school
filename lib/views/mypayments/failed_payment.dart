@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../home/home_screen.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
+import '../mychildren/payments/total_impaid_child.dart';
 
-class FailedPayment extends StatelessWidget {
-  const FailedPayment({Key? key}) : super(key: key);
+class FailedPayment extends StatefulWidget {
+  final Mychildreen? student;
+  const FailedPayment({Key? key, this.student}) : super(key: key);
 
+  @override
+  State<FailedPayment> createState() => _FailedPaymentState();
+}
+
+class _FailedPaymentState extends State<FailedPayment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +29,8 @@ class FailedPayment extends StatelessWidget {
                   child: Image.asset('assets/imgs/failed.png', fit: BoxFit.cover),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Payment Failed',
+                 Text(
+                  'paymentfailed'.tr,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -31,8 +39,8 @@ class FailedPayment extends StatelessWidget {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: const Text(
-                    'The Payment has failed, please try again.',
+                  child:  Text(
+                    'paymentfail'.tr,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -41,7 +49,9 @@ class FailedPayment extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(()=>HomeScreen());
+                      Get.offAll(()=>HomeScreen(
+
+                      ));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
@@ -51,7 +61,7 @@ class FailedPayment extends StatelessWidget {
                         50,
                       ),
                     ),
-                    child: const Text('Return'),
+                    child:  Text('return'.tr),
                   ),
                 ),
               ],

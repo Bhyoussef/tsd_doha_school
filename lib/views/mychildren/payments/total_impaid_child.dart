@@ -32,6 +32,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
         parentId = uid;
       });
     });
+    print('jgdajhgdhjasgdhjagdhja'+widget.student!.studentId!.toString());
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       controller.fetchingTotalInPaidDetailsStudent(widget.student!.studentId!);
@@ -62,7 +63,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.toNamed(Routes.home);
               },
               child: Image.asset(
@@ -88,7 +89,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/imgs/notfound.png'),
-                  Text('notimetablefound'.tr),
+                  Text('nopaymentshistoryfound'.tr),
                 ],
               );
             } else {
@@ -157,7 +158,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
             List<PaymentDetails> selectedDetails = selectedLines
                 .map((index) => controller.totalinpaiddetailsstudents[index])
                 .toList();
-            navigateToPaymentPage(context, selectedDetails);
+            navigateToPaymentPage(context, selectedDetails,student:widget.student);
           }
         },
         child: Text(
@@ -178,19 +179,20 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
   }
 
   void navigateToPaymentPage(
-      BuildContext context, List<PaymentDetails> selectedDetails) {
+      BuildContext context, List<PaymentDetails> selectedDetails, {Mychildreen? student}) {
     List<int> lineIDs =
         selectedDetails.map((detail) => detail.idLine!).toList();
 
-
-    Get.to(()=>PaymentScreen(
-      schoolCode: widget.student!.schoolCode!,
-      parentID: parentId,
-      childID: widget.student!.studentId!,
-      amount: totalAmount,
-      lineIDs: lineIDs,
-      student: widget.student,
-    ),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
-
+    Get.to(
+        () => PaymentScreen(
+              schoolCode: widget.student!.schoolCode!,
+              parentID: parentId,
+              childID: widget.student!.studentId!,
+              amount: totalAmount,
+              lineIDs: lineIDs,
+              student: widget.student,
+            ),
+        transition: Transition.cupertinoDialog,
+        duration: Duration(seconds: 1));
   }
 }

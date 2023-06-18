@@ -100,6 +100,7 @@ class LoginScreen extends StatelessWidget {
                                         'reset_password'.tr,
                                         style: TextStyle(
                                           color: primarycolor,
+                                          fontWeight: FontWeight.bold
                                         ),
                                       ),
                                     ),

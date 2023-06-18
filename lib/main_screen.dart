@@ -200,7 +200,7 @@ class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title:  Text('logout'.tr),
+      title:  Text('logout'.tr,style: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),),
       content: Obx(
         () => _authController.isLoading.value
             ?  CircularProgressBar(color: primarycolor,)

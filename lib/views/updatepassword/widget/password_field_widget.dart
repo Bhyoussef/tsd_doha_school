@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 
 class PasswordFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -16,11 +17,13 @@ class PasswordFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: primarycolor,
       keyboardType: keyboardtype,
       controller: controller,
       obscureText: true,
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),
       ),
       validator: validator,
     );

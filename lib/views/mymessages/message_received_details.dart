@@ -39,6 +39,16 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
         Get.find<MessageReceivedController>();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       controller.getComments(uid, widget.message.iD!);
+
+
+      if(widget.message.state !='read'){
+        controller.markAsRead(uid, widget.message!.iD!);
+
+      }else{
+
+      }
+
+
     });
   }
 

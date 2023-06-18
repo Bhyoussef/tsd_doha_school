@@ -73,6 +73,16 @@ class ExerciseController extends GetxController {
     return null;
   }
 
+  Future<String?> markAsRead(int uid, int messageId) async {
+    try {
+      await ExerciseApi.markAsRead(
+        uid,
+        messageId,
+      );
+    } finally {}
+    return null;
+  }
+
   Future<String?> updateMessageState(int uid, int messageId) async {
     try {
       isLoading(true);

@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
 import 'package:tsdoha/views/mypayments/succes_payment.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../constant/constant.dart';
 import '../../model/child_model.dart';
 import '../../theme/app_colors.dart';
-import '../home/home_screen.dart';
 import 'failed_payment.dart';
 
 class PaymentScreen extends StatelessWidget {
@@ -56,7 +56,7 @@ class PaymentScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: (){
-                Get.to(()=>HomeScreen());
+                Get.offAll(()=>HomeScreen());
               },
               child: Image.asset(
                 'assets/imgs/tsdIcon.png',
@@ -221,8 +221,8 @@ class PaymentScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => WebViewScreen(
           url: encodedUrl,
-          successCallback: () => SuccsesPayament(amount :amount),
-          errorCallback: () => const FailedPayment(),
+          successCallback: () => Get.to(() => SuccsesPayament(student:student)),
+          errorCallback: () => Get.to(() =>  FailedPayment(student:student)),
         ),
       ),
     );
@@ -244,8 +244,8 @@ class PaymentScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => WebViewScreen(
           url: encodedUrl,
-          successCallback: () => const SuccsesPayament(),
-          errorCallback: () => const  FailedPayment(),
+          successCallback: () => Get.to(() => SuccsesPayament()),
+          errorCallback: () => Get.to(() => FailedPayment()),
         ),
       ),
     );
@@ -300,7 +300,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: (){
-              Get.to(()=>HomeScreen());
+              Get.offAll(()=>HomeScreen());
             },
             child: Image.asset(
               'assets/imgs/tsdIcon.png',

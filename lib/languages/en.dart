@@ -105,6 +105,10 @@ const Map<String, String> en = {
   'doyouwanttoexit':'Are you sure you want to exit the application?',
   'yes':'Yes',
   'no':'No',
+  'payment2':'QAR has been successfully sent to Tsdoha from your wallet.',
+  'payment1':'The Payment of',
+  'continue':'Continue',
+  'return':'Return'
 
 
 

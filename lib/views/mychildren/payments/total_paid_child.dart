@@ -56,8 +56,8 @@ class _TotalPaymentsChildState extends State<TotalPaymentsChild> {
                 child: CircularProgressBar(color: primarycolor,),
               );
             } else if (paymentController.totalpaiddetailsstudents.isEmpty) {
-              return const Center(
-                child: Text('No payments history found.'),
+              return  Center(
+                child: Text('nopaymentshistoryfound'.tr),
               );
             }
 

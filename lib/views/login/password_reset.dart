@@ -43,6 +43,9 @@ class PasswordRest extends StatelessWidget {
                                     decoration: InputDecoration(
                                       labelText: 'parent_id'.tr,
                                       border: const OutlineInputBorder(),
+                                      labelStyle: TextStyle(
+                                        color: primarycolor,fontWeight: FontWeight.bold
+                                      )
                                     ),
                                   ),
                                   const SizedBox(height: 18),
@@ -61,7 +64,7 @@ class PasswordRest extends StatelessWidget {
                                     },
                                     child: Text(
                                       'or_login'.tr,
-                                      style: TextStyle(color: primarycolor),
+                                      style: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ],

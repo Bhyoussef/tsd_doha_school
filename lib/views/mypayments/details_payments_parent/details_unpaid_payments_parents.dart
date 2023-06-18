@@ -66,7 +66,6 @@ class _DetailPaymentsUnpaidParentsState extends State<DetailPaymentsUnpaidParent
                   itemCount: controller.totalinpaiddetailsparents.length,
                   itemBuilder: (context, index) {
                     final paidDetail = controller.totalinpaiddetailsparents[index];
-
                     return Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
