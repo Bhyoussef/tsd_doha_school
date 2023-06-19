@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/model/auth_model.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 
-import '../model/auth_model.dart';
-import '../utils/shared_preferences.dart';
 
 
 enum DrawerOption {

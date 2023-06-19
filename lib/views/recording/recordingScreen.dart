@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../routes/routes.dart';
-import '../../theme/app_colors.dart';
+import 'package:tsdoha/routes/routes.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 
 
 

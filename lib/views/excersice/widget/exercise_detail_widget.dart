@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/controller/dowload_file_controller.dart';
+import 'package:tsdoha/model/exersice_model.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../controller/dowload_file_controller.dart';
-import '../../../model/exersice_model.dart';
-import '../../../theme/app_colors.dart';
-import '../../../utils/shared_preferences.dart';
 
 class DetailExersiceCard extends StatelessWidget {
   final Exersice? exercise;

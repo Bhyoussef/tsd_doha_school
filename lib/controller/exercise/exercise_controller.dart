@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../model/attachement_model.dart';
-import '../../model/comments_model.dart';
-import '../../services/exercise.dart';
-import '../../utils/shared_preferences.dart';
+import 'package:tsdoha/model/attachement_model.dart';
+import 'package:tsdoha/model/comments_model.dart';
+import 'package:tsdoha/services/exercise.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+
 
 class ExerciseController extends GetxController {
   final comments = <Comment>[].obs;

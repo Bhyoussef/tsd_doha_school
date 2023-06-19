@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/model/child_model.dart';
-import '../home/home_screen.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
 
 class SuccsesPayament extends StatefulWidget {
   final double? amount;
@@ -16,8 +16,8 @@ class SuccsesPayament extends StatefulWidget {
 class _SuccsesPayamentState extends State<SuccsesPayament> {
   @override
   Widget build(BuildContext context) {
-    String  payment1='payment1'.tr;
-    String  payment2='payment2'.tr;
+
+
 
     return Scaffold(
       backgroundColor: Colors.white,

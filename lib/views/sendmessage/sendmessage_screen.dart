@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tsdoha/routes/routes.dart';
-import '../../constant/constant.dart';
-import '../../controller/message_controller/send_message_controller.dart';
-import '../../model/personal_model.dart';
-import '../../theme/app_colors.dart';
-import '../../utils/shared_preferences.dart';
-import '../home/home_screen.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/message_controller/send_message_controller.dart';
+import 'package:tsdoha/model/personal_model.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
+
+
+
 
 class SendMessageScreen extends StatefulWidget {
   SendMessageScreen({Key? key}) : super(key: key);

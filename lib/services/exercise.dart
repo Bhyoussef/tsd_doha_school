@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../constant/constant.dart';
-import '../controller/exercise/exercise_controller.dart';
-import '../model/attachement_model.dart';
-import '../model/comments_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/exercise/exercise_controller.dart';
+import 'package:tsdoha/model/attachement_model.dart';
+import 'package:tsdoha/model/comments_model.dart';
 
 class ExerciseApi {
   static final dio = Dio();

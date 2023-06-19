@@ -1,8 +1,9 @@
 import 'dart:convert';
-import '../constant/constant.dart';
 import 'package:http/http.dart' as http;
-import '../model/payment_details_model.dart';
-import '../model/payment_model.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/model/payment_details_model.dart';
+import 'package:tsdoha/model/payment_model.dart';
+
 
 class ApiServicePayment {
   static Future<List<Payment>> getPaymentsParentTotal(int uid) async {

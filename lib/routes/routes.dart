@@ -1,16 +1,17 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:tsdoha/getx_controller_binding.dart';
 import 'package:tsdoha/model/child_model.dart';
 import 'package:tsdoha/views/about/about_screen.dart';
 import 'package:tsdoha/views/configuration/configuration_screen.dart';
+import 'package:tsdoha/views/dicipline/dicipline_screen.dart';
 import 'package:tsdoha/views/excersice/excersice_screen.dart';
 import 'package:tsdoha/views/home/home_screen.dart';
 import 'package:tsdoha/views/login/login_screen.dart';
+import 'package:tsdoha/views/mychildren/children_details_screen.dart';
+import 'package:tsdoha/views/mychildren/mychildren_screen.dart';
 import 'package:tsdoha/views/mymessages/mymessage_screen.dart';
 import 'package:tsdoha/views/onbording/spalsh_screen.dart';
-import '../getx_controller_binding.dart';
-import '../views/dicipline/dicipline_screen.dart';
-import '../views/mychildren/children_details_screen.dart';
-import '../views/mychildren/mychildren_screen.dart';
+
 
 class Routes {
   static String loginScreen = "/login";

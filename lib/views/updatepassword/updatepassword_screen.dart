@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../constant/constant.dart';
-import '../../theme/app_colors.dart';
-import '../../utils/shared_preferences.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/auth_controller/updatepassword_controller.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import 'widget/password_field_widget.dart';
-import '../../controller/auth_controller/updatepassword_controller.dart';
+
 
 class UpdatePasswordScreen extends StatefulWidget {
   const UpdatePasswordScreen({super.key});

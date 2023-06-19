@@ -1,12 +1,10 @@
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
 
-import '../theme/app_colors.dart';
-import '../views/home/home_screen.dart';
 
 class ImageReaderPage extends StatelessWidget {
   final Uint8List imageBytes;

@@ -10,12 +10,11 @@ import '../../theme/app_colors.dart';
 import 'message_received_details.dart';
 
 class ReceivedMessages extends StatelessWidget {
-
-
   const ReceivedMessages({
     Key? key,
     required this.controller,
-    required this.downloadController, this.uid,
+    required this.downloadController,
+    this.uid,
   }) : super(key: key);
 
   final MessageReceivedController controller;
@@ -26,54 +25,53 @@ class ReceivedMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Obx(() =>controller.isLoading.isTrue
-          ?Center(
-            child: CircularProgressBar(color: primarycolor))
-          :controller.receivedMessage.isNotEmpty
-        ? ListView.builder(
-            itemCount: controller.receivedMessage.length,
-            itemBuilder: (context, index) {
-              Message message = controller.receivedMessage[index];
-              return GestureDetector(
-                onTap: () {
-                  if (message.state != 'read') {
-                    controller.updateMessageState(uid!, message.iD!);
-                    print('youssef'+uid.toString());
-                  }
-                  Get.to(() => DetailsMessageReceived(
-                    message: message,
-                    downloadController: downloadController,
-                  ));
-
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: MessageCardReceived(
-                    title: message.titleOfMessage ?? '',
-                    image: message.teacherImage ?? '',
-                    sender: message.teacher ?? '',
-                    message: message.message ?? '',
-                    details: '${message.student ?? ''} • ${message.date ?? ''}',
-                    isRead: message.state ?? '',
-                    isAttached: message.attachments!.isEmpty,
-                    attachments: message.attachments!,
-                    downloadController: downloadController,
-                  ),
-                ),
-              );
-            },
-          ):Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset('assets/imgs/notfound.png'),
-        const Text('No message received found'),
-      ],
-    )
-
-      ),
+      child: Obx(() => controller.isLoading.isTrue
+          ? Center(child: CircularProgressBar(color: primarycolor))
+          : controller.receivedMessage.isNotEmpty
+              ? ListView.builder(
+                  itemCount: controller.receivedMessage.length,
+                  itemBuilder: (context, index) {
+                    Message message = controller.receivedMessage[index];
+                    return GestureDetector(
+                      onTap: () {
+                        if (message.state != 'read') {
+                          controller.updateMessageState(uid!, message.iD!);
+                          print('youssef' + uid.toString());
+                        }
+                        Get.to(() => DetailsMessageReceived(
+                              message: message,
+                              downloadController: downloadController,
+                            ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: MessageCardReceived(
+                          title: message.titleOfMessage ?? '',
+                          image: message.teacherImage ?? '',
+                          sender: message.teacher ?? '',
+                          message: message.message ?? '',
+                          details:
+                              '${message.student ?? ''} • ${message.date ?? ''}',
+                          isRead: message.state ?? '',
+                          isAttached: message.attachments!.isEmpty,
+                          attachments: message.attachments!,
+                          downloadController: downloadController,
+                        ),
+                      ),
+                    );
+                  },
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/imgs/notfound.png'),
+                    const Text('No message received found'),
+                  ],
+                )),
     );
   }
 }
+
 class MessageCardReceived extends StatelessWidget {
   final String? title;
   final String? image;
@@ -104,7 +102,7 @@ class MessageCardReceived extends StatelessWidget {
     final isArabic = locale?.languageCode == 'ar';
     bool isMessageRead = isRead == 'read';
     return Container(
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         color: isMessageRead ? Colors.white : Color(0xffececec),
         boxShadow: [
           BoxShadow(
@@ -178,42 +176,42 @@ class MessageCardReceived extends StatelessWidget {
           ),
           isArabic == true
               ? Positioned(
-            top: 8.0,
-            left: 8.0,
-            child: Container(
-              width: 12.0,
-              height: 12.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isMessageRead ? Colors.green : Colors.red,
-              ),
-            ),
-          )
+                  top: 8.0,
+                  left: 8.0,
+                  child: Container(
+                    width: 12.0,
+                    height: 12.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isMessageRead ? Colors.green : Colors.red,
+                    ),
+                  ),
+                )
               : Positioned(
-            top: 8.0,
-            right: 8.0,
-            child: Container(
-              width: 12.0,
-              height: 12.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isMessageRead ? Colors.green : Colors.red,
-              ),
-            ),
-          ),
+                  top: 8.0,
+                  right: 8.0,
+                  child: Container(
+                    width: 12.0,
+                    height: 12.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isMessageRead ? Colors.green : Colors.red,
+                    ),
+                  ),
+                ),
           isAttached!
               ? Container()
               : isArabic == true
-              ? const Positioned(
-            top: 8.0,
-            left: 25.0,
-            child: Icon(Icons.attach_file),
-          )
-              : const Positioned(
-            top: 8.0,
-            right: 25.0,
-            child: Icon(Icons.attach_file),
-          ),
+                  ? const Positioned(
+                      top: 8.0,
+                      left: 25.0,
+                      child: Icon(Icons.attach_file),
+                    )
+                  : const Positioned(
+                      top: 8.0,
+                      right: 25.0,
+                      child: Icon(Icons.attach_file),
+                    ),
         ],
       ),
     );

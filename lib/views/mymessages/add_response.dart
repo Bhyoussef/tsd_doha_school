@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,7 +37,6 @@ class _AddResponseState extends State<AddResponse> {
     setState(() {
       uid = fetchedUid;
       print(uid);
-      //print(widget.message.iD.toString());
       print(responsecontroller.text);
     });
   }

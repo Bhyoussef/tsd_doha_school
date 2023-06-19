@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../constant/constant.dart';
-import '../model/auth_model.dart';
-import '../views/login/login_screen.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/model/auth_model.dart';
+import 'package:tsdoha/views/login/login_screen.dart';
 
 class ApiServiceAuth {
   static Future<Object> authenticate(String login, String password) async {
@@ -97,14 +97,13 @@ class ApiServiceAuth {
     return null;
   }
 
-
-  static Future<Object> pushData(String pushId,int uid) async {
+  static Future<Object> pushData(String pushId, int uid) async {
     final url = Uri.parse('${Res.host}/pushid/set');
     final body = jsonEncode({
       "jsonrpc": "2.0",
       "method": "call",
       "uid": uid,
-      "params": { "pushID": pushId }
+      "params": {"pushID": pushId}
     });
     final response = await http.post(
       url,
@@ -119,5 +118,58 @@ class ApiServiceAuth {
     } else {
       return [];
     }
+  }
+
+  static Future<String?> resetPassword(
+    String uid,
+  ) async {
+    final url = Uri.parse('${Res.host}/web/reset_password_json');
+    final body = jsonEncode(
+      {
+        "jsonrpc": "2.0",
+        "method": "call",
+        "params": {"login": uid}
+      },
+    );
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['result']['success'] == 'true') {
+        Get.snackbar(
+          'succes'.tr,
+          jsonResponse['result']['responce'],
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(20),
+        );
+        Get.off(() => LoginScreen());
+      } else if (jsonResponse['result']['success'] == 'false') {
+        Get.snackbar(
+          'error'.tr,
+          jsonResponse['result']['responce'],
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(20),
+        );
+      }
+      return jsonResponse["result"]["res"];
+    } else {
+      Get.snackbar(
+        'connexion_error'.tr,
+        'passwordfailedchange'.tr,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(20),
+      );
+    }
+    return null;
   }
 }

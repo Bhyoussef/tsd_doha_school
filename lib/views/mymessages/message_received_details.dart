@@ -570,7 +570,7 @@ class _CommentCardState extends State<CommentCard> {
         }
       }
     }
-    return const AssetImage('assets/imgs/user-avatar.png');
+    return const AssetImage('assets/imgs/user.png');
   }
 }
 

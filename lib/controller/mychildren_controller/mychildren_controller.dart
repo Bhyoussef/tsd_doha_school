@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/model/dicipline_model.dart';
 import 'package:tsdoha/model/exersice_model.dart';

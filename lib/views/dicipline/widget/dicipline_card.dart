@@ -120,7 +120,7 @@ class DiciplineCard extends StatelessWidget {
         errorBuilder: (_, __, ___) {
           print('Error loading user avatar');
           return CircleAvatar(
-            backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+            backgroundImage: AssetImage('assets/imgs/user.png'),
             radius: 30.0,
           );
         },
@@ -128,7 +128,7 @@ class DiciplineCard extends StatelessWidget {
     }
 
     return CircleAvatar(
-      backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+      backgroundImage: AssetImage('assets/imgs/user.png'),
       radius: 30.0,
     );
   }

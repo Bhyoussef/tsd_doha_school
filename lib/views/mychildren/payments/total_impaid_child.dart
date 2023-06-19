@@ -32,7 +32,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
         parentId = uid;
       });
     });
-    print('jgdajhgdhjasgdhjagdhja'+widget.student!.studentId!.toString());
+    print(widget.student!.studentId!);
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       controller.fetchingTotalInPaidDetailsStudent(widget.student!.studentId!);
@@ -77,7 +77,7 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
       ),
       body: SafeArea(
         child: Obx(
-          () {
+              () {
             if (controller.isloading.value) {
               return Center(
                 child: CircularProgressBar(
@@ -93,77 +93,89 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
                 ],
               );
             } else {
-              return ListView.builder(
-                itemCount: controller.totalinpaiddetailsstudents.length,
-                itemBuilder: (context, index) {
-                  final paidDetail =
-                      controller.totalinpaiddetailsstudents[index];
-                  return Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.totalinpaiddetailsstudents.length,
+                      itemBuilder: (context, index) {
+                        final paidDetail =
+                        controller.totalinpaiddetailsstudents[index];
+                        return Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              paidDetail.period.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    '${paidDetail.priceUnit} ${paidDetail.currency}'),
+                                Text('${paidDetail.year}'),
+                              ],
+                            ),
+                            trailing: CupertinoSwitch(
+                              activeColor: primarycolor,
+                              value: selectedLines.contains(index),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    selectedLines.add(index);
+                                  } else {
+                                    selectedLines.remove(index);
+                                  }
+                                  totalAmount = calculateTotalAmount();
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    child: ListTile(
-                      title: Text(
-                        paidDetail.period.toString(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              '${paidDetail.priceUnit} ${paidDetail.currency}'),
-                          Text('${paidDetail.year}'),
-                        ],
-                      ),
-                      trailing: CupertinoSwitch(
-                        activeColor: primarycolor,
-                        value: selectedLines.contains(index),
-                        onChanged: (value) {
-                          setState(() {
-                            if (value) {
-                              selectedLines.add(index);
-                            } else {
-                              selectedLines.remove(index);
-                            }
-                            totalAmount = calculateTotalAmount();
-                          });
+                  ),
+                 controller.totalinpaiddetailsstudents.isEmpty?Container(): Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MaterialButton(
+                        height: 50,
+                        minWidth: MediaQuery.of(context).size.width - 30,
+                        color: primarycolor,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          if (selectedLines.isNotEmpty) {
+                            List<PaymentDetails> selectedDetails = selectedLines
+                                .map((index) => controller.totalinpaiddetailsstudents[index])
+                                .toList();
+                            navigateToPaymentPage(context, selectedDetails, student: widget.student);
+                          }
                         },
+                        child: Text(
+                          totalAmount == 0.0 ? 'select'.tr : '${'pay'.tr} $totalAmount QAR',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  );
-                },
+                  ),
+                ],
               );
             }
           },
-        ),
-      ),
-      floatingActionButton: MaterialButton(
-        height: 50,
-        minWidth: MediaQuery.of(context).size.width - 30,
-        color: primarycolor,
-        textColor: Colors.white,
-        onPressed: () {
-          if (selectedLines.isNotEmpty) {
-            List<PaymentDetails> selectedDetails = selectedLines
-                .map((index) => controller.totalinpaiddetailsstudents[index])
-                .toList();
-            navigateToPaymentPage(context, selectedDetails,student:widget.student);
-          }
-        },
-        child: Text(
-          totalAmount == 0.0 ? 'select'.tr : '${'pay'.tr} $totalAmount QAR',
-          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -181,18 +193,19 @@ class _TotalImpaidChildState extends State<TotalImpaidChild> {
   void navigateToPaymentPage(
       BuildContext context, List<PaymentDetails> selectedDetails, {Mychildreen? student}) {
     List<int> lineIDs =
-        selectedDetails.map((detail) => detail.idLine!).toList();
+    selectedDetails.map((detail) => detail.idLine!).toList();
 
     Get.to(
-        () => PaymentScreen(
-              schoolCode: widget.student!.schoolCode!,
-              parentID: parentId,
-              childID: widget.student!.studentId!,
-              amount: totalAmount,
-              lineIDs: lineIDs,
-              student: widget.student,
-            ),
-        transition: Transition.cupertinoDialog,
-        duration: Duration(seconds: 1));
+          () => PaymentScreen(
+        schoolCode: widget.student!.schoolCode!,
+        parentID: parentId,
+        childID: widget.student!.studentId!,
+        amount: totalAmount,
+        lineIDs: lineIDs,
+        student: widget.student,
+      ),
+      transition: Transition.cupertinoDialog,
+      duration: Duration(seconds: 1),
+    );
   }
 }

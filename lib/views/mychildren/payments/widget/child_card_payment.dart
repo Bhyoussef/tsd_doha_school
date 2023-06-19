@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../model/child_model.dart';
+import 'package:tsdoha/model/child_model.dart';
 
 class ChildCardPayment extends StatelessWidget {
   final Mychildreen student;

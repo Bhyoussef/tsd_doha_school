@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tsdoha/model/attachement_model.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/model/comments_model.dart';
+import 'package:tsdoha/model/message_model.dart';
+import 'package:tsdoha/services/message.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
 import 'dart:io';
 import 'dart:convert';
-import '../../model/attachement_model.dart';
-import '../../model/child_model.dart';
-import '../../model/comments_model.dart';
-import '../../model/message_model.dart';
-import '../../services/message.dart';
 
 class MessageReceivedController extends GetxController {
   final childDetail = <Mychildreen>[].obs;

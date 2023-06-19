@@ -6,7 +6,8 @@ class LoginTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? labelText;
   final bool obscureText;
-  final String? Function(String?)? validator;
+  final String?
+  Function(String?)? validator;
   const LoginTextField({super.key,
      this.controller,
      this.labelText,

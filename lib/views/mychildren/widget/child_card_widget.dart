@@ -88,7 +88,7 @@ class ChildCardWidget extends StatelessWidget {
       }
     }
     return const CircleAvatar(
-      backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+      backgroundImage: AssetImage('assets/imgs/user.png'),
       radius: 30.0,
     );
   }

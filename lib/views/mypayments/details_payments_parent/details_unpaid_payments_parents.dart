@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/payment_controller/payments_controller.dart';
+import 'package:tsdoha/routes/routes.dart';
 import 'package:tsdoha/theme/app_colors.dart';
-import '../../../constant/constant.dart';
-import '../../../controller/payment_controller/payments_controller.dart';
-import '../../../routes/routes.dart';
+
 
 
 class DetailPaymentsUnpaidParents extends StatefulWidget {

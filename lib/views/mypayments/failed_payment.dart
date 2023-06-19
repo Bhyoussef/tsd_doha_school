@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/model/child_model.dart';
 import 'package:tsdoha/views/home/home_screen.dart';
-import '../mychildren/payments/total_impaid_child.dart';
 
 class FailedPayment extends StatefulWidget {
   final Mychildreen? student;

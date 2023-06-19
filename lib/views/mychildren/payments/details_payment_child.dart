@@ -21,13 +21,13 @@ class DetailsPaymentChild extends StatefulWidget {
 
 class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
   final PaymentsController paymentController = Get.find<PaymentsController>();
-  bool isLoading = true; // Add isLoading variable
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchData(); // Move the fetching logic to a separate function
+      fetchData();
     });
   }
 
@@ -77,45 +77,45 @@ class _DetailsPaymentChildState extends State<DetailsPaymentChild> {
         padding: const EdgeInsets.all(8.0),
         child: isLoading // Check isLoading value
             ? Center(
-          child: CircularProgressBar(
-            color: primarycolor,
-          ),
-        )
-            : Obx(() {
-          if (paymentController.paymentsTotalstudents.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/imgs/notfound.png'),
-                  Text('nopaymentshistoryfound'.tr),
-                ],
-              ),
-            );
-          } else {
-            return ListView(
-              children: [
-                ChildCardPayment(student: widget.student!),
-                const SizedBox(height: 15),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: paymentController.paymentsTotalstudents.length,
-                  itemBuilder: (context, index) {
-                    final paymentTotal =
-                    paymentController.paymentsTotalstudents[index];
-                    return PaymentChildListItem(
-                      paymentTotal: paymentTotal,
-                      student: widget.student!,
-                    );
-                  },
+                child: CircularProgressBar(
+                  color: primarycolor,
                 ),
-              ],
-            );
-          }
-        }),
+              )
+            : Obx(() {
+                if (paymentController.paymentsTotalstudents.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/imgs/notfound.png'),
+                        Text('nopaymentshistoryfound'.tr),
+                      ],
+                    ),
+                  );
+                } else {
+                  return ListView(
+                    children: [
+                      ChildCardPayment(student: widget.student!),
+                      const SizedBox(height: 15),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:
+                            paymentController.paymentsTotalstudents.length,
+                        itemBuilder: (context, index) {
+                          final paymentTotal =
+                              paymentController.paymentsTotalstudents[index];
+                          return PaymentChildListItem(
+                            paymentTotal: paymentTotal,
+                            student: widget.student!,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }
+              }),
       ),
     );
   }
 }
-

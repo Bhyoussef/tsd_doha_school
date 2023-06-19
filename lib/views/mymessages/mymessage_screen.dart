@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/message_controller/message_received_controller.dart';
-import '../../controller/message_controller/message_sent_controller.dart';
-import '../../controller/dowload_file_controller.dart';
-import '../../theme/app_colors.dart';
-import '../sendmessage/sendmessage_screen.dart';
+import 'package:tsdoha/controller/dowload_file_controller.dart';
+import 'package:tsdoha/controller/message_controller/message_received_controller.dart';
+import 'package:tsdoha/controller/message_controller/message_sent_controller.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/views/sendmessage/sendmessage_screen.dart';
 import 'message_received.dart';
 import 'message_sent.dart';
 

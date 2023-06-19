@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tsdoha/model/send_message_model.dart';
 import 'package:tsdoha/model/message_sent_model.dart';
 import 'package:tsdoha/services/message.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 
-import '../../utils/shared_preferences.dart';
 
 class MessageSentController extends GetxController {
   final sentedmessage = <MessageSent>[].obs;

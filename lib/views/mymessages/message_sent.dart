@@ -144,8 +144,7 @@ class MessageCardSent extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  // Handle file download here
-                },
+                  },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

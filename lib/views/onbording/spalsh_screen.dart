@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../theme/app_colors.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 import 'language_page.dart';
 import 'widget/topandbuttomwrapper.dart';
 

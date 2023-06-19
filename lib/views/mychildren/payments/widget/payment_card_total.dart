@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../model/child_model.dart';
-import '../../../../model/payment_model.dart';
-import '../total_impaid_child.dart';
-import '../total_paid_child.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/model/payment_model.dart';
+import 'package:tsdoha/views/mychildren/payments/total_impaid_child.dart';
+import 'package:tsdoha/views/mychildren/payments/total_paid_child.dart';
+
 
 class PaymentListItem extends StatelessWidget {
   final Payment paymentTotal;

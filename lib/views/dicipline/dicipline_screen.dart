@@ -1,13 +1,12 @@
-import 'dart:convert';
-import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../constant/constant.dart';
-import '../../controller/mychildren_controller/mychildren_controller.dart';
-import '../../routes/routes.dart';
-import '../../theme/app_colors.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/mychildren_controller/mychildren_controller.dart';
+import 'package:tsdoha/routes/routes.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 import 'details_dicipline.dart';
 
 class DiciplineScreen extends StatefulWidget {

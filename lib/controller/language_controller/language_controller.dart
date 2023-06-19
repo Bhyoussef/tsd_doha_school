@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:get/get.dart';
-import '../../utils/shared_preferences.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 
 
 class LanguageController extends GetxController {

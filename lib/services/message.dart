@@ -4,14 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../constant/constant.dart';
-import '../controller/message_controller/message_received_controller.dart';
-import '../model/attachement_model.dart';
-import '../model/comments_model.dart';
-import '../model/message_model.dart';
-import '../model/message_sent_model.dart';
-import '../model/send_message_model.dart';
-import '../views/home/home_screen.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/message_controller/message_received_controller.dart';
+import 'package:tsdoha/model/attachement_model.dart';
+import 'package:tsdoha/model/comments_model.dart';
+import 'package:tsdoha/model/message_model.dart';
+import 'package:tsdoha/model/message_sent_model.dart';
+import 'package:tsdoha/model/send_message_model.dart';
+import 'package:tsdoha/views/home/home_screen.dart';
+
 
 class ApiServiceMessage {
 

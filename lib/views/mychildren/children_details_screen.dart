@@ -256,7 +256,7 @@ Widget _buildCircleAvatar(dynamic image) {
     }
   }
   return const CircleAvatar(
-    backgroundImage: AssetImage("assets/imgs/user-avatar.png"),
+    backgroundImage: AssetImage("assets/imgs/user.png"),
     radius: 40.0,
   );
 }

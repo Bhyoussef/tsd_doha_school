@@ -108,7 +108,9 @@ const Map<String, String> ar = {
   'payment2':'ريال قطري تم بنجاح من محفظتك.',
   'payment1':'دفع',
   'continue':'استمر',
-  'return':'عودة'
+  'return':'عودة',
+  'devloppedby':'طور التطبيق من طرف ',
+  'linkia':'لينكيا'
 
 
 

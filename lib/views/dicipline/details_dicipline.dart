@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/model/dicipline_model.dart';
-import '../../routes/routes.dart';
-import '../../theme/app_colors.dart';
+import 'package:tsdoha/routes/routes.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 
 class DiciplineDetail extends StatelessWidget {
   final Dicipline? dicipline;
@@ -122,7 +122,7 @@ Widget _buildCircleAvatar(dynamic image) {
       errorBuilder: (_, __, ___) {
         print('Error loading user avatar');
         return CircleAvatar(
-          backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+          backgroundImage: AssetImage('assets/imgs/user.png'),
           radius: 30.0,
         );
       },
@@ -130,7 +130,7 @@ Widget _buildCircleAvatar(dynamic image) {
   }
 
   return CircleAvatar(
-    backgroundImage: AssetImage('assets/imgs/user-avatar.png'),
+    backgroundImage: AssetImage('assets/imgs/user.png'),
     radius: 30.0,
   );
 }

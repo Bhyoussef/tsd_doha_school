@@ -1,11 +1,12 @@
 import 'dart:convert';
-import '../constant/constant.dart';
 import 'package:http/http.dart' as http;
-import '../model/book_model.dart';
-import '../model/child_model.dart';
-import '../model/dicipline_model.dart';
-import '../model/exersice_model.dart';
-import '../model/time_table_model.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/model/book_model.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/model/dicipline_model.dart';
+import 'package:tsdoha/model/exersice_model.dart';
+import 'package:tsdoha/model/time_table_model.dart';
+
 
 class ApiServiceMyChildren {
   static Future<List<Mychildreen>> getChildren(int parentId) async {

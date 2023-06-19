@@ -2,29 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+class AboutScreen extends StatefulWidget {
+  const AboutScreen({Key? key}) : super(key: key);
 
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white,
-                spreadRadius: 1,
-                blurRadius: 10,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+        children: [
+          Expanded(
+              child: Column(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 50,
               ),
               Image.asset(
@@ -36,16 +30,16 @@ class AboutScreen extends StatelessWidget {
                 onTap: () {
                   launch('https://proosoftcloud.com/');
                 },
-                child:  ListTile(
+                child: ListTile(
                   leading: const Icon(Icons.language),
                   title: Text('website'.tr),
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  launch('info@proosoft.com');
+                  launch('mailto:wch@gmail.com');
                 },
-                child:  ListTile(
+                child: ListTile(
                   leading: const Icon(Icons.email),
                   title: Text('email'.tr),
                 ),
@@ -55,14 +49,50 @@ class AboutScreen extends StatelessWidget {
                   launch(
                       'https://www.facebook.com/Proo-School-Erp-102552524734673/');
                 },
-                child:  ListTile(
+                child: ListTile(
                   leading: const Icon(Icons.facebook),
                   title: Text('facebook'.tr),
                 ),
               ),
             ],
-          ),
-        ),
+          )),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/imgs/linkialogo.png',
+                    height: 35,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      launch('https://linkia.qa');
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'devloppedby'.tr,
+                        style: TextStyle(color: Colors.black, fontSize: 12),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'linkia'.tr,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff318fd2),
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

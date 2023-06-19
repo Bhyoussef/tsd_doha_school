@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/mychildren_controller/mychildren_controller.dart';
 import 'package:tsdoha/theme/app_colors.dart';
-import '../../constant/constant.dart';
-import '../../controller/mychildren_controller/mychildren_controller.dart';
 import 'children_details_screen.dart';
 import 'widget/child_card_widget.dart';
 

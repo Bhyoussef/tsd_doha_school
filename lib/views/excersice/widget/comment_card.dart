@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controller/exercise/exercise_controller.dart';
-import '../../../model/comments_model.dart';
-import '../../../utils/shared_preferences.dart';
+import 'package:tsdoha/controller/exercise/exercise_controller.dart';
+import 'package:tsdoha/model/comments_model.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import 'attachement_card.dart';
 
 class CommentCard extends StatefulWidget {

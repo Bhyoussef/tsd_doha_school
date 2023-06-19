@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tsdoha/model/time_table_model.dart';
-import '../../../theme/app_colors.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 
 class TimeTableEntry extends StatelessWidget {
   final TimeTable? timetableEntry;

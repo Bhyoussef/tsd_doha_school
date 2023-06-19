@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../constant/constant.dart';
-import '../../controller/dowload_file_controller.dart';
-import '../../controller/mychildren_controller/mychildren_controller.dart';
-import '../../routes/routes.dart';
-import '../../theme/app_colors.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/dowload_file_controller.dart';
+import 'package:tsdoha/controller/mychildren_controller/mychildren_controller.dart';
+import 'package:tsdoha/routes/routes.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 import 'widget/book_card.dart';
 
 class BookListScreen extends StatefulWidget {

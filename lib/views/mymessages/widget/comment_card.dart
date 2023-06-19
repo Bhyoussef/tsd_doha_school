@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constant/constant.dart';
-import '../../../theme/app_colors.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/model/comments_model.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import '../../../controller/message_controller/message_received_controller.dart';
-import '../../../model/comments_model.dart';
-import '../../../utils/shared_preferences.dart';
 import 'attachement_widget.dart';
 
 class CommentCard extends StatefulWidget {

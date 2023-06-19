@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/theme/app_colors.dart';
 import 'package:tsdoha/views/home/home_screen.dart';
 import 'package:tsdoha/views/mypayments/succes_payment.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../../constant/constant.dart';
-import '../../model/child_model.dart';
-import '../../theme/app_colors.dart';
 import 'failed_payment.dart';
 
 class PaymentScreen extends StatelessWidget {

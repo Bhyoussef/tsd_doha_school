@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../model/exersice_model.dart';
+import 'package:tsdoha/model/exersice_model.dart';
 
 class TeacherCardPayment extends StatelessWidget {
   final Exersice? exercise;

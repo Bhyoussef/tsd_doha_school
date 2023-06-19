@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/constant/constant.dart';
+import 'package:tsdoha/controller/mychildren_controller/mychildren_controller.dart';
+import 'package:tsdoha/controller/payment_controller/payments_controller.dart';
 import 'package:tsdoha/theme/app_colors.dart';
-import '../../constant/constant.dart';
-import '../../controller/mychildren_controller/mychildren_controller.dart';
-import '../../controller/payment_controller/payments_controller.dart';
 import 'details_payment_children/details_payment_children.dart';
 import 'widget/child_payment_card_widget.dart';
 import 'widget/payment_list_widget.dart';

@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
+import 'package:tsdoha/model/payment_details_model.dart';
+import 'package:tsdoha/model/payment_model.dart';
 import 'package:tsdoha/services/payment.dart';
-import '../../model/payment_details_model.dart';
-import '../../model/payment_model.dart';
-import '../../utils/shared_preferences.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+
 
 class PaymentsController extends GetxController {
   final paymentsTotalparents = <Payment>[].obs;

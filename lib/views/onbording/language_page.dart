@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tsdoha/routes/routes.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/theme/app_theme.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import 'package:tsdoha/views/login/login_screen.dart';
-import '../../routes/routes.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_theme.dart';
-import '../../utils/shared_preferences.dart';
 import 'widget/topandbuttomwrapper.dart';
 
 class LanguageScreen extends StatelessWidget {

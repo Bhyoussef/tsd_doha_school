@@ -108,7 +108,9 @@ const Map<String, String> en = {
   'payment2':'QAR has been successfully sent to Tsdoha from your wallet.',
   'payment1':'The Payment of',
   'continue':'Continue',
-  'return':'Return'
+  'return':'Return',
+  'devloppedby':'Mobile App developed by ',
+  'linkia':'Linkia'
 
 
 

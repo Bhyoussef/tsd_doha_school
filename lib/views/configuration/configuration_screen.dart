@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/language_controller/language_controller.dart';
-import '../../theme/app_colors.dart';
-import '../../utils/shared_preferences.dart';
+import 'package:tsdoha/controller/language_controller/language_controller.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
+
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);

@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
-import '../../services/auth.dart';
+import 'package:tsdoha/services/auth.dart';
 
 class PasswordChangeController extends GetxController {
   var isLoading = false.obs;
-
-
 
   Future<String?> updatePasswd(int uid,
       String oldPassword, newPassword, confirmPassword) async {

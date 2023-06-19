@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../model/child_model.dart';
-import '../../../model/payment_model.dart';
-import '../../mypayments/details_payments_parent/details_payment_paid_parents.dart';
-import '../payments/total_impaid_child.dart';
+import 'package:tsdoha/model/child_model.dart';
+import 'package:tsdoha/model/payment_model.dart';
+import 'package:tsdoha/views/mychildren/payments/total_impaid_child.dart';
+import 'package:tsdoha/views/mypayments/details_payments_parent/details_payment_paid_parents.dart';
+
+
 
 class PaymentChildListItem extends StatelessWidget {
   final Payment? paymentTotal;
@@ -41,7 +43,6 @@ class PaymentChildListItem extends StatelessWidget {
                 ),
                 onTap: () {
                   Get.to(() =>  DetailPaymentsPaidParents(
-
                   ),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
                 },
               ),

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../../model/message_model.dart';
-import '../../../theme/app_colors.dart';
-import '../../../utils/shared_preferences.dart';
+import 'package:tsdoha/model/message_model.dart';
+import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 
 
 
