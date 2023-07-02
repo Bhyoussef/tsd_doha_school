@@ -13,6 +13,7 @@ import 'dart:convert';
 class MessageReceivedController extends GetxController {
   final childDetail = <Mychildreen>[].obs;
   RxList<Message> receivedMessage = RxList();
+  RxList<Message> receivedSingleMessage = RxList();
   final comments = <Comment>[].obs;
   final isLoading = false.obs;
   final isloading = false.obs;
@@ -21,14 +22,12 @@ class MessageReceivedController extends GetxController {
   final attachmentController = TextEditingController().obs;
   int? parentId;
 
-
   @override
   void onInit() {
     super.onInit();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       fetchReceivedMessage(uid);
     });
-
   }
 
   @override
@@ -36,17 +35,28 @@ class MessageReceivedController extends GetxController {
     super.onClose();
   }
 
-  Future<void>fetchReceivedMessage(uid) async {
-      isLoading(true);
-      final list = await ApiServiceMessage.getMessagesReceived(uid);
-      receivedMessage.assignAll(list);
-      isLoading(false);
+  Future<void> fetchReceivedMessage(uid) async {
+    isLoading(true);
+    final list = await ApiServiceMessage.getMessagesReceived(uid);
+    receivedMessage.assignAll(list);
+
+    isLoading(false);
+
+  }
+
+  Future<void> fetchSingleMessage(uid, messageId) async {
+    isLoading(true);
+    final list =
+        await ApiServiceMessage.getSingleMessagesReceived(uid, messageId);
+    receivedSingleMessage.assignAll(list);
+    isLoading(false);
   }
 
   Future<void> getComments(int uid, int messageId) async {
     isloading.value = true;
     try {
-      final commentsList = await ApiServiceMessage.getListComments(uid, messageId);
+      final commentsList =
+          await ApiServiceMessage.getListComments(uid, messageId);
       comments.assignAll(commentsList);
       for (var comment in commentsList) {
         getAttachements(comment.attachmentIds, comment.id);
@@ -59,7 +69,7 @@ class MessageReceivedController extends GetxController {
   }
 
   Future<String?> getAttachements(attachements, msgId) async {
-    for (var att in attachements ) {
+    for (var att in attachements) {
       if (att != null) {
         final attachments = await ApiServiceMessage.getAllAttachments(att);
         var comment = comments.where((c) => c.id == msgId);
@@ -71,8 +81,6 @@ class MessageReceivedController extends GetxController {
     return null;
   }
 
-
-
   Future<String?> voteComment(int uid, int messageId) async {
     try {
       await ApiServiceMessage.voteComment(
@@ -82,6 +90,7 @@ class MessageReceivedController extends GetxController {
     } finally {}
     return null;
   }
+
   Future<String?> markAsRead(int uid, int messageId) async {
     try {
       await ApiServiceMessage.markAsRead(

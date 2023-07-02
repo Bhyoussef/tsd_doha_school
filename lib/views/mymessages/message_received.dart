@@ -9,7 +9,7 @@ import '../../model/message_model.dart';
 import '../../theme/app_colors.dart';
 import 'message_received_details.dart';
 
-class ReceivedMessages extends StatelessWidget {
+class ReceivedMessages extends StatefulWidget {
   const ReceivedMessages({
     Key? key,
     required this.controller,
@@ -22,25 +22,36 @@ class ReceivedMessages extends StatelessWidget {
   final int? uid;
 
   @override
+  State<ReceivedMessages> createState() => _ReceivedMessagesState();
+}
+
+class _ReceivedMessagesState extends State<ReceivedMessages> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.receivedMessage();
+  }
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Obx(() => controller.isLoading.isTrue
+      child: Obx(() => widget.controller.isLoading.isTrue
           ? Center(child: CircularProgressBar(color: primarycolor))
-          : controller.receivedMessage.isNotEmpty
+          : widget.controller.receivedMessage.isNotEmpty
               ? ListView.builder(
-                  itemCount: controller.receivedMessage.length,
+                  itemCount: widget.controller.receivedMessage.length,
                   itemBuilder: (context, index) {
-                    Message message = controller.receivedMessage[index];
+                    Message message = widget.controller.receivedMessage[index];
                     return GestureDetector(
                       onTap: () {
                         if (message.state != 'read') {
-                          controller.updateMessageState(uid!, message.iD!);
-                          print('youssef' + uid.toString());
+                          widget.controller.updateMessageState(widget.uid!, message.iD!);
+                          print('youssef' + widget.uid.toString());
                         }
                         Get.to(() => DetailsMessageReceived(
                               message: message,
-                              downloadController: downloadController,
+                              messageid:message.iD,
+                              downloadController: widget.downloadController,
                             ));
                       },
                       child: Padding(
@@ -55,7 +66,7 @@ class ReceivedMessages extends StatelessWidget {
                           isRead: message.state ?? '',
                           isAttached: message.attachments!.isEmpty,
                           attachments: message.attachments!,
-                          downloadController: downloadController,
+                          downloadController: widget.downloadController,
                         ),
                       ),
                     );

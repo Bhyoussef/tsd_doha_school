@@ -119,18 +119,14 @@ class ApiServiceAuth {
       return [];
     }
   }
-
-  static Future<String?> resetPassword(
-    String uid,
-  ) async {
+  static Future<String?> resetPassword(int uid) async {
     final url = Uri.parse('${Res.host}/web/reset_password_json');
-    final body = jsonEncode(
-      {
-        "jsonrpc": "2.0",
-        "method": "call",
-        "params": {"login": uid}
-      },
-    );
+    final body = jsonEncode({
+      "jsonrpc": "2.0",
+      "method": "call",
+      "params": {"login": uid}
+    });
+
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -139,20 +135,21 @@ class ApiServiceAuth {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['result']['success'] == 'true') {
+
+      if (jsonResponse['result']['success'] == false) {
         Get.snackbar(
-          'succes'.tr,
-          jsonResponse['result']['responce'],
+          'success'.tr,
+          jsonResponse['result']['responce'].toString(),
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
-        Get.off(() => LoginScreen());
-      } else if (jsonResponse['result']['success'] == 'false') {
+        Get.offAll(() => LoginScreen());
+      } else if (jsonResponse['result']['success'] == false) {
         Get.snackbar(
           'error'.tr,
-          jsonResponse['result']['responce'],
+          jsonResponse['result'][0]['responce'].toString(),
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
@@ -162,8 +159,8 @@ class ApiServiceAuth {
       return jsonResponse["result"]["res"];
     } else {
       Get.snackbar(
-        'connexion_error'.tr,
-        'passwordfailedchange'.tr,
+        'connection_error'.tr,
+        'password_failed_change'.tr,
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
@@ -172,4 +169,5 @@ class ApiServiceAuth {
     }
     return null;
   }
+
 }

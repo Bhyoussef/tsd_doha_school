@@ -54,6 +54,7 @@ class PasswordRest extends StatelessWidget {
                                                 color: primarycolor,
                                                 fontWeight: FontWeight.bold),
                                           ),
+                                        cursorColor: primarycolor,
 
                                       ),
                                       const SizedBox(height: 18),
@@ -64,8 +65,9 @@ class PasswordRest extends StatelessWidget {
                                         color: primarycolor,
                                         onPressed: () {
                                           controller.updatePasswd(
-                                              controller.restfield.value.text,
-                                            );
+                                            int.parse(controller.restfield.value.text),
+                                          );
+                                          print(int.parse(controller.restfield.value.text));
                                         },
                                         textColor: Colors.white,
                                         child: Text('reset_password'.tr),

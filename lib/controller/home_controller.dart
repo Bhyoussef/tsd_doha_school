@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/model/auth_model.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
-
-
+import 'package:tsdoha/views/home/home_screen.dart';
+import 'package:tsdoha/views/mymessages/mymessage_screen.dart';
 
 enum DrawerOption {
   MyChildren,
@@ -25,6 +25,12 @@ class HomeController extends GetxController {
   void goToMyChildrenScreen() {
     selectedOption.value = DrawerOption.MyChildren;
     pageTitle.value = 'My Children';
+    Get.offAll(() => HomeScreen()); // Use Get.offAll instead of Get.to to remove all previous routes
+  }
+  void goToMessageScreen() {
+    selectedOption.value = DrawerOption.MyMessages;
+    pageTitle.value = 'My Messages';
+    Get.offAll(() => MessagesScreen()); // Use Get.offAll instead of Get.to to remove all previous routes
   }
 
   @override
@@ -37,10 +43,12 @@ class HomeController extends GetxController {
 
   void updateSelectedOption(DrawerOption option) {
     selectedOption.value = option;
+    updateTitle(option); // Update the page title
+    Get.back(); // Close the drawer after selecting an option
   }
 
-  Color getOptionColor(int index) {
-    return selectedOption.value == index
+  Color getOptionColor(DrawerOption option) {
+    return selectedOption.value == option
         ? const Color(0xFF590D6F)
         : Colors.black;
   }

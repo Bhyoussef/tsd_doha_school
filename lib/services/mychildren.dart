@@ -5,6 +5,7 @@ import 'package:tsdoha/model/book_model.dart';
 import 'package:tsdoha/model/child_model.dart';
 import 'package:tsdoha/model/dicipline_model.dart';
 import 'package:tsdoha/model/exersice_model.dart';
+import 'package:tsdoha/model/single_child_model.dart';
 import 'package:tsdoha/model/time_table_model.dart';
 
 
@@ -159,6 +160,36 @@ class ApiServiceMyChildren {
       final data = jsonData['result'][0]["sanction_student"];
       List<Dicipline> list = data
           .map<Dicipline>((data) => Dicipline.fromJson(data))
+          .toList();
+      return list;
+    } else {
+      throw Exception('Failed to fetch books');
+    }
+  }
+
+  static Future<List<ChildModel>> fetchSingleChild(int uid,int studentId) async {
+    final response = await http.post(
+      Uri.parse('${Res.host}/proschool/child'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "uid": "",
+          "params": {
+            "parent_id": uid ,
+            "id": studentId
+          }
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+
+      final data = jsonData['result'][0]["childrens"];
+      List<ChildModel> list = data
+          .map<ChildModel>((data) => ChildModel.fromJson(data))
           .toList();
       return list;
     } else {

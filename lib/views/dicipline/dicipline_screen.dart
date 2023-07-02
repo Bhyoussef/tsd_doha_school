@@ -1,6 +1,4 @@
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/constant/constant.dart';
@@ -37,7 +35,7 @@ class _DiciplineScreenState extends State<DiciplineScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: CupertinoColors.white),
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
         ),
         backgroundColor: primarycolor,

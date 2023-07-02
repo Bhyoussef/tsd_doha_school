@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/controller/home_controller.dart';
+import 'package:tsdoha/controller/auth_controller/login_controller.dart';
+
 import 'constant/constant.dart';
-import 'controller/home_controller.dart';
-import 'controller/auth_controller/login_controller.dart';
 
 class MainScreen extends StatelessWidget {
   final HomeController controller = Get.find();
 
-  MainScreen({super.key});
+  MainScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,100 +62,96 @@ class MainScreen extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: Text(
+            title: Obx(() => Text(
               'mychildren'.tr,
               style: TextStyle(
-                color: controller.getOptionColor(0),
-
+                color: controller.getOptionColor(DrawerOption.MyChildren),
               ),
-            ),
+            )),
             onTap: () {
-              controller.getOptionColor(0);
               controller.updateSelectedOption(DrawerOption.MyChildren);
-              controller.pageTitle.value = 'mychildren'.tr;
-              controller.pageTitle.value;
+              controller.updateTitle(DrawerOption.MyChildren);
               Get.back();
             },
           ),
           ListTile(
             leading: const Icon(Icons.message),
-            title: Text(
+            title: Obx(() => Text(
               'mymessage'.tr,
               style: TextStyle(
-                color: controller.getOptionColor(1),
+                color: controller.getOptionColor(DrawerOption.MyMessages),
               ),
-            ),
+            )),
             onTap: () {
-              controller.getOptionColor(1);
               controller.updateSelectedOption(DrawerOption.MyMessages);
-              controller.pageTitle.value = 'mymessage'.tr;
+              controller.updateTitle(DrawerOption.MyMessages);
               Get.back();
             },
           ),
           ListTile(
             leading: const Icon(Icons.payment),
-            title: Text(
+            title: Obx(() => Text(
               'mypayments'.tr,
               style: TextStyle(
-                color: controller.getOptionColor(2),
+                color: controller.getOptionColor(DrawerOption.MyPayments),
               ),
-            ),
+            )),
             onTap: () {
-              controller.getOptionColor(2);
               controller.updateSelectedOption(DrawerOption.MyPayments);
-              controller.pageTitle.value = 'mypayments'.tr;
+              controller.updateTitle(DrawerOption.MyPayments);
               Get.back();
             },
           ),
           ListTile(
             leading: const Icon(Icons.info),
-            title: Text('aboutus'.tr,
-                style: TextStyle(color: controller.getOptionColor(3))),
+            title: Obx(() => Text(
+              'aboutus'.tr,
+              style: TextStyle(
+                color: controller.getOptionColor(DrawerOption.About),
+              ),
+            )),
             onTap: () {
-              controller.getOptionColor(3);
               controller.updateSelectedOption(DrawerOption.About);
-              controller.pageTitle.value = 'aboutus'.tr;
+              controller.updateTitle(DrawerOption.About);
               Get.back();
             },
           ),
           ListTile(
             leading: const Icon(Icons.lock),
-            title: Text(
+            title: Obx(() => Text(
               'updatepassword'.tr,
               style: TextStyle(
-                color: controller.getOptionColor(4),
+                color: controller.getOptionColor(DrawerOption.UpdatePassword),
               ),
-            ),
+            )),
             onTap: () {
-              controller.getOptionColor(4);
               controller.updateSelectedOption(DrawerOption.UpdatePassword);
-              controller.pageTitle.value = 'updatepassword'.tr;
+              controller.updateTitle(DrawerOption.UpdatePassword);
               Get.back();
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: Text(
+            title: Obx(() => Text(
               'configuration'.tr,
               style: TextStyle(
-                color: controller.getOptionColor(5),
+                color: controller.getOptionColor(DrawerOption.Configuration),
               ),
-            ),
+            )),
             onTap: () {
-              controller.getOptionColor(5);
               controller.updateSelectedOption(DrawerOption.Configuration);
-              controller.pageTitle.value = 'configuration'.tr;
+              controller.updateTitle(DrawerOption.Configuration);
               Get.back();
             },
           ),
           ListTile(
-            leading:  Icon(
+            leading: Icon(
               Icons.logout,
               color: primarycolor,
             ),
             title: Text(
               'logout'.tr,
-              style:  TextStyle(
+              style: TextStyle(
                   color: primarycolor, fontWeight: FontWeight.bold),
             ),
             onTap: () {
@@ -195,28 +192,34 @@ class MainScreen extends StatelessWidget {
 class LogoutDialog extends StatelessWidget {
   final AuthController _authController = Get.find();
 
-   LogoutDialog({super.key});
+  LogoutDialog({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title:  Text('logout'.tr,style: TextStyle(color: primarycolor,fontWeight: FontWeight.bold),),
+      title: Text(
+        'logout'.tr,
+        style: TextStyle(color: primarycolor, fontWeight: FontWeight.bold),
+      ),
       content: Obx(
-        () => _authController.isLoading.value
-            ?  CircularProgressBar(color: primarycolor,)
-            :  Text('areyousureyouwanttologout'.tr),
+            () => _authController.isLoading.value
+            ? CircularProgressBar(color: primarycolor)
+            : Text('areyousureyouwanttologout'.tr),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => Get.back(),
-          child:  Text('cancel'.tr,style: TextStyle(color: primarycolor),),
+          child: Text(
+            'cancel'.tr,
+            style: TextStyle(color: primarycolor),
+          ),
         ),
         TextButton(
           onPressed: () {
             _authController.logout();
             Get.back();
           },
-          child:  Text('logout'.tr,style: TextStyle(color: primarycolor)),
+          child: Text('logout'.tr, style: TextStyle(color: primarycolor)),
         ),
       ],
     );

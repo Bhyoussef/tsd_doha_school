@@ -32,7 +32,7 @@ class MyChildrenScreen extends StatelessWidget {
                     final student = controller.children[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => DetailScreen(student: student),
+                        Get.to(() => DetailScreen(student: student,studentId:student.studentId),
                             transition: Transition.downToUp);
                       },
                       child: Padding(

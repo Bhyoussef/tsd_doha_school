@@ -117,6 +117,36 @@ class ApiServiceMessage {
       throw Exception('Error: $e');
     }
   }
+  static Future<List<Message>> getSingleMessagesReceived(int parentId,int messageId) async {
+
+    final url = '${Res.host}/proschool/parent_message';
+
+    try {
+      final response = await dio.post(
+        url,
+        options: Options(headers: {"Content-Type": "application/json"}),
+        data: {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "uid": parentId,
+          "params": {"parent_id": parentId, "id": messageId}
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = response.data;
+        final parentMessage = jsonResponse['result'][0]['message'];
+        List<Message> parentMessages = parentMessage
+            .map<Message>((data) => Message.fromJson(data))
+            .toList();
+        return parentMessages;
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
   //handle received message
 
   //handle sented message
@@ -494,15 +524,14 @@ class ApiServiceMessage {
   }
 
   static Future<String?> markAsRead(int uid, int messageId) async {
-    final url = Uri.parse('${Res.host}/message/mark_as_read');
+    final url = Uri.parse('${Res.host}/proschool/message/mark_as_read');
     final body = jsonEncode(
-      {
-        "jsonrpc": "2.0",
-        "method": "call",
-        "uid": uid,
-        "params": {
-          "ID": messageId
-        }
+        {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "uid": uid,
+          "params": { "ID": messageId }
+
       },
     );
 
@@ -515,7 +544,7 @@ class ApiServiceMessage {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       if (jsonResponse['result'] != null) {
-        return jsonResponse["result"].toString(); // Convert the result to a String
+        return jsonResponse["result"].toString();
       } else if (jsonResponse['result'] == null) {
         return null;
       }

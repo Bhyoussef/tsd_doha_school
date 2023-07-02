@@ -187,7 +187,7 @@ class ExerciseApi {
   }
 
   static Future<String?> markAsRead(int uid, int messageId) async {
-    final url = Uri.parse('${Res.host}/message/mark_as_read');
+    final url = Uri.parse('${Res.host}/proschool/homework/mark_as_read');
     final body = jsonEncode(
       {
         "jsonrpc": "2.0",
@@ -208,7 +208,7 @@ class ExerciseApi {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       if (jsonResponse['result'] != null) {
-        return jsonResponse["result"].toString(); // Convert the result to a String
+        return jsonResponse["result"].toString();
       } else if (jsonResponse['result'] == null) {
         return null;
       }

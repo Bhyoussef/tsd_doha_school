@@ -9,7 +9,7 @@ class PasswordResetController extends GetxController {
   final restfield = TextEditingController().obs;
 
 
-  Future<String?> updatePasswd(String uid) async {
+  Future<String?> updatePasswd(int uid) async {
     try {
       isLoading(true);
       await ApiServiceAuth.resetPassword(

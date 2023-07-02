@@ -9,14 +9,15 @@ import 'package:tsdoha/theme/app_colors.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
 import 'package:tsdoha/views/about/about_screen.dart';
 import 'package:tsdoha/views/configuration/configuration_screen.dart';
+import 'package:tsdoha/views/dicipline/dicipline_screen.dart';
+import 'package:tsdoha/views/excersice/excersice_screen.dart';
 import 'package:tsdoha/views/mychildren/mychildren_screen.dart';
+import 'package:tsdoha/views/mymessages/message_received_details.dart';
 import 'package:tsdoha/views/mymessages/mymessage_screen.dart';
 import 'package:tsdoha/views/mypayments/mypayment_screen.dart';
 import 'package:tsdoha/views/updatepassword/updatepassword_screen.dart';
 
-
 class HomeScreen extends StatefulWidget {
-
   HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -26,65 +27,65 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final HomeController controller = Get.put(HomeController());
 
-
-
-
   Future<bool> _onWillPop(BuildContext context) async {
     return await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('exitconfirmation'.tr,style:TextStyle(color: primarycolor)),
-          content: Text('doyouwanttoexit'.tr),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('no'.tr,style: TextStyle(color: primarycolor),),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('yes'.tr,style: TextStyle(color: primarycolor),),
-            ),
-          ],
-        );
-      },
-    ) ?? false;
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('exitconfirmation'.tr,
+                  style: TextStyle(color: primarycolor)),
+              content: Text('doyouwanttoexit'.tr),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(
+                    'no'.tr,
+                    style: TextStyle(color: primarycolor),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text(
+                    'yes'.tr,
+                    style: TextStyle(color: primarycolor),
+                  ),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
   }
 
   @override
-  void initState()  {
+  void initState() {
     pushId();
     super.initState();
   }
 
-  void pushId()async {
+  void pushId() async {
     final status = await OneSignal.shared.getDeviceState();
     final String? osUserID = status?.userId;
     final uid = await SharedData.getFromStorage('parent', 'object', 'uid');
     final push = await ApiServiceAuth.pushData(osUserID!, uid);
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
 
-
-
-    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      print('hereeeeeeeee'+result.notification.additionalData?['alert']);
-      print('hereeeeeeeee'+result.notification.additionalData?['title']);
+      if (result.notification.additionalData?['type'].toString() ==
+          'homework') {
+        Get.to(() =>  ExerciseScreen(
+          studentId: result.notification.additionalData?['student_ids'],
+            ));
+      } else if (result.notification.additionalData?['type'].toString() ==
+          'sanction') {
+        Get.to(() =>  DiciplineScreen(
+              studentId: result.notification.additionalData?['student_ids'],
+            ));
+      } else if (result.notification.additionalData?['type'].toString() ==
+          'message') {
+        Get.to(() =>  DetailsMessageReceived(messageid:55976,));
+      }
     });
-
-
-
-
- /*   OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      final notificationData = result.notification.jsonRepresentation();
-      print('noitication opened${notificationData}');
-      this.setState(() {
-      final parsedData = jsonDecode(notificationData) as Map<String, dynamic>;
-      print('data parsed hhhhhhhhhhhhhhhhhh${parsedData}');
-      final notificationTitle = parsedData['alert'];
-      final notificationBody = parsedData['title'];
-      print('Alert: $notificationTitle');
-      print('Title: $notificationBody');
-      });
-    });*/
   }
 
   @override
@@ -99,18 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
           iconTheme: const IconThemeData(color: Colors.white),
           title: Obx(() => Text(
-            controller.pageTitle.value,
-            style: const TextStyle(
-              color: CupertinoColors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          )),
+                controller.pageTitle.value,
+                style: const TextStyle(
+                  color: CupertinoColors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                 controller.goToMyChildrenScreen();
+                  controller.goToMyChildrenScreen();
                 },
                 child: Image.asset(
                   'assets/imgs/tsdIcon.png',

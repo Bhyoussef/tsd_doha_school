@@ -91,7 +91,8 @@ class _BookListScreenState extends State<BookListScreen> {
                           Text('nogradebooks'.tr),
                         ],
                       ),
-                    )),
+                    )
+          ),
         ));
   }
 }

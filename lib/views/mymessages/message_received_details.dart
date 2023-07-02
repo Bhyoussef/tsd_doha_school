@@ -16,10 +16,13 @@ import '../home/home_screen.dart';
 import 'add_comment.dart';
 
 class DetailsMessageReceived extends StatefulWidget {
-  final Message message;
-  final FileDownloadController downloadController;
+  final Message? message;
+  final int? messageid;
+  final FileDownloadController? downloadController;
   const DetailsMessageReceived(
-      {Key? key, required this.message, required this.downloadController})
+      {Key? key, this.message,
+       this.downloadController,
+      this.messageid})
       : super(key: key);
 
   @override
@@ -38,17 +41,13 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
     final MessageReceivedController controller =
         Get.find<MessageReceivedController>();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
-      controller.getComments(uid, widget.message.iD!);
+      controller.getComments(uid, widget.messageid!);
+      controller.fetchSingleMessage(uid,widget.messageid);
+      print(controller.receivedSingleMessage.toString());
 
-
-      if(widget.message.state !='read'){
-        controller.markAsRead(uid, widget.message!.iD!);
-
-      }else{
-
-      }
-
-
+      if (widget.message!.state! == 'sent') {
+        controller.markAsRead(uid, widget.messageid!);
+      } else {}
     });
   }
 
@@ -73,7 +72,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
             color: CupertinoColors.white,
           ),
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -104,24 +103,17 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
-            messageContent(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'comments'.tr,
-                    style: TextStyle(
-                      color: primarycolor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
+            Obx(() {
+              if (controller.isloading.isTrue) {
+                return Center(
+                  child: Container(
                   ),
-                ),
-              ],
-            ),
-            comments(),
+                );
+              } else
+                return MessageSingleReceived(controller: controller);
+              }),
+
+        comments(),
           ],
         ),
       ),
@@ -145,17 +137,18 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   }
 
   Widget messageContent() {
+
     return MessageCardReceived(
-        title: widget.message.titleOfMessage ?? '',
-        image: widget.message.teacherImage ?? '',
-        sender: widget.message.teacher ?? '',
-        message: widget.message.message ?? '',
+        title: widget.message!.titleOfMessage! ?? '',
+        image: widget.message!.teacherImage! ?? '',
+        sender: widget.message!.teacher! ?? '',
+        message: widget.message!.message! ?? '',
         details:
-            '${widget.message.student ?? ''} • ${widget.message.date ?? ''}',
-        isRead: widget.message.state!,
-        isAttached: widget.message.attachments!.isEmpty,
-        attachments: widget.message.attachments!,
-        downloadController: widget.downloadController);
+            '${widget.message!.student! ?? ''} • ${widget.message!.date! ?? ''}',
+        isRead: widget.message!.state!,
+        isAttached: widget.message!.attachments!.isEmpty,
+        attachments: widget.message!.attachments!,
+        downloadController: widget!.downloadController!);
   }
 
   Widget comments() {
@@ -167,17 +160,37 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
           ),
         );
       } else if (controller.comments.isNotEmpty) {
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: controller.comments.length,
-          itemBuilder: (context, index) {
-            final comment = controller.comments[index];
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CommentCard(comment: comment),
-            );
-          },
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'comments'.tr,
+                    style: TextStyle(
+                      color: primarycolor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: controller.comments.length,
+              itemBuilder: (context, index) {
+                final comment = controller.comments[index];
+                return Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: CommentCard(comment: comment),
+                );
+              },
+            ),
+          ],
         );
       } else {
         return Column(
@@ -190,6 +203,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
       }
     });
   }
+
 }
 
 class MessageCardReceived extends StatelessWidget {
@@ -269,8 +283,7 @@ class MessageCardReceived extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: RichText(
                   text: TextSpan(
-                    style:
-                        const TextStyle(fontSize: 16.0, color: Colors.black),
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
                     children: [
                       TextSpan(
                         text: message,
@@ -348,31 +361,6 @@ class MessageCardReceived extends StatelessWidget {
               ),
             ],
           ),
-          isArabic == true
-              ? Positioned(
-                  top: 8.0,
-                  left: 8.0,
-                  child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isRead == 'read' ? Colors.green : Colors.red,
-                    ),
-                  ),
-                )
-              : Positioned(
-                  top: 8.0,
-                  right: 8.0,
-                  child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isRead == 'read' ? Colors.green : Colors.red,
-                    ),
-                  ),
-                ),
           isAttached
               ? Container()
               : isArabic == true
@@ -395,6 +383,172 @@ class MessageCardReceived extends StatelessWidget {
     );
   }
 }
+
+
+
+class MessageSingleReceived extends StatelessWidget {
+ final MessageReceivedController? controller;
+
+
+  const MessageSingleReceived({
+    super.key,this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final FileDownloadController downloadController = Get.find<FileDownloadController>();
+   bool  isAttached= controller!.receivedSingleMessage[0].attachments!.isEmpty;
+    final locale = Get.locale;
+    final isArabic = locale?.languageCode == 'ar';
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  controller!.receivedSingleMessage[0].titleOfMessage!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: MemoryImage(base64Decode(controller!.receivedSingleMessage[0].teacherImage!)),
+                      radius: 30.0,
+                    ),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: Text(
+                        controller!.receivedSingleMessage[0].teacher! ,
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: controller!.receivedSingleMessage[0].message!,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (controller!.receivedSingleMessage[0].attachments!.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'attachemnts'.tr,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ListView.builder(
+                        key: UniqueKey(),
+                        shrinkWrap: true,
+                        itemCount: controller!.receivedSingleMessage[0].attachments!.length,
+                        itemBuilder: (context, index) {
+                          final attachment = controller!.receivedSingleMessage[0].attachments![index];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                attachment.fileName ?? '',
+                                style: const TextStyle(fontSize: 14.0),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.download,
+                                  color: primarycolor,
+                                ),
+                                onPressed: () {
+                                  SharedData.getFromStorage(
+                                      'parent', 'object', 'uid')
+                                      .then((uid) {
+                                    downloadController.downloadFile(
+                                      uid,
+                                      attachment.id.toString(),
+                                      attachment.fileName ?? '',
+                                    );
+                                  });
+                                  if (kDebugMode) {
+                                    print('here${attachment.id}');
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${controller!.receivedSingleMessage[0]!.student ?? ""} •  ${controller!.receivedSingleMessage[0]!.date??""}',
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          isAttached
+              ? Container()
+              : isArabic == true
+              ? const Positioned(
+            top: 8.0,
+            left: 25.0,
+            child: Icon(
+              Icons.attach_file,
+            ),
+          )
+              : const Positioned(
+            top: 8.0,
+            right: 25.0,
+            child: Icon(
+              Icons.attach_file,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class CommentCard extends StatefulWidget {
   final Comment? comment;
