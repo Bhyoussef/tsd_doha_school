@@ -56,21 +56,21 @@ class SendMessageController extends GetxController {
 
   Future<String?> createMessage(
       int parentId,
-      String receiver,
-      String subject,
-      String message,
-      String receiverId,
-      String attachmentPath,
+      String? receiver,
+      String? subject,
+      String? message,
+      String? receiverId,
+      String? attachmentPath,
       ) async {
     try {
       isLoading(true);
       await ApiServiceMessage.createMessage(
         parentId,
-        receiver,
-        subject,
-        message,
-        receiverId,
-        attachmentPath,
+        receiver!,
+        subject!,
+        message!,
+        receiverId!,
+        attachmentPath!,
       );
     } finally {
       isLoading(false);

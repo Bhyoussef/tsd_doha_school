@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/controller/dowload_file_controller.dart';
 import 'package:tsdoha/controller/message_controller/message_sent_controller.dart';
@@ -289,9 +290,11 @@ class _MessageCardSentState extends State<MessageCardSent> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  widget.message.date!,
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(widget.message.date!)
+                      .add(Duration(hours: 3))),
                   style: const TextStyle(fontSize: 14.0),
                 ),
+
               ],
             ),
           ),

@@ -30,10 +30,10 @@ class TopRedSection extends StatelessWidget {
                     child: Image.asset('assets/imgs/tsdIcon.png'),
                   ),
                   const Text(
-                    'Tunisian School',
+                    'Tunisian School Doha – Parent - المدرسة التونسية بالدوحة',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 25,
                       color: Colors.white,
                       fontFamily: 'Bahij',
                     ),

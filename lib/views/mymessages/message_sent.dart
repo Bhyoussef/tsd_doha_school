@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../model/message_sent_model.dart';
 import '../../theme/app_colors.dart';
 import 'message_sent_details.dart';
 
-class SentMessages extends StatelessWidget {
+class SentMessages extends StatefulWidget {
   const SentMessages({
     Key? key,
     required this.controller,
@@ -15,43 +17,54 @@ class SentMessages extends StatelessWidget {
   final MessageSentController controller;
 
   @override
+  State<SentMessages> createState() => _SentMessagesState();
+}
+
+class _SentMessagesState extends State<SentMessages> {
+  Future<void> _refreshMessages() async {
+    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
+      await widget.controller.fetchingSentMessage(uid);
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Obx(() => controller.isLoading.isTrue
+      child: Obx(() => widget.controller.isLoading.isTrue
           ? Center(child: CircularProgressBar(color: primarycolor))
-          : controller.sentedmessage.isNotEmpty
-              ? ListView.builder(
-                  itemCount: controller.sentedmessage.length,
-                  itemBuilder: (context, index) {
-                    MessageSent message = controller.sentedmessage[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(() => MessageSentDetails(message: message));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: MessageCardSent(
-                          title: message.name ?? '',
-                          receiver: message.receiver ?? '',
-                          message: message.message ?? '',
-                          date: message.date ?? '',
-                          uploadedfile: message.uploadFile ?? '',
-                        ),
-                      ),
-                    );
-                  },
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/imgs/notfound.png'),
-                    const Text('No sent messages Found'),
-                  ],
-                )),
+          : RefreshIndicator(
+        onRefresh: _refreshMessages,
+        child: ListView.builder(
+          itemCount: widget.controller.sentedmessage.length,
+          itemBuilder: (context, index) {
+            MessageSent message = widget.controller.sentedmessage[index];
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => MessageSentDetails(message: message));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: MessageCardSent(
+                  title: message.name ?? '',
+                  receiver: message.receiver ?? '',
+                  message: message.message ?? '',
+                  date: message.date ?? '',
+                  uploadedfile: message.uploadFile ?? '',
+                ),
+              ),
+            );
+          },
+        ),
+      )),
     );
   }
 }
+
 
 class MessageCardSent extends StatelessWidget {
   final String? title;
@@ -132,7 +145,8 @@ class MessageCardSent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  date!,
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse( date!,)
+                      .add(Duration(hours: 3))),
                   style: const TextStyle(fontSize: 14.0),
                 ),
               ],

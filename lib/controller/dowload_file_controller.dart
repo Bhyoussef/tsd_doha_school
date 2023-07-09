@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:android_intent/android_intent.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
@@ -13,6 +16,7 @@ import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/theme/app_colors.dart';
 import 'package:tsdoha/utils/image_redear.dart';
 import 'package:tsdoha/utils/pdf_viewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -351,7 +355,8 @@ class FileDownloadController extends GetxController {
   }
 
 
-  Future<void> openDownloadedFile(String filePath,BuildContext context) async {
+
+  Future<void> openDownloadedFile(String filePath, BuildContext context) async {
     if (Platform.isIOS) {
       Get.back();
       await OpenFile.open(filePath);
@@ -359,22 +364,49 @@ class FileDownloadController extends GetxController {
       String fileExtension = path.extension(filePath).toLowerCase();
       if (fileExtension == '.pdf') {
         Navigator.pop(context);
-        await Get.to(() => PDFViwer(
-          path: filePath
-        ));
+        await Get.to(() => PDFViwer(path: filePath));
       } else if (fileExtension == '.jpg' ||
           fileExtension == '.jpeg' ||
           fileExtension == '.png') {
         Get.back();
         final File file = File(filePath);
         final image = file.readAsBytesSync();
-        Get.to(()=>ImageReaderPage(  imageBytes: image,));
+        Get.to(() => ImageReaderPage(imageBytes: image));
       } else {
         Get.back();
-        await OpenFile.open(filePath);
+        bool fileOpened = await openFileInFolder(filePath);
+        if (!fileOpened) {
+          print('Error opening the file in folder.');
+        }
       }
     }
   }
+
+  Future<bool> openFileInFolder(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        final result = await FilePicker.platform.pickFiles(
+          allowMultiple: false,
+          withData: false,
+          type: FileType.any,
+        );
+        if (result != null && result.files.isNotEmpty) {
+          final openedFile = File(result.files.first.path!);
+          await OpenFile.open(openedFile.path);
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+
 
 
 

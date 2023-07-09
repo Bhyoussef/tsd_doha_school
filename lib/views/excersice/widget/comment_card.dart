@@ -130,13 +130,13 @@ class _CommentCardState extends State<CommentCard> {
               ),
             ),
           const Divider(),
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '',
+                  widget.comment!.date!,
                   style: TextStyle(fontSize: 14.0),
                 ),
               ],

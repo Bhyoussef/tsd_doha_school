@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:tsdoha/utils/shared_preferences.dart';
 import '../../constant/constant.dart';
 import '../../controller/dowload_file_controller.dart';
 import '../../controller/message_controller/message_received_controller.dart';
@@ -26,11 +27,16 @@ class ReceivedMessages extends StatefulWidget {
 }
 
 class _ReceivedMessagesState extends State<ReceivedMessages> {
+  Future<void> _refreshMessages() async {
+    SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
+      await widget.controller.fetchReceivedMessage(uid);
+    });
+  }
   @override
   void initState() {
     super.initState();
-    widget.controller.receivedMessage();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,50 +44,54 @@ class _ReceivedMessagesState extends State<ReceivedMessages> {
       child: Obx(() => widget.controller.isLoading.isTrue
           ? Center(child: CircularProgressBar(color: primarycolor))
           : widget.controller.receivedMessage.isNotEmpty
-              ? ListView.builder(
-                  itemCount: widget.controller.receivedMessage.length,
-                  itemBuilder: (context, index) {
-                    Message message = widget.controller.receivedMessage[index];
-                    return GestureDetector(
-                      onTap: () {
-                        if (message.state != 'read') {
-                          widget.controller.updateMessageState(widget.uid!, message.iD!);
-                          print('youssef' + widget.uid.toString());
-                        }
-                        Get.to(() => DetailsMessageReceived(
-                              message: message,
-                              messageid:message.iD,
-                              downloadController: widget.downloadController,
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: MessageCardReceived(
-                          title: message.titleOfMessage ?? '',
-                          image: message.teacherImage ?? '',
-                          sender: message.teacher ?? '',
-                          message: message.message ?? '',
-                          details:
-                              '${message.student ?? ''} • ${message.date ?? ''}',
-                          isRead: message.state ?? '',
-                          isAttached: message.attachments!.isEmpty,
-                          attachments: message.attachments!,
-                          downloadController: widget.downloadController,
-                        ),
-                      ),
-                    );
-                  },
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/imgs/notfound.png'),
-                    const Text('No message received found'),
-                  ],
-                )),
+          ? RefreshIndicator(
+        color: primarycolor,
+        onRefresh: _refreshMessages,
+        child: ListView.builder(
+          itemCount: widget.controller.receivedMessage.length,
+          itemBuilder: (context, index) {
+            Message message = widget.controller.receivedMessage[index];
+            return GestureDetector(
+              onTap: () {
+                if (message.state != 'read') {
+                  widget.controller.updateMessageState(widget.uid!, message.iD!);
+                  print('youssef' + widget.uid.toString());
+                }
+                Get.to(() => DetailsMessageReceived(
+                  message: message,
+                  messageid: message.iD,
+                  downloadController: widget.downloadController,
+                ));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: MessageCardReceived(
+                  title: message.titleOfMessage ?? '',
+                  image: message.teacherImage ?? '',
+                  sender: message.teacher ?? '',
+                  message: message.message ?? '',
+                  details: '${message.student ?? ''} • ${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(message.date!).add(Duration(hours: 3)))}',
+                  isRead: message.state ?? '',
+                  isAttached: message.attachments!.isEmpty,
+                  attachments: message.attachments!,
+                  downloadController: widget.downloadController,
+                ),
+              ),
+            );
+          },
+        ),
+      )
+          : Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/imgs/notfound.png'),
+          const Text('No message received found'),
+        ],
+      )),
     );
   }
 }
+
 
 class MessageCardReceived extends StatelessWidget {
   final String? title;

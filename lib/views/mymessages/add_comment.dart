@@ -1,7 +1,10 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart' as path;
 import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/controller/message_controller/message_received_controller.dart';
 import 'package:tsdoha/model/message_model.dart';
@@ -115,11 +118,11 @@ class _AddCommentPageState extends State<AddCommentPage> {
 
   Widget _buildAttachmentList() {
     return Obx(
-      () => Column(
+          () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'attachemnts'.tr,
+            'attachments'.tr,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -128,10 +131,8 @@ class _AddCommentPageState extends State<AddCommentPage> {
               children: [
                 Expanded(
                   child: Text(
-                    attachmentPath!.value.split('/').last,
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
+                    path.basename(attachmentPath!.value),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
                 IconButton(
@@ -164,10 +165,14 @@ class _AddCommentPageState extends State<AddCommentPage> {
   }
 
   void showAttachmentSelectionDialog() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      attachmentPath!.value = pickedFile.path;
+    final filePicker = FilePicker.platform;
+    final file = await filePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx'], // Add the desired file extensions here
+    );
+
+    if (file != null) {
+      attachmentPath!.value = file.files.single.path!;
     }
   }
 }

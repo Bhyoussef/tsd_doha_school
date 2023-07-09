@@ -286,14 +286,14 @@ class ApiServiceMessage {
 
   static Future<void> createMessage(
       int parentId,
-      String receiver,
-      String subject,
-      String message,
-      String receiverId,
-      String attachmentPath,
+      String? receiver,
+      String? subject,
+      String? message,
+      String? receiverId,
+      String? attachmentPath,
       ) async {
     try {
-      final File attachmentFile = File(attachmentPath);
+      final File attachmentFile = File(attachmentPath!);
       final List<int> attachmentBytes = await attachmentFile.readAsBytes();
       final String attachmentBase64 = base64Encode(attachmentBytes);
       final url = Uri.parse('${Res.host}/proschool/send_teacher_messaging');
@@ -378,7 +378,7 @@ class ApiServiceMessage {
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
-        Get.to(() => HomeScreen());
+        Get.offAll(() => HomeScreen());
         return; // Message sent successfully, exit the method
       }
     }

@@ -1,7 +1,7 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tsdoha/model/message_sent_model.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
@@ -157,10 +157,14 @@ class _AddResponseState extends State<AddResponse> {
   }
 
   void showAttachmentSelectionDialog() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      attachmentPath.value = pickedFile.path;
+    final filePicker = FilePicker.platform;
+    final file = await filePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx'], // Add the desired file extensions here
+    );
+
+    if (file != null) {
+      attachmentPath!.value = file.files.single.path!;
     }
   }
 }

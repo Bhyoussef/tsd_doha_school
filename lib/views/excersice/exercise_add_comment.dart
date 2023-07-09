@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,8 @@ import 'package:tsdoha/utils/shared_preferences.dart';
 
 class AddCommentExercise extends StatefulWidget {
   final Exersice? exercise;
-  const AddCommentExercise({Key? key,  this.exercise}) : super(key: key);
+
+  const AddCommentExercise({Key? key, this.exercise}) : super(key: key);
 
   @override
   _AddCommentPageState createState() => _AddCommentPageState();
@@ -20,26 +22,21 @@ class _AddCommentPageState extends State<AddCommentExercise> {
   final TextEditingController commentController = TextEditingController();
   final ExerciseController controller = Get.put(ExerciseController());
   final RxString attachmentPath = RxString('');
-
-
-  int uid =0;
+  int uid = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchUid();
-
   }
 
   Future<void> _fetchUid() async {
     final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
-      print(uid);
-      print(widget.exercise!.iD.toString());
-      print(commentController.text);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +44,7 @@ class _AddCommentPageState extends State<AddCommentExercise> {
         centerTitle: true,
         backgroundColor: primarycolor,
         automaticallyImplyLeading: false,
-        title:  Text(
+        title: Text(
           'addcomment'.tr,
           style: const TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
@@ -68,7 +65,7 @@ class _AddCommentPageState extends State<AddCommentExercise> {
             TextField(
               controller: commentController,
               maxLines: 5,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'writeyourcomment'.tr,
               ),
             ),
@@ -82,21 +79,15 @@ class _AddCommentPageState extends State<AddCommentExercise> {
               height: 50,
               color: primarycolor,
               textColor: Colors.white,
-              onPressed: () {
-                controller.addCommentWithAttachment(
-                  commentController.text,
-                  widget.exercise!.iD!,
-                  attachmentPath.value.toString(), uid,);
-
-              },
-              child:  Text(
+              onPressed: _sendCommentWithAttachment,
+              child: Text(
                 'send'.tr,
-                style:const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 20,),
             Obx(() => controller.isLoading.value
-                ?  Center(child: CircularProgressBar(color: primarycolor,))
+                ? Center(child: CircularProgressBar(color: primarycolor,))
                 : Container()),
           ],
         ),
@@ -111,7 +102,7 @@ class _AddCommentPageState extends State<AddCommentExercise> {
         children: [
           Text(
             'attachemnts'.tr,
-            style:const  TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           if (attachmentPath.value.isNotEmpty)
@@ -140,25 +131,48 @@ class _AddCommentPageState extends State<AddCommentExercise> {
 
   Widget _buildAddAttachmentButton() {
     return MaterialButton(
-      minWidth: double.infinity,
+      minWidth:double.infinity,
       height: 50,
       color: primarycolor,
       textColor: Colors.white,
-      onPressed: () {
-        showAttachmentSelectionDialog();
-      },
-      child:  Text(
+      onPressed: showAttachmentSelectionDialog,
+      child: Text(
         'addattachment'.tr,
-        style:const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
 
   void showAttachmentSelectionDialog() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      attachmentPath.value = pickedFile.path;
+    final filePicker = FilePicker.platform;
+    final file = await filePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx'], // Add the desired file extensions here
+    );
+
+    if (file != null) {
+      attachmentPath!.value = file.files.single.path!;
     }
   }
+
+  void _sendCommentWithAttachment() {
+
+
+    if (attachmentPath.value.isEmpty) {
+      final snackbar = SnackBar(
+        backgroundColor: primarycolor,
+        content: Text('Attachment is required'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return;
+    }
+
+    controller.addCommentWithAttachment(
+      commentController.text,
+      widget.exercise!.iD!,
+      attachmentPath.value.toString(),
+      uid,
+    );
+  }
+
 }

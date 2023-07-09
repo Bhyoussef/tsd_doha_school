@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tsdoha/model/exersice_model.dart';
 
 class ExerciseCard extends StatelessWidget {
@@ -69,9 +70,11 @@ class ExerciseCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      exercise!.date!,
+                      DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse( exercise!.date!,)
+                          .add(Duration(hours: 3))),
                       style: const TextStyle(fontSize: 14.0),
                     ),
+
                   ],
                 ),
               ),

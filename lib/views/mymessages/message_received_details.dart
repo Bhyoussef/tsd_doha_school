@@ -106,7 +106,8 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
             Obx(() {
               if (controller.isloading.isTrue) {
                 return Center(
-                  child: Container(
+                  child: CircularProgressBar(
+                    color: primarycolor,
                   ),
                 );
               } else
@@ -155,9 +156,7 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
     return Obx(() {
       if (controller.isloading.isTrue) {
         return Center(
-          child: CircularProgressBar(
-            color: primarycolor,
-          ),
+          child: Container()
         );
       } else if (controller.comments.isNotEmpty) {
         return Column(
@@ -397,7 +396,7 @@ class MessageSingleReceived extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FileDownloadController downloadController = Get.find<FileDownloadController>();
-   bool  isAttached= controller!.receivedSingleMessage[0].attachments!.isEmpty;
+    bool  isAttached= controller!.receivedSingleMessage![0].attachments!.isEmpty;
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
     return Container(
