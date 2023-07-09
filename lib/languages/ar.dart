@@ -110,7 +110,9 @@ const Map<String, String> ar = {
   'continue':'استمر',
   'return':'عودة',
   'devloppedby':'طور التطبيق من طرف ',
-  'linkia':'لينكيا'
+  'linkia':'لينكيا',
+  'emailsent':'تم إرسال بريد إلكتروني لإعادة تعيين كلمة المرور',
+  'fieldarerequired':'الرجاء إضافة جميع الملفات'
 
 
 

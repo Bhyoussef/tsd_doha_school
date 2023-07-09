@@ -48,7 +48,7 @@ class PasswordRest extends StatelessWidget {
                                       TextFormField(
                                         controller: controller.restfield.value,
                                         decoration: InputDecoration(
-                                            labelText: 'parent_id'.tr,
+                                            labelText: 'email'.tr,
                                             border:  OutlineInputBorder(),
                                             labelStyle: TextStyle(
                                                 color: primarycolor,
@@ -65,7 +65,7 @@ class PasswordRest extends StatelessWidget {
                                         color: primarycolor,
                                         onPressed: () {
                                           controller.updatePasswd(
-                                            int.parse(controller.restfield.value.text),
+                                            controller.restfield.value.text
                                           );
                                           print(int.parse(controller.restfield.value.text));
                                         },

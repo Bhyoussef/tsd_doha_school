@@ -110,7 +110,9 @@ const Map<String, String> en = {
   'continue':'Continue',
   'return':'Return',
   'devloppedby':'Mobile App developed by ',
-  'linkia':'Linkia'
+  'linkia':'Linkia',
+  'emailsent':'Email has been sent to reset the password',
+  'fieldarerequired':'please add all the filds'
 
 
 

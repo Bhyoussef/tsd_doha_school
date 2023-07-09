@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../constant/constant.dart';
 import '../../controller/home_controller.dart';
 import '../../controller/message_controller/message_received_controller.dart';
@@ -396,9 +397,9 @@ class MessageSingleReceived extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FileDownloadController downloadController = Get.find<FileDownloadController>();
-    bool  isAttached= controller!.receivedSingleMessage![0].attachments!.isEmpty;
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
+    bool  isAttached= controller!.receivedSingleMessage![0].attachments!.isEmpty;
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -471,6 +472,7 @@ class MessageSingleReceived extends StatelessWidget {
                         ),
                       ),
                       ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
                         key: UniqueKey(),
                         shrinkWrap: true,
                         itemCount: controller!.receivedSingleMessage[0].attachments!.length,
@@ -671,15 +673,17 @@ class _CommentCardState extends State<CommentCard> {
               ),
             ),
           const Divider(),
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '',
-                  style: TextStyle(fontSize: 14.0),
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(  widget!.comment!.date!)
+                      .add(Duration(hours: 3))),
+                  style: const TextStyle(fontSize: 14.0),
                 ),
+                
               ],
             ),
           ),

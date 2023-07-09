@@ -119,12 +119,12 @@ class ApiServiceAuth {
       return [];
     }
   }
-  static Future<String?> resetPassword(int uid) async {
+  static Future<String?> resetPassword(String email) async {
     final url = Uri.parse('${Res.host}/web/reset_password_json');
     final body = jsonEncode({
       "jsonrpc": "2.0",
       "method": "call",
-      "params": {"login": uid}
+      "params": {"login": email}
     });
 
     final response = await http.post(
@@ -139,7 +139,7 @@ class ApiServiceAuth {
       if (jsonResponse['result']['success'] == false) {
         Get.snackbar(
           'success'.tr,
-          jsonResponse['result']['responce'].toString(),
+          'emailsent'.tr,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,

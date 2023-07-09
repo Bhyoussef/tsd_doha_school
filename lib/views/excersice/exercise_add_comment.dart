@@ -158,10 +158,10 @@ class _AddCommentPageState extends State<AddCommentExercise> {
   void _sendCommentWithAttachment() {
 
 
-    if (attachmentPath.value.isEmpty) {
+    if (attachmentPath.value.isEmpty || commentController.text.isEmpty) {
       final snackbar = SnackBar(
         backgroundColor: primarycolor,
-        content: Text('Attachment is required'),
+        content: Text('fieldarerequired'.tr),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       return;

@@ -89,13 +89,24 @@ class _AddCommentPageState extends State<AddCommentPage> {
               color: primarycolor,
               textColor: Colors.white,
               onPressed: () {
-                controller.addCommentWithAttachment(
-                  commentController.text,
-                  widget.message!.iD!,
-                  attachmentPath!.value.toString(),
-                  uid,
-                );
+                if (commentController.text.isEmpty || attachmentPath!.value.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('fieldarerequired'.tr),
+                      backgroundColor: primarycolor,
+                    ),
+                  );
+                } else {
+                  controller.addCommentWithAttachment(
+                    commentController.text,
+                    widget.message!.iD!,
+                    attachmentPath!.value.toString(),
+                    uid,
+                  );
+                }
               },
+
+
               child: Text(
                 'send'.tr,
                 style: const TextStyle(fontWeight: FontWeight.bold),

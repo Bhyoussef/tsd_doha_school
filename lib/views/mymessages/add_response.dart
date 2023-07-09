@@ -85,11 +85,23 @@ class _AddResponseState extends State<AddResponse> {
                 color: primarycolor,
                 textColor: Colors.white,
                 onPressed: () {
-                  controller.addCommentWithAttachment(
-                    responsecontroller.text,
-                    widget.message!.id!,
-                    attachmentPath.value.toString(), uid,);
+                  if (responsecontroller.text.isEmpty || attachmentPath.value.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('fieldarerequired'.tr),
+                        backgroundColor: primarycolor,
+                      ),
+                    );
+                  } else {
+                    controller.addCommentWithAttachment(
+                      responsecontroller.text,
+                      widget.message!.id!,
+                      attachmentPath.value.toString(),
+                      uid,
+                    );
+                  }
                 },
+
                 child:  Text(
                   'send'.tr,
                   style:const TextStyle(fontWeight: FontWeight.bold),

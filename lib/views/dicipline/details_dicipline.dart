@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tsdoha/model/dicipline_model.dart';
 import 'package:tsdoha/routes/routes.dart';
 import 'package:tsdoha/theme/app_colors.dart';
@@ -210,9 +211,11 @@ class DiciplineCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      dicipline!.date!,
+                      DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse( dicipline!.date!,)
+                          .add(Duration(hours: 3))),
                       style: const TextStyle(fontSize: 14.0),
                     ),
+
                   ],
                 ),
               ),
