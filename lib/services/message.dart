@@ -6,12 +6,14 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/controller/message_controller/message_received_controller.dart';
+import 'package:tsdoha/main_screen.dart';
 import 'package:tsdoha/model/attachement_model.dart';
 import 'package:tsdoha/model/comments_model.dart';
 import 'package:tsdoha/model/message_model.dart';
 import 'package:tsdoha/model/message_sent_model.dart';
 import 'package:tsdoha/model/send_message_model.dart';
 import 'package:tsdoha/views/home/home_screen.dart';
+import 'package:tsdoha/views/mymessages/message_sent_details.dart';
 
 
 class ApiServiceMessage {
@@ -264,6 +266,7 @@ class ApiServiceMessage {
           );
           final MessageReceivedController controller = Get.find();
           await controller.getComments(uid, messageId);
+          Get.back();
         } else {
           Get.snackbar(
             'error'.tr,
@@ -378,6 +381,7 @@ class ApiServiceMessage {
           snackPosition: SnackPosition.BOTTOM,
           margin: const EdgeInsets.all(20),
         );
+        //Get.back();
         Get.offAll(() => HomeScreen());
         return; // Message sent successfully, exit the method
       }
@@ -432,6 +436,7 @@ class ApiServiceMessage {
           );
           final MessageReceivedController controller = Get.find();
           await controller.getComments(uid, messageId);
+          Get.back();
         } else {
           Get.snackbar(
             'error'.tr,

@@ -49,6 +49,7 @@ class MessageReceivedController extends GetxController {
     final list =
         await ApiServiceMessage.getSingleMessagesReceived(uid, messageId);
     receivedSingleMessage.assignAll(list);
+    print('hereeeeeee'+receivedSingleMessage[0].attachments!.length.toString());
     isLoading(false);
   }
 

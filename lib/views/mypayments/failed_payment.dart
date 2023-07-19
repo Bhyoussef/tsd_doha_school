@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:tsdoha/model/child_model.dart';
 import 'package:tsdoha/views/home/home_screen.dart';
 
@@ -24,11 +25,11 @@ class _FailedPaymentState extends State<FailedPayment> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width/2,
+                  width: MediaQuery.of(context).size.width / 2,
                   child: Image.asset('assets/imgs/failed.png', fit: BoxFit.cover),
                 ),
                 const SizedBox(height: 20),
-                 Text(
+                Text(
                   'paymentfailed'.tr,
                   style: TextStyle(
                     fontSize: 20,
@@ -38,7 +39,7 @@ class _FailedPaymentState extends State<FailedPayment> {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child:  Text(
+                  child: Text(
                     'paymentfail'.tr,
                     textAlign: TextAlign.center,
                   ),
@@ -48,9 +49,7 @@ class _FailedPaymentState extends State<FailedPayment> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.offAll(()=>HomeScreen(
-
-                      ));
+                      Get.offAll(() => HomeScreen());
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
@@ -60,7 +59,21 @@ class _FailedPaymentState extends State<FailedPayment> {
                         50,
                       ),
                     ),
-                    child:  Text('return'.tr),
+                    child: Text('return'.tr),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                InkWell(
+                  onTap: () {
+                    launch('https://tsdoha.com/page/contactus'); // Replace with your technical support link
+                  },
+                  child: Text(
+                    'technicalsupport'.tr,
+                    style: TextStyle(
+                      color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
               ],

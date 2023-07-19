@@ -2,13 +2,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/controller/message_controller/message_received_controller.dart';
 import 'package:tsdoha/model/message_model.dart';
 import 'package:tsdoha/theme/app_colors.dart';
+import 'package:tsdoha/utils/keyboard.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
 
 class AddCommentPage extends StatefulWidget {
@@ -65,63 +65,66 @@ class _AddCommentPageState extends State<AddCommentPage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextFormField(
-              cursorColor: primarycolor,
-              controller: commentController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: 'writeyourcomment'.tr,
+      body: GestureDetector(
+        onTap: () => KeyboardUtil.hideKeyboard(context),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                cursorColor: primarycolor,
+                controller: commentController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: 'writeyourcomment'.tr,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _buildAttachmentList(),
-            const SizedBox(height: 20),
-            _buildAddAttachmentButton(),
-            const SizedBox(height: 20),
-            MaterialButton(
-              minWidth: MediaQuery.of(context).size.width,
-              height: 50,
-              color: primarycolor,
-              textColor: Colors.white,
-              onPressed: () {
-                if (commentController.text.isEmpty || attachmentPath!.value.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('fieldarerequired'.tr),
-                      backgroundColor: primarycolor,
-                    ),
-                  );
-                } else {
-                  controller.addCommentWithAttachment(
-                    commentController.text,
-                    widget.message!.iD!,
-                    attachmentPath!.value.toString(),
-                    uid,
-                  );
-                }
-              },
+              const SizedBox(height: 20),
+              _buildAttachmentList(),
+              const SizedBox(height: 20),
+              _buildAddAttachmentButton(),
+              const SizedBox(height: 20),
+              MaterialButton(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 50,
+                color: primarycolor,
+                textColor: Colors.white,
+                onPressed: () {
+                  if (commentController.text.isEmpty || attachmentPath!.value.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('fieldarerequired'.tr),
+                        backgroundColor: primarycolor,
+                      ),
+                    );
+                  } else {
+                    controller.addCommentWithAttachment(
+                      commentController.text,
+                      widget.message!.iD!,
+                      attachmentPath!.value.toString(),
+                      uid,
+                    );
+                  }
+                },
 
 
-              child: Text(
-                'send'.tr,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                child: Text(
+                  'send'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Obx(() => controller.isLoading.value
-                ? Center(
-                    child: CircularProgressBar(
-                    color: primarycolor,
-                  ))
-                : Container()),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              Obx(() => controller.isLoading.value
+                  ? Center(
+                      child: CircularProgressBar(
+                      color: primarycolor,
+                    ))
+                  : Container()),
+            ],
+          ),
         ),
       ),
     );

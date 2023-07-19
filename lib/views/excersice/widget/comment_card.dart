@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tsdoha/controller/exercise/exercise_controller.dart';
 import 'package:tsdoha/model/comments_model.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
@@ -136,7 +137,9 @@ class _CommentCardState extends State<CommentCard> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  widget.comment!.date!,
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(widget.comment!.date!,)
+                      .add(Duration(hours: 3))),
+
                   style: TextStyle(fontSize: 14.0),
                 ),
               ],

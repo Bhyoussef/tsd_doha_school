@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tsdoha/model/message_sent_model.dart';
+import 'package:tsdoha/utils/keyboard.dart';
 import '../../constant/constant.dart';
 import '../../controller/message_controller/message_sent_controller.dart';
 import '../../theme/app_colors.dart';
@@ -11,7 +12,8 @@ import '../../utils/shared_preferences.dart';
 class AddResponse extends StatefulWidget {
   final MessageSent? message;
   final Function? refreshCallback;
-  const AddResponse({Key? key,  this.message,  this.refreshCallback}) : super(key: key);
+  const AddResponse({Key? key, this.message, this.refreshCallback})
+      : super(key: key);
 
   @override
   State<AddResponse> createState() => _AddResponseState();
@@ -22,24 +24,23 @@ class _AddResponseState extends State<AddResponse> {
   final MessageSentController controller = Get.put(MessageSentController());
   final RxString attachmentPath = RxString('');
 
+  int uid = 0;
 
-  int uid =0;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _fetchUid();
-
   }
 
   Future<void> _fetchUid() async {
     final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
-      print(uid);
-      print(responsecontroller.text);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +48,10 @@ class _AddResponseState extends State<AddResponse> {
         centerTitle: true,
         backgroundColor: primarycolor,
         automaticallyImplyLeading: false,
-        title:  Text(
+        title: Text(
           'addResponse'.tr,
-          style: const TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: CupertinoColors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -60,58 +62,77 @@ class _AddResponseState extends State<AddResponse> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                cursorColor: primarycolor,
-                controller: responsecontroller,
-                maxLines: 5,
-                decoration:  InputDecoration(
-                  hintText: 'writeyourcomment'.tr,
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildAttachmentList(),
-              const SizedBox(height: 20),
-              _buildAddAttachmentButton(),
-              const SizedBox(height: 20),
-              MaterialButton(
-                minWidth: MediaQuery.of(context).size.width,
-                height: 50,
-                color: primarycolor,
-                textColor: Colors.white,
-                onPressed: () {
-                  if (responsecontroller.text.isEmpty || attachmentPath.value.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('fieldarerequired'.tr),
-                        backgroundColor: primarycolor,
-                      ),
-                    );
-                  } else {
-                    controller.addCommentWithAttachment(
-                      responsecontroller.text,
-                      widget.message!.id!,
-                      attachmentPath.value.toString(),
-                      uid,
-                    );
-                  }
-                },
+      body: GestureDetector(
+        onTap: () => KeyboardUtil.hideKeyboard(context),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextFormField(
+                    cursorColor: primarycolor,
+                    controller: responsecontroller,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      hintText: 'writeyourcomment'.tr,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'pleaseaddcomment'.tr;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  _buildAttachmentList(),
+                  const SizedBox(height: 20),
+                  _buildAddAttachmentButton(),
+                  const SizedBox(height: 20),
+                  MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: primarycolor,
+                    textColor: Colors.white,
+                    onPressed: () {
 
-                child:  Text(
-                  'send'.tr,
-                  style:const TextStyle(fontWeight: FontWeight.bold),
-                ),
+                        if (_formKey.currentState!.validate()) {
+                          if (attachmentPath.value.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('fieldarerequired'.tr),
+                                backgroundColor: primarycolor,
+                              ),
+                            );
+                          } else {
+                            controller.addCommentWithAttachment(
+                              responsecontroller.text,
+                              widget.message!.id!,
+                              attachmentPath.value.toString(),
+                              uid,
+                            );
+                          }
+                        }
+
+                    },
+                    child: Text(
+                      'send'.tr,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Obx(() => controller.isLoading.value
+                      ? Center(
+                    child: CircularProgressBar(color: primarycolor),
+                  )
+                      : Container()),
+                ],
               ),
-              const SizedBox(height: 20,),
-              Obx(() => controller.isLoading.value
-                  ?  Center(child: CircularProgressBar(color: primarycolor,))
-                  : Container()),
-            ],
+            ),
           ),
         ),
       ),
@@ -123,10 +144,11 @@ class _AddResponseState extends State<AddResponse> {
           () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (attachmentPath.value.isNotEmpty)Text(
-            'attachemnts'.tr,
-            style:const  TextStyle(fontWeight: FontWeight.bold),
-          ),
+          if (attachmentPath.value.isNotEmpty)
+            Text(
+              'attachemnts'.tr,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           const SizedBox(height: 10),
           if (attachmentPath.value.isNotEmpty)
             Row(
@@ -161,9 +183,9 @@ class _AddResponseState extends State<AddResponse> {
       onPressed: () {
         showAttachmentSelectionDialog();
       },
-      child:  Text(
+      child: Text(
         'addattachment'.tr,
-        style:const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -172,11 +194,11 @@ class _AddResponseState extends State<AddResponse> {
     final filePicker = FilePicker.platform;
     final file = await filePicker.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'], // Add the desired file extensions here
+      allowedExtensions: ['pdf', 'doc', 'docx'],
     );
 
     if (file != null) {
-      attachmentPath!.value = file.files.single.path!;
+      attachmentPath.value = file.files.single.path!;
     }
   }
 }

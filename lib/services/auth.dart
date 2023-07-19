@@ -138,7 +138,7 @@ class ApiServiceAuth {
 
       if (jsonResponse['result']['success'] == false) {
         Get.snackbar(
-          'success'.tr,
+          'connexion_success_title'.tr,
           'emailsent'.tr,
           backgroundColor: Colors.green,
           colorText: Colors.white,

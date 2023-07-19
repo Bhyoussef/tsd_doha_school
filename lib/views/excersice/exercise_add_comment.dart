@@ -1,8 +1,7 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/controller/exercise/exercise_controller.dart';
 import 'package:tsdoha/model/exersice_model.dart';
@@ -24,6 +23,8 @@ class _AddCommentPageState extends State<AddCommentExercise> {
   final RxString attachmentPath = RxString('');
   int uid = 0;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -31,7 +32,8 @@ class _AddCommentPageState extends State<AddCommentExercise> {
   }
 
   Future<void> _fetchUid() async {
-    final fetchedUid = await SharedData.getFromStorage('parent', 'object', 'uid');
+    final fetchedUid =
+    await SharedData.getFromStorage('parent', 'object', 'uid');
     setState(() {
       uid = fetchedUid;
     });
@@ -46,7 +48,9 @@ class _AddCommentPageState extends State<AddCommentExercise> {
         automaticallyImplyLeading: false,
         title: Text(
           'addcomment'.tr,
-          style: const TextStyle(color: CupertinoColors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: CupertinoColors.white,
+              fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -59,37 +63,67 @@ class _AddCommentPageState extends State<AddCommentExercise> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: commentController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: 'writeyourcomment'.tr,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: commentController,
+                maxLines: 5,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'pleaseaddcomment'.tr;
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: 'writeyourcomment'.tr,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _buildAttachmentList(),
-            const SizedBox(height: 20),
-            _buildAddAttachmentButton(),
-            const SizedBox(height: 20),
-            MaterialButton(
-              minWidth: MediaQuery.of(context).size.width,
-              height: 50,
-              color: primarycolor,
-              textColor: Colors.white,
-              onPressed: _sendCommentWithAttachment,
-              child: Text(
-                'send'.tr,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              const SizedBox(height: 20),
+              _buildAttachmentList(),
+              const SizedBox(height: 20),
+              _buildAddAttachmentButton(),
+              const SizedBox(height: 20),
+              MaterialButton(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 50,
+                color: primarycolor,
+                textColor: Colors.white,
+
+                onPressed: () {
+                  if (commentController.text.isEmpty || attachmentPath!.value.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('fieldarerequired'.tr),
+                        backgroundColor: primarycolor,
+                      ),
+                    );
+                  } else {
+                    if (_formKey.currentState!.validate()) {
+                      _sendCommentWithAttachment();
+                    }
+                  }
+                },
+
+                child: Text(
+                  'send'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            const SizedBox(height: 20,),
-            Obx(() => controller.isLoading.value
-                ? Center(child: CircularProgressBar(color: primarycolor,))
-                : Container()),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              Obx(() => controller.isLoading.value
+                  ? Center(
+                child: CircularProgressBar(
+                  color: primarycolor,
+                ),
+              )
+                  : Container()),
+            ],
+          ),
         ),
       ),
     );
@@ -131,7 +165,7 @@ class _AddCommentPageState extends State<AddCommentExercise> {
 
   Widget _buildAddAttachmentButton() {
     return MaterialButton(
-      minWidth:double.infinity,
+      minWidth: double.infinity,
       height: 50,
       color: primarycolor,
       textColor: Colors.white,
@@ -147,21 +181,32 @@ class _AddCommentPageState extends State<AddCommentExercise> {
     final filePicker = FilePicker.platform;
     final file = await filePicker.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'], // Add the desired file extensions here
+      allowedExtensions: ['pdf', 'doc', 'docx'],
     );
 
     if (file != null) {
-      attachmentPath!.value = file.files.single.path!;
+      attachmentPath.value = file.files.single.path!;
     }
   }
 
   void _sendCommentWithAttachment() {
-
-
     if (attachmentPath.value.isEmpty || commentController.text.isEmpty) {
       final snackbar = SnackBar(
         backgroundColor: primarycolor,
         content: Text('fieldarerequired'.tr),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return;
+    }
+
+    // Additional attachment validation
+    final List<String> allowedExtensions = ['pdf', 'doc', 'docx'];
+    final String attachmentExtension =
+    attachmentPath.value.split('.').last.toLowerCase();
+    if (!allowedExtensions.contains(attachmentExtension)) {
+      final snackbar = SnackBar(
+        backgroundColor: primarycolor,
+        content: Text('Invalid attachment format.'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       return;
@@ -174,5 +219,4 @@ class _AddCommentPageState extends State<AddCommentExercise> {
       uid,
     );
   }
-
 }

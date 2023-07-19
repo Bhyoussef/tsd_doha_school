@@ -39,6 +39,7 @@ class _SentMessagesState extends State<SentMessages> {
           ? Center(child: CircularProgressBar(color: primarycolor))
           : RefreshIndicator(
         onRefresh: _refreshMessages,
+        color: primarycolor,
         child: ListView.builder(
           itemCount: widget.controller.sentedmessage.length,
           itemBuilder: (context, index) {

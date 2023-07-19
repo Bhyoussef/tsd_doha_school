@@ -156,6 +156,7 @@ class MainScreen extends StatelessWidget {
             ),
             onTap: () {
               Get.dialog(LogoutDialog());
+              //Get.to(()=>FailedPayment());
             },
           ),
           Column(

@@ -386,7 +386,7 @@ class MessageCardReceived extends StatelessWidget {
 
 
 
-class MessageSingleReceived extends StatelessWidget {
+class MessageSingleReceived extends StatefulWidget {
  final MessageReceivedController? controller;
 
 
@@ -395,11 +395,29 @@ class MessageSingleReceived extends StatelessWidget {
   });
 
   @override
+  State<MessageSingleReceived> createState() => _MessageSingleReceivedState();
+}
+
+class _MessageSingleReceivedState extends State<MessageSingleReceived> {
+
+  DateTime? _addHoursToDateTime(String? dateString) {
+    if (dateString == null) return null;
+    DateTime date = DateTime.parse(dateString);
+    return date.add(Duration(hours: 3));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final FileDownloadController downloadController = Get.find<FileDownloadController>();
     final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
-    bool  isAttached= controller!.receivedSingleMessage![0].attachments!.isEmpty;
+    bool isAttached = false;
+    if (widget.controller!.receivedSingleMessage != null &&
+        widget.controller!.receivedSingleMessage!.isNotEmpty &&
+        widget.controller!.receivedSingleMessage![0].attachments != null) {
+      isAttached = widget.controller!.receivedSingleMessage![0].attachments!.isEmpty;
+    }
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -419,7 +437,7 @@ class MessageSingleReceived extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  controller!.receivedSingleMessage[0].titleOfMessage!,
+                  widget.controller!.receivedSingleMessage[0].titleOfMessage!,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -432,13 +450,13 @@ class MessageSingleReceived extends StatelessWidget {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: MemoryImage(base64Decode(controller!.receivedSingleMessage[0].teacherImage!)),
+                      backgroundImage: MemoryImage(base64Decode(widget.controller!.receivedSingleMessage[0].teacherImage!)),
                       radius: 30.0,
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
                       child: Text(
-                        controller!.receivedSingleMessage[0].teacher! ,
+                        widget.controller!.receivedSingleMessage[0].teacher! ,
                         style: const TextStyle(fontSize: 16.0),
                       ),
                     ),
@@ -452,13 +470,13 @@ class MessageSingleReceived extends StatelessWidget {
                     style: const TextStyle(fontSize: 16.0, color: Colors.black),
                     children: [
                       TextSpan(
-                        text: controller!.receivedSingleMessage[0].message!,
+                        text: widget.controller!.receivedSingleMessage[0].message!,
                       ),
                     ],
                   ),
                 ),
               ),
-              if (controller!.receivedSingleMessage[0].attachments!.isNotEmpty)
+              if (widget.controller!.receivedSingleMessage[0].attachments!.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -475,9 +493,9 @@ class MessageSingleReceived extends StatelessWidget {
                         physics: AlwaysScrollableScrollPhysics(),
                         key: UniqueKey(),
                         shrinkWrap: true,
-                        itemCount: controller!.receivedSingleMessage[0].attachments!.length,
+                        itemCount: widget.controller!.receivedSingleMessage[0].attachments!.length,
                         itemBuilder: (context, index) {
-                          final attachment = controller!.receivedSingleMessage[0].attachments![index];
+                          final attachment = widget.controller!.receivedSingleMessage[0].attachments![index];
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -519,7 +537,8 @@ class MessageSingleReceived extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      '${controller!.receivedSingleMessage[0]!.student ?? ""} •  ${controller!.receivedSingleMessage[0]!.date??""}',
+                      '${widget!.controller!.receivedSingleMessage[0]!.student ?? ""} • ${_addHoursToDateTime(widget!.controller!.receivedSingleMessage[0]!.date) ?? ""}'
+                      ,
                       style: const TextStyle(fontSize: 14.0),
                     ),
                   ],
@@ -659,16 +678,18 @@ class _CommentCardState extends State<CommentCard> {
                     ),
                   ),
                   const SizedBox(height: 8.0),
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: widget.comment!.attachments!
-                        .map((attachment) => AttachmentWidget(
-                              attachment: attachment,
-                              comment: widget.comment!,
-                            ))
-                        .toList(),
-                  )
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.comment!.attachments!.length,
+                    itemBuilder: (context, index) {
+                      final attachment = widget.comment!.attachments![index];
+                      return AttachmentWidget(
+                        attachment: attachment,
+                        comment: widget.comment!,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
