@@ -331,7 +331,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'attachments'.tr,
+            'attachemnts'.tr,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
@@ -374,14 +374,49 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
   }
 
   void showAttachmentSelectionDialog() async {
-    final filePicker = FilePicker.platform;
-    final file = await filePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
-    );
+    showDialog(
+      context: Get.overlayContext!,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('selectattatchement'.tr,  style: TextStyle(
+            color: primarycolor,
+            fontWeight: FontWeight.bold,
+          ),),
+          content: Text('onlytype'.tr,  style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('cancel'.tr,  style: TextStyle(
+                color: primarycolor,
+                fontWeight: FontWeight.bold,
+              ),),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                final filePicker = FilePicker.platform;
+                final file = await filePicker.pickFiles(
+                  type: FileType.custom,
+                  allowedExtensions: ['pdf', 'doc', 'docx'],
+                );
 
-    if (file != null) {
-      attachmentPath.value = file.files.single.path!;
-    }
+                if (file != null) {
+                  attachmentPath.value = file.files.single.path!;
+                }
+              },
+              child: Text('choosefile'.tr,  style: TextStyle(
+                color: primarycolor,
+                fontWeight: FontWeight.bold,
+              ),),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tsdoha/controller/dowload_file_controller.dart';
 import 'package:tsdoha/model/exersice_model.dart';
 import 'package:tsdoha/theme/app_colors.dart';
@@ -129,10 +130,13 @@ class DetailExersiceCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+
                     Text(
-                      exercise!.date!,
+                      DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse( exercise!.date!,)
+                          .add(Duration(hours: 3))),
                       style: const TextStyle(fontSize: 14.0),
                     ),
+
                   ],
                 ),
               ),

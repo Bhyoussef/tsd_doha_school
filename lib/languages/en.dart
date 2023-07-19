@@ -116,7 +116,10 @@ const Map<String, String> en = {
   'technicalsupport':'Technical Support',
   'pleaseaddcomment':'Please enter a comment.',
   'pleaseenterasubject':'Please enter a subject.',
-  'pleaseenteramessage':'Please enter a message.'
+  'pleaseenteramessage':'Please enter a message.',
+  'selectattatchement':'Select Attachment',
+  'onlytype':'Only PDF, DOC, and DOCX files are accepted.',
+  'choosefile':'Choose File'
 
 
 

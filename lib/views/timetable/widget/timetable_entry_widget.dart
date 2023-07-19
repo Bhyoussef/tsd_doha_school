@@ -22,9 +22,9 @@ class TimeTableEntry extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-     /*     Row(
+          Row(
             children: [
               Icon(
                 Icons.circle,
@@ -39,7 +39,7 @@ class TimeTableEntry extends StatelessWidget {
                 ),
               ),
             ],
-          ),*/
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

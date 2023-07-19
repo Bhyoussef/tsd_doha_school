@@ -112,11 +112,14 @@ const Map<String, String> ar = {
   'devloppedby':'طور التطبيق من طرف ',
   'linkia':'لينكيا',
   'emailsent':'تم إرسال بريد إلكتروني لإعادة تعيين كلمة المرور',
-  'fieldarerequired':'الرجاء إضافة جميع الملفات',
+  'fieldarerequired':'الرجاء إضافة جميع المعلومات و المرفقات',
   'technicalsupport':'دعم فني',
   'pleaseaddcomment':'الرجاء إدخال تعليق.',
   'pleaseenterasubject':'الرجاء إدخال موضوع.',
-  'pleaseenteramessage':'من فضلك أدخل رسالة.'
+  'pleaseenteramessage':'من فضلك أدخل رسالة.',
+  'selectattatchement':'حدد المرفقات',
+  'onlytype':'يتم قبول ملفات PDF و DOC و DOCX فقط.',
+  'choosefile':'اختر ملف'
 
 
 
