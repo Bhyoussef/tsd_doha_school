@@ -12,7 +12,8 @@ class Book {
       this.attachments,
       this.average,
       this.period,
-      this.Class});
+      this.Class
+      });
 
   Book.fromJson(Map<String, dynamic> json) {
     academic = json['academic'];
@@ -25,7 +26,7 @@ class Book {
     }
     average = json['average'];
     period = json['period'];
-    Class = json['class'];
+    //Class = json['class'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,7 +38,7 @@ class Book {
     }
     data['average'] = this.average;
     data['period'] = this.period;
-    data['class'] = this.Class;
+    //data['class'] = this.Class;
     return data;
   }
 }

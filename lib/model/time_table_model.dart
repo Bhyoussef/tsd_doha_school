@@ -34,7 +34,7 @@ class TimeTable {
     companyName = json['company_name'];
     startTime = json['start_time'];
     period = json['period'];
-    Class = json['class'];
+    //Class = json['class'];
     endTime = json['end_time'];
     teacher = json['teacher'];
     day = json['day'];
@@ -50,7 +50,7 @@ class TimeTable {
     data['company_name'] = this.companyName;
     data['start_time'] = this.startTime;
     data['period'] = this.period;
-    data['class'] = this.Class;
+    //data['class'] = this.Class;
     data['end_time'] = this.endTime;
     data['teacher'] = this.teacher;
     data['day'] = this.day;

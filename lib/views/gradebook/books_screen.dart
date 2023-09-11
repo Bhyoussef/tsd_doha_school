@@ -86,6 +86,7 @@ class _BookListScreenState extends State<BookListScreen> {
                     )
                   : Center(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset('assets/imgs/notfound.png'),
                           Text('nogradebooks'.tr),

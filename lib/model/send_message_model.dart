@@ -14,7 +14,8 @@ class SendMessage {
         this.date,
         this.authorId,
         this.message,
-        this.id});
+        this.id
+      });
 
   SendMessage.fromJson(Map<String, dynamic> json) {
     attachmentName = json['attachment_name'].cast<String>();

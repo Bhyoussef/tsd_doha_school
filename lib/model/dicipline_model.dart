@@ -20,7 +20,7 @@ class Dicipline {
   academicYear = json['academic_year'];
   group = json['group'];
   studentId = json['student_id'];
-  Class = json['class'];
+  //Class = json['class'];
   titleOfSanction = json['title_of_sanction'];
   iD = json['ID'];
   state = json['state'];

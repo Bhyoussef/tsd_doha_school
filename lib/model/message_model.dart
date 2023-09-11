@@ -10,10 +10,14 @@ class Message {
   String? student;
   String? date;
   String? message;
-  String? Class;
+  //String? Class;
   int? iD;
 
-  Message({this.academicYear, this.group, this.attachments, this.studentId, this.titleOfMessage, this.teacher, this.state, this.teacherImage, this.student, this.date, this.message, this.Class, this.iD});
+  Message({
+    this.academicYear,
+    this.group, this.attachments, this.studentId, this.titleOfMessage, this.teacher, this.state, this.teacherImage, this.student, this.date, this.message,
+    //this.Class,
+    this.iD});
 
   Message.fromJson(Map<String, dynamic> json) {
   academicYear = json['academic_year'];
@@ -30,7 +34,7 @@ class Message {
   student = json['student'];
   date = json['date'];
   message = json['message'];
-  Class = json['class'];
+  //Class = json['class'];
   iD = json['ID'];
   }
 
@@ -49,7 +53,7 @@ class Message {
   data['student'] = this.student;
   data['date'] = this.date;
   data['message'] = this.message;
-  data['class'] = this.Class;
+  //data['class'] = this.Class;
   data['ID'] = this.iD;
   return data;
   }

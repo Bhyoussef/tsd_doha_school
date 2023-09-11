@@ -1,4 +1,5 @@
 class Mychildreen {
+
   String? academicYear;
   String? lastName;
   String? parent;
@@ -32,11 +33,11 @@ class Mychildreen {
   notif = json['notif'] != null ? new Notif.fromJson(json['notif']) : null;
   lastNameAr = json['last_name_ar'];
   schoolCode = json['school_code'];
-  Class = json['class'];
+  //Class = json['class'];
   group = json['group'];
   name = json['name'];
   birthdateStudent = json['birthdate_student'];
-  classId = json['class_id'];
+  //classId = json['class_id'];
   studentId = json['student_id'];
   admissionDate = json['Admission_Date'];
   companyId = json['company_id'];
@@ -58,7 +59,7 @@ class Mychildreen {
   }
   data['last_name_ar'] = this.lastNameAr;
   data['school_code'] = this.schoolCode;
-  data['class'] = this.Class;
+  //data['class'] = this.Class;
   data['group'] = this.group;
   data['name'] = this.name;
   data['birthdate_student'] = this.birthdateStudent;

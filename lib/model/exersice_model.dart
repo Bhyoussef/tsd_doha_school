@@ -74,7 +74,7 @@ class Exersice {
     data['group'] = this.group;
     data['ID'] = this.iD;
     data['message_of_homework'] = this.messageOfHomework;
-    data['class'] = this.Class;
+    //data['class'] = this.Class;
     return data;
   }
 }
