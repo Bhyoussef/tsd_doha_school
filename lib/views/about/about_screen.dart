@@ -57,7 +57,7 @@ class _AboutScreenState extends State<AboutScreen> {
             ],
           )),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.only(bottom: 50.0),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Column(
@@ -73,7 +73,11 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: RichText(
                       text: TextSpan(
                         text: 'devloppedby'.tr,
-                        style: TextStyle(color: Colors.black, fontSize: 12),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: 'Bahij',
+                        ),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'linkia'.tr,
@@ -82,6 +86,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               fontWeight: FontWeight.bold,
                               color: Color(0xff318fd2),
                               decoration: TextDecoration.underline,
+                              fontFamily: 'Bahij',
                             ),
                           ),
                         ],

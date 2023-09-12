@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tsdoha/theme/app_colors.dart';
 
-
 class TopRedSection extends StatelessWidget {
   final Size? size;
 
-  const TopRedSection({super.key,  this.size});
+  const TopRedSection({super.key, this.size});
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -29,14 +28,27 @@ class TopRedSection extends StatelessWidget {
                     width: 156,
                     child: Image.asset('assets/imgs/tsdIcon.png'),
                   ),
-                  const Text(
-                    'Tunisian School Doha – Parent - المدرسة التونسية بالدوحة',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontFamily: 'Bahij',
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        'Tunisian School Doha',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: 'Bahij',
+                        ),
+                      ),
+                      Text(
+                        'المدرسة التونسية بالدوحة',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: 'Bahij',
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

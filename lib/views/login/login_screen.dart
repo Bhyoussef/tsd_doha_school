@@ -87,7 +87,15 @@ class LoginScreen extends StatelessWidget {
                                           );
                                         }
                                       },
-                                      child: Text('identifier'.tr),
+                                      child: Text(
+                                        'identifier'.tr,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontFamily: 'Bahij',
+                                        ),
+                                      ),
                                     ),
                                     const SizedBox(height: 18),
                                     TextButton(
@@ -99,9 +107,8 @@ class LoginScreen extends StatelessWidget {
                                       child: Text(
                                         'reset_password'.tr,
                                         style: TextStyle(
-                                          color: primarycolor,
-                                          fontWeight: FontWeight.bold
-                                        ),
+                                            color: primarycolor,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     const SizedBox(height: 20),

@@ -32,16 +32,31 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 224,
               child: Image.asset('assets/imgs/tsdIcon.png'),
             ),
-            const Text(
-              'Tunisian School Doha – Parent - المدرسة التونسية بالدوحة',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.white,
-                fontFamily: 'Bahij',
-              ),
+            Column(
+              children: [
+                Text(
+                  'Tunisian School Doha',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontFamily: 'Bahij',
+                  ),
+                ),
+                Text(
+                  'المدرسة التونسية بالدوحة',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontFamily: 'Bahij',
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             const Text(
               'Version 2.0.0',
               textAlign: TextAlign.center,
