@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:tsdoha/model/payment_details_model.dart';
 import 'package:tsdoha/model/payment_model.dart';
+import 'package:tsdoha/model/status_model.dart';
 import 'package:tsdoha/services/payment.dart';
 import 'package:tsdoha/utils/shared_preferences.dart';
 
@@ -13,6 +14,7 @@ class PaymentsController extends GetxController {
   final totalinpaiddetailsparents = <PaymentDetails>[].obs;
   final totalpaiddetailsstudents = <PaymentDetails>[].obs;
   final totalinpaiddetailsstudents = <PaymentDetails>[].obs;
+  final statusPaymentList = <StatusModel>[].obs;
   late int patrentId;
 
   @override
@@ -70,6 +72,14 @@ class PaymentsController extends GetxController {
     final paidList =
         await ApiServicePayment.getInPaidDetailsStudents(studentId);
     totalinpaiddetailsstudents.assignAll(paidList);
+    update();
+    isloading(false);
+  }
+  Future<void> statusPayment() async {
+    isloading(true);
+    final statusList =
+    await ApiServicePayment.getStatusPayment();
+    statusPaymentList.assignAll(statusList);
     update();
     isloading(false);
   }

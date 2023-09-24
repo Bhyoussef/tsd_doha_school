@@ -119,7 +119,8 @@ const Map<String, String> en = {
   'pleaseenteramessage':'Please enter a message.',
   'selectattatchement':'Select Attachment',
   'onlytype':'Only PDF, DOC, and DOCX files are accepted.',
-  'choosefile':'Choose File'
+  'choosefile':'Choose File',
+  'nopaymentmethod':'No payment method available'
 
 
 

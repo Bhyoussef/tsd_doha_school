@@ -119,7 +119,8 @@ const Map<String, String> ar = {
   'pleaseenteramessage':'من فضلك أدخل رسالة.',
   'selectattatchement':'حدد المرفقات',
   'onlytype':'يتم قبول ملفات PDF و DOC و DOCX فقط.',
-  'choosefile':'اختر ملف'
+  'choosefile':'اختر ملف',
+  'nopaymentmethod':'لا توجد طريقة دفع متاحة'
 
 
 

@@ -8,9 +8,10 @@ import 'package:tsdoha/theme/app_colors.dart';
 import 'package:tsdoha/views/home/home_screen.dart';
 import 'package:tsdoha/views/mypayments/succes_payment.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../controller/payment_controller/payments_controller.dart';
 import 'failed_payment.dart';
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   final Mychildreen? student;
   final String? schoolCode;
   final int? parentID;
@@ -29,8 +30,28 @@ class PaymentScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  final PaymentsController paymentController = Get.find<PaymentsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      paymentController
+          .statusPayment();
+    });
+  }
+
+
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CupertinoColors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
@@ -67,13 +88,36 @@ class PaymentScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(
+      body: Obx(
+              () {
+            if (paymentController.isloading.value) {
+              return  Center(
+                child: CircularProgressBar(color: primarycolor,),
+              );
+            }else return SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: paymentController.statusPaymentList[0].status == 0 && paymentController.statusPaymentList[1].status == 0 ?
+          Center(
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Image.asset('assets/imgs/failed.png', fit: BoxFit.cover),
+              ),
+              Text('nopaymentmethod'.tr,   style:const TextStyle(
+                color: CupertinoColors.black,
+                fontWeight: FontWeight.bold,
+              ),),
+            ],
+          ),):Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              GestureDetector(
+
+              paymentController.statusPaymentList[0].status == 0?Container():GestureDetector(
                 onTap: () {
                   openCreditBrowser(context);
                 },
@@ -138,7 +182,7 @@ class PaymentScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              GestureDetector(
+              paymentController.statusPaymentList[1].status == 0?Container():GestureDetector(
                 onTap: () {
                   openDebitBrowser(context);
                 },
@@ -201,18 +245,18 @@ class PaymentScreen extends StatelessWidget {
                 ),
               ),
             ],
-          ),
+          )
         ),
-      ),
-    );
+      );
+    }
+    ));
   }
 
   void openCreditBrowser(BuildContext context) {
-    List<String> encodedLines = lineIDs!.map((item) => 'lines[]=$item').toList();
+    List<String> encodedLines = widget.lineIDs!.map((item) => 'lines[]=$item').toList();
     String lines = encodedLines.join('&');
 
-    String url =
-        'https://payment.tsdoha.com/session?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amount&$lines';
+    String url = 'https://payment.tsdoha.com/session?school_code=${widget.schoolCode}&parent_id=${widget.parentID}&child_id=${widget.childID}&total_amount=${widget.amount}&$lines';
 
     String encodedUrl = Uri.encodeFull(url);
 
@@ -221,20 +265,20 @@ class PaymentScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => WebViewScreen(
           url: encodedUrl,
-          successCallback: () => Get.to(() => SuccsesPayament(student:student)),
-          errorCallback: () => Get.to(() =>  FailedPayment(student:student)),
+          successCallback: () => Get.to(() => SuccsesPayament(student:widget.student)),
+          errorCallback: () => Get.to(() =>  FailedPayment(student:widget.student)),
         ),
       ),
     );
   }
 
   void openDebitBrowser(BuildContext context) {
-    List<String> encodedLines = lineIDs!.map((item) => 'lines[]=$item').toList();
+    List<String> encodedLines = widget.lineIDs!.map((item) => 'lines[]=$item').toList();
     String lines = encodedLines.join('&');
-    final double amountdebit = amount! * 100;
+    final double amountdebit = widget.amount! * 100;
     final int amountdeb = amountdebit.toInt();
     String url =
-        'https://payment.tsdoha.com/sts/checkout?school_code=$schoolCode&parent_id=$parentID&child_id=$childID&total_amount=$amountdeb&$lines';
+        'https://payment.tsdoha.com/sts/checkout?school_code=${widget.schoolCode}&parent_id=${widget.parentID}&child_id=${widget.childID}&total_amount=$amountdeb&$lines';
     if (kDebugMode) {
       print(url);
     }
@@ -250,8 +294,6 @@ class PaymentScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
 
 class WebViewScreen extends StatefulWidget {

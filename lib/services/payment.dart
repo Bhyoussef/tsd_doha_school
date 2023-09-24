@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:tsdoha/constant/constant.dart';
 import 'package:tsdoha/model/payment_details_model.dart';
 import 'package:tsdoha/model/payment_model.dart';
+import 'package:tsdoha/model/status_model.dart';
 
 
 class ApiServicePayment {
@@ -224,6 +225,30 @@ class ApiServicePayment {
       )
           .toList();
       return InpaidDetails;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+
+  static Future<List<StatusModel>> getStatusPayment(
+      ) async {
+    final response = await http.get(
+      Uri.parse('https://payment.tsdoha.com/api/payment/status'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      final paymentStatus = jsonResponse['data'];
+      print(paymentStatus);
+      List<StatusModel> paymentstatus = paymentStatus
+          .map<StatusModel>(
+            (data) => StatusModel.fromJson(data),
+      )
+          .toList();
+      print(paymentStatus);
+      return paymentstatus;
     } else {
       throw Exception('Failed to load data');
     }
