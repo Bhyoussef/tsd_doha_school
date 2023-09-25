@@ -1,4 +1,4 @@
-package com.tsdoha.parent
+package com.tsdoha.parents
 
 import io.flutter.embedding.android.FlutterActivity
 
