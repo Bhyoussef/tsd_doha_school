@@ -71,7 +71,7 @@ class MainScreen extends StatelessWidget {
             onTap: () {
               controller.updateSelectedOption(DrawerOption.MyChildren);
               controller.updateTitle(DrawerOption.MyChildren);
-              Get.back();
+             // Get.back();
             },
           ),
           ListTile(
@@ -85,7 +85,7 @@ class MainScreen extends StatelessWidget {
             onTap: () {
               controller.updateSelectedOption(DrawerOption.MyMessages);
               controller.updateTitle(DrawerOption.MyMessages);
-              Get.back();
+              //Get.back();
             },
           ),
           ListTile(
@@ -99,7 +99,7 @@ class MainScreen extends StatelessWidget {
             onTap: () {
               controller.updateSelectedOption(DrawerOption.MyPayments);
               controller.updateTitle(DrawerOption.MyPayments);
-              Get.back();
+              //Get.back();
             },
           ),
           ListTile(
@@ -113,7 +113,7 @@ class MainScreen extends StatelessWidget {
             onTap: () {
               controller.updateSelectedOption(DrawerOption.About);
               controller.updateTitle(DrawerOption.About);
-              Get.back();
+              //Get.back();
             },
           ),
           ListTile(
@@ -127,7 +127,7 @@ class MainScreen extends StatelessWidget {
             onTap: () {
               controller.updateSelectedOption(DrawerOption.UpdatePassword);
               controller.updateTitle(DrawerOption.UpdatePassword);
-              Get.back();
+              //Get.back();
             },
           ),
           ListTile(
@@ -141,7 +141,7 @@ class MainScreen extends StatelessWidget {
             onTap: () {
               controller.updateSelectedOption(DrawerOption.Configuration);
               controller.updateTitle(DrawerOption.Configuration);
-              Get.back();
+              //Get.back();
             },
           ),
           ListTile(
@@ -156,7 +156,6 @@ class MainScreen extends StatelessWidget {
             ),
             onTap: () {
               Get.dialog(LogoutDialog());
-              //Get.to(()=>FailedPayment());
             },
           ),
           Column(

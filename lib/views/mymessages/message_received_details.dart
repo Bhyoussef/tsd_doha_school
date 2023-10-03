@@ -39,8 +39,6 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   @override
   void initState() {
     super.initState();
-    final MessageReceivedController controller =
-        Get.find<MessageReceivedController>();
     SharedData.getFromStorage('parent', 'object', 'uid').then((uid) async {
       controller.getComments(uid, widget.messageid!);
       controller.fetchSingleMessage(uid,widget.messageid);
@@ -101,24 +99,25 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            Obx(() {
-              if (controller.isloading.isTrue) {
-                return Center(
-                  child: CircularProgressBar(
-                    color: primarycolor,
-                  ),
-                );
-              } else
-                return MessageSingleReceived(controller: controller);
-              }),
-
-        comments(),
-          ],
-        ),
+        child: Obx(() {
+          if (controller.isloading.isTrue) {
+            return Center(
+              child: CircularProgressBar(
+                color: primarycolor,
+              ),
+            );
+          } else {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                messageContent(),
+                comments(),
+              ],
+            );
+          }
+        }),
       ),
+
       floatingActionButton: ElevatedButton(
         onPressed: () {
           Get.to(() => AddCommentPage(message: widget.message));
@@ -156,8 +155,12 @@ class _DetailsMessageReceivedState extends State<DetailsMessageReceived> {
   Widget comments() {
     return Obx(() {
       if (controller.isloading.isTrue) {
-        return Center(
-          child: Container()
+        return Column(
+          children: [
+            Center(
+              child: Container(),
+            ),
+          ],
         );
       } else if (controller.comments.isNotEmpty) {
         return Column(
@@ -405,19 +408,29 @@ class _MessageSingleReceivedState extends State<MessageSingleReceived> {
     DateTime date = DateTime.parse(dateString);
     return date.add(Duration(hours: 3));
   }
+  final FileDownloadController downloadController = Get.find<FileDownloadController>();
+
+  final locale = Get.locale;
+
+
+  bool isAttached = false;
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 5), () {
+      if (widget.controller!.receivedSingleMessage != null &&
+          widget.controller!.receivedSingleMessage!.isNotEmpty &&
+          widget.controller!.receivedSingleMessage![0].attachments != null) {
+        isAttached = widget.controller!.receivedSingleMessage![0].attachments!.isEmpty;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final FileDownloadController downloadController = Get.find<FileDownloadController>();
-    final locale = Get.locale;
     final isArabic = locale?.languageCode == 'ar';
-    bool isAttached = false;
-    if (widget.controller!.receivedSingleMessage != null &&
-        widget.controller!.receivedSingleMessage!.isNotEmpty &&
-        widget.controller!.receivedSingleMessage![0].attachments != null) {
-      isAttached = widget.controller!.receivedSingleMessage![0].attachments!.isEmpty;
-    }
-
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,

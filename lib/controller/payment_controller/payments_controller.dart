@@ -14,6 +14,7 @@ class PaymentsController extends GetxController {
   final totalinpaiddetailsparents = <PaymentDetails>[].obs;
   final totalpaiddetailsstudents = <PaymentDetails>[].obs;
   final totalinpaiddetailsstudents = <PaymentDetails>[].obs;
+  final totalunpaidchild = <PaymentDetails>[].obs;
   final statusPaymentList = <StatusModel>[].obs;
   late int patrentId;
 
@@ -40,6 +41,13 @@ class PaymentsController extends GetxController {
     final paymentList =
         await ApiServicePayment.getPaidDetailsStudents(studentId);
     totalpaiddetailsstudents.assignAll(paymentList);
+    isloading(false);
+  }
+  Future<void> fetchingTotalUnPaymentsStudentsDetail(int studentId) async {
+    isloading(true);
+    final paymentList =
+    await ApiServicePayment.getUnPaidDetailsStudents(studentId);
+    totalunpaidchild.assignAll(paymentList);
     isloading(false);
   }
 

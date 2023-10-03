@@ -130,6 +130,37 @@ class ApiServicePayment {
       throw Exception('Failed to load data');
     }
   }
+  static Future<List<PaymentDetails>> getUnPaidDetailsStudents(int studentId,
+      ) async {
+    final response = await http.post(
+      Uri.parse('${Res.host}/proschool/give_me_total_unpaid'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+        {
+          "jsonrpc": "2.0",
+          "method": "call",
+          "uid": false,
+          "params": {
+            "student_id": studentId,
+            "parent_id": false,
+          }
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      final paiddetails = jsonResponse['result'];
+      List<PaymentDetails> paidDetails = paiddetails
+          .map<PaymentDetails>(
+            (data) => PaymentDetails.fromJson(data),
+      )
+          .toList();
+      return paidDetails;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   static Future<List<PaymentDetails>> getInPaidDetailsStudents(int studentId,
       ) async {
